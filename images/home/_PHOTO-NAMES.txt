@@ -1,0 +1,14 @@
+HOME PAGE PHOTOS — drop them in this folder with these exact names (all lowercase, .jpg).
+
+looks-glazed.jpg             "Looks of the week" — 1st picture (Milky & glazed)
+looks-stickers.jpg           "Looks of the week" — 2nd picture (Sweet stick-ons)
+looks-chrome.jpg             "Looks of the week" — 3rd picture (Mirror chrome)
+
+collection-press-ons.jpg     Collections — Press-On Sets card
+collection-stick-ons.jpg     Collections — Stick-Ons card
+collection-chrome-foil.jpg   Collections — Chrome & Foil card
+collection-custom-orders.jpg Collections — Custom Orders card
+
+about-shanaya.jpg            "Meet Shanaya" — a photo of you (your logo shows until you add one)
+
+Tips: portrait shots work best (about 3:4), 1000–1500px wide, under ~300 KB each.

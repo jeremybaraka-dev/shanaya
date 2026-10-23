@@ -1,0 +1,21 @@
+PRODUCT PHOTOS — drop them in this folder with these exact names (all lowercase, .jpg).
+Each photo appears on the product card, quick look and bag. Until a photo exists, the
+nail illustration shows instead.
+
+glazed-donut-set.jpg
+french-coffin-kit.jpg
+midnight-chrome-set.jpg
+soft-lilac-stickers.jpg
+y2k-chrome-kit.jpg
+floral-sticker-sheet.jpg
+classic-glam-set.jpg        (also the "Classic" slide in the home page hero)
+gel-glow-set.jpg            (also the "Gel" hero slide)
+french-luxe-tips.jpg        (also the "French" hero slide)
+custom-nail-art.jpg         (also the "Custom" hero slide)
+stick-on-starter-kit.jpg    (also the "Stick-On" hero slide)
+ombre-dreams-set.jpg
+chrome-finish-set.jpg
+floral-garden-set.jpg
+limited-rose-gold.jpg
+
+Tips: portrait or square, about 1000–1500px wide, under ~300 KB each (squoosh.app shrinks them).

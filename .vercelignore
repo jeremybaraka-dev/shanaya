@@ -1,0 +1,5 @@
+# Never upload backups, editor settings or notes
+_original-backup
+_backup-pink-v1
+.claude
+**/_PHOTO-NAMES.txt

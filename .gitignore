@@ -1,0 +1,14 @@
+# Local backups and editor settings — not part of the site
+_original-backup/
+_backup-pink-v1/
+.claude/
+
+# Secrets and tooling (PayPal keys live in Vercel's settings, never in the repo)
+.env
+.env.*
+.vercel/
+node_modules/
+
+# OS files
+Thumbs.db
+.DS_Store
