@@ -1,9 +1,9 @@
 // POST /api/paypal/capture-order  body: { orderID }
-// Takes the payment after the customer approves it in PayPal, then emails the
-// shop owner and returns a receipt built from PayPal's confirmed order.
+// Takes the payment after the customer approves it in PayPal and returns a
+// receipt built from PayPal's confirmed order. (PayPal emails the shop owner
+// and the customer about each sale on its own.)
 const { endpoint, readBody, accessToken, send, CheckoutError } = require('../_paypal');
 const { toReceipt } = require('../../js/receipt.js');
-const { notifySale } = require('../_notify');
 
 module.exports = endpoint(async (req, res, env) => {
   const orderID = String(readBody(req).orderID || '');
@@ -41,7 +41,6 @@ module.exports = endpoint(async (req, res, env) => {
       if (full.ok) order = await full.json();
     } catch (e) { /* fall back to the capture reply */ }
     result.receipt = toReceipt(order);
-    await notifySale(result.receipt);
   }
   return send(res, 200, result);
 });
