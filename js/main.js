@@ -594,16 +594,39 @@
     };
   }
 
-  function showThanks(firstName) {
+  // Receipt PDF, built from PayPal's confirmed order (see js/receipt.js).
+  function downloadReceipt(receipt) {
+    const R = window.SHANAYA_RECEIPT;
+    if (!R || !receipt) return;
+    const blob = new Blob([R.receiptPdf(receipt)], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Nails-by-Shanaya-receipt-${String(receipt.orderId).replace(/[^A-Z0-9]/gi, '') || 'order'}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  }
+
+  function showThanks(firstName, receipt) {
     cart = [];
     saveCart();
     $('#drawer-items').innerHTML = `<div class="drawer__empty drawer__done">
       <img src="${S.nailArt('glazed')}" alt="">
       <p></p>
-      <span>Your order is confirmed. A receipt is on its way to your email, and your set ships to the address on your PayPal.</span>
+      <span>Your order is confirmed. PayPal is emailing you a receipt too, and your set ships to the address on your PayPal.</span>
+      <small class="drawer__order"></small>
+      <button class="btn btn--pink btn--sm" id="receipt-dl" hidden><span class="roll"><span>Download receipt (PDF)</span><span>Download receipt (PDF)</span></span></button>
       <a href="shop.html" class="btn btn--ghost btn--sm">Keep shopping</a>
     </div>`;
     $('.drawer__done p').textContent = `Thank you${firstName ? ', ' + firstName : ''}! ♡`;
+    if (receipt && receipt.orderId) {
+      $('.drawer__order').textContent = `Order ${receipt.orderId}`;
+      const dl = $('#receipt-dl');
+      dl.hidden = false;
+      dl.addEventListener('click', () => downloadReceipt(receipt));
+    }
     showToast('Payment received — thank you! 💅');
   }
   const notCompleted = () => showToast("Payment didn't complete — please try again or DM @nailsbyshanaya_");
@@ -622,7 +645,7 @@
     const r = await postJSON('/api/paypal/capture-order', { orderID: data.orderID });
     if (r.status === 422 && r.data.declined) return actions.restart(); // card declined → pick another method
     if (!r.ok || r.data.status !== 'COMPLETED') return notCompleted();
-    showThanks(r.data.firstName);
+    showThanks(r.data.firstName, r.data.receipt);
   }
 
   function renderPayPal() {
@@ -634,7 +657,9 @@
       onClick: (data, actions) => (cart.length ? actions.resolve() : actions.reject()),
       createOrder: server ? serverCreateOrder : (data, actions) => actions.order.create(practiceOrder()),
       onApprove: server ? serverApprove : (data, actions) => actions.order.capture().then((d) => (
-        d && d.status === 'COMPLETED' ? showThanks(d.payer && d.payer.name ? d.payer.name.given_name : '') : notCompleted()
+        d && d.status === 'COMPLETED'
+          ? showThanks(d.payer && d.payer.name ? d.payer.name.given_name : '', window.SHANAYA_RECEIPT && window.SHANAYA_RECEIPT.toReceipt(d))
+          : notCompleted()
       )),
       onCancel: () => showToast('Payment cancelled — your bag is saved ♡'),
       onError: () => showToast(payError || "Payment didn't go through. Please try again."),

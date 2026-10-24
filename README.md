@@ -32,4 +32,24 @@ then redeploy:
 Never commit the Secret. Without these variables the site shows a
 "checkout unavailable" message instead of the payment buttons.
 
+## Sale emails and receipts
+
+After every completed payment, the shop owner gets an email with the items,
+total and shipping address, and the customer can download a PDF receipt
+(built from PayPal's confirmed order in `js/receipt.js`).
+
+Emails are sent through [Resend](https://resend.com). Add these in Vercel, then redeploy:
+
+| Name | Value |
+|---|---|
+| `RESEND_API_KEY` | from resend.com → API Keys |
+| `NOTIFY_EMAIL` | where sale emails go (your Resend sign-up email) |
+
+Without them, sales and receipts still work — only the email is skipped.
+
+## Pinterest
+
+`/pinterest-catalog.csv` is a product feed for Pinterest Catalogs, built from
+`js/products.js`. Only products with a photo are listed.
+
 Smooth scrolling uses [Lenis](https://github.com/darkroomengineering/lenis) (MIT).

@@ -889,6 +889,8 @@ body.show-float .float-cta { transform: translate(-50%, 0); }
 .drawer__secure { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted); text-align: center; }
 .drawer__test { padding: 2px 8px; border-radius: 999px; background: var(--pearl); color: var(--ink); font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
 .drawer__done p { color: var(--ink); }
+.drawer__order { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--muted); }
+.drawer__done .btn { width: 100%; max-width: 300px; }
 .drawer__continue { font-size: 14px; font-weight: 700; color: var(--muted); padding: 8px; text-decoration: underline; text-underline-offset: 4px; }
 
 /* ─── Quick view ─── */
