@@ -20,7 +20,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const mqMobile = matchMedia('(max-width: 900px)');
-  const PAY = Object.assign({ currency: 'USD', freeShippingOver: 40, shippingFee: 0 }, window.SHANAYA_PAY);
+  const PAY = Object.assign({ currency: 'USD', freeShippingOver: 50, shippingFee: 10 }, window.SHANAYA_PAY);
   const FREE_SHIP = PAY.freeShippingOver;
 
   const ICON = {
@@ -355,7 +355,16 @@
   document.body.appendChild(toast);
   let toastTimer;
   function showToast(msg, art) {
-    toast.innerHTML = (art ? `<img src="${art}" alt="">` : '') + `<span>${msg}</span>`;
+    toast.textContent = '';
+    if (art) {
+      const img = document.createElement('img');
+      img.src = art;
+      img.alt = '';
+      toast.appendChild(img);
+    }
+    const span = document.createElement('span');
+    span.textContent = msg;
+    toast.appendChild(span);
     toast.style.paddingLeft = art ? '' : '20px';
     toast.classList.add('is-on');
     clearTimeout(toastTimer);
@@ -399,7 +408,7 @@
         <p class="qv__label">Choose your size</p>
         <div class="qv__sizes" id="qv-sizes"></div>
         <button class="btn btn--pink" id="qv-add"><span class="roll"><span>Add to bag</span><span>Add to bag</span></span><span class="btn__icon">${ICON.plus}</span></button>
-        <ul class="qv__perks"><li>Handcrafted by Shanaya</li><li>Free shipping on orders over $40</li><li>Lasts up to 2 weeks</li></ul>
+        <ul class="qv__perks"><li>Handcrafted by Shanaya</li><li>Free shipping on orders $50+</li><li>Lasts up to 2 weeks</li></ul>
       </div>
     </div>`);
 
@@ -632,6 +641,7 @@
   const notCompleted = () => showToast("Payment didn't complete — please try again or DM @nailsbyshanaya_");
 
   let payError = ''; // the server's reason, shown instead of PayPal's generic message
+  let orderPass = null; // proof this browser created the order (checked by capture-order)
   async function serverCreateOrder() {
     payError = '';
     const r = await postJSON('/api/paypal/create-order', { items: cart.map(({ id, size, qty }) => ({ id, size, qty })) });
@@ -639,12 +649,17 @@
       payError = r.data.error || "Couldn't start checkout. Please try again.";
       throw new Error(payError);
     }
+    orderPass = { id: r.data.id, pass: r.data.pass };
     return r.data.id;
   }
   async function serverApprove(data, actions) {
-    const r = await postJSON('/api/paypal/capture-order', { orderID: data.orderID });
+    const pass = orderPass && orderPass.id === data.orderID ? orderPass.pass : '';
+    const r = await postJSON('/api/paypal/capture-order', { orderID: data.orderID, pass });
     if (r.status === 422 && r.data.declined) return actions.restart(); // card declined → pick another method
-    if (!r.ok || r.data.status !== 'COMPLETED') return notCompleted();
+    if (!r.ok || r.data.status !== 'COMPLETED') {
+      if (r.data && r.data.error) payError = r.data.error;
+      return notCompleted();
+    }
     showThanks(r.data.firstName, r.data.receipt);
   }
 

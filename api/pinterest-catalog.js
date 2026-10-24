@@ -5,7 +5,8 @@
 const catalog = require('../js/products.js');
 const settings = require('../js/payments.js');
 
-const COLUMNS = ['id', 'title', 'description', 'link', 'image_link', 'price', 'sale_price', 'availability', 'condition', 'brand', 'product_type'];
+const SITE_URL = 'https://nailsbyshanaya.vercel.app';
+const COLUMNS =['id', 'title', 'description', 'link', 'image_link', 'price', 'sale_price', 'availability', 'condition', 'brand', 'product_type'];
 const TYPES = {
   'press-on': 'Beauty > Nails > Press-On Nails',
   gel: 'Beauty > Nails > Press-On Nails',
@@ -36,10 +37,11 @@ module.exports = async (req, res) => {
     res.setHeader('Allow', 'GET, HEAD');
     return res.status(405).send('Method not allowed');
   }
-  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
-  if (!/^[a-z0-9.-]+(:\d+)?$/i.test(host)) return res.status(400).send('Bad host');
-  const proto = /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host) ? 'http' : 'https';
-  const base = `${proto}://${host}`;
+  // Links and photo checks always use the real shop address — never a
+  // request header, which a visitor could fake to point us at another site.
+  const host = String(req.headers.host || '');
+  const local = !process.env.VERCEL && /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host);
+  const base = local ? `http://${host}` : SITE_URL;
 
   const items = await Promise.all(catalog.PRODUCTS.map(async (p) => {
     const image = `${base}/${p.img}`;

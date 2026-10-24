@@ -3,6 +3,7 @@
 
    Prices always come from js/products.js — the browser only says which
    product, size and quantity, so nobody can change what they pay. */
+const crypto = require('crypto');
 const catalog = require('../js/products.js');
 const settings = require('../js/payments.js');
 
@@ -95,8 +96,48 @@ function priceCart(lines) {
 }
 
 function readBody(req) {
-  if (req.body && typeof req.body === 'object') return req.body;
-  try { return JSON.parse(req.body || '{}'); } catch (e) { throw new CheckoutError('Bad request.'); }
+  // Vercel parses JSON lazily and throws on malformed bodies — treat that as a bad request.
+  try {
+    const body = req.body;
+    if (body && typeof body === 'object') return body;
+    return JSON.parse(body || '{}');
+  } catch (e) {
+    throw new CheckoutError('Bad request.');
+  }
+}
+
+/* Order pass: create-order hands the buyer's browser an HMAC of the order ID.
+   capture-order only works with it, so nobody can complete an order this
+   server didn't create, or read someone else's receipt from an order number. */
+function orderToken(orderID, env) {
+  return crypto.createHmac('sha256', env.secret).update(`shanaya-order:${orderID}`).digest('base64url');
+}
+function checkOrderToken(orderID, token, env) {
+  const want = Buffer.from(orderToken(orderID, env));
+  const got = Buffer.from(String(token || ''));
+  if (got.length !== want.length || !crypto.timingSafeEqual(got, want)) throw new CheckoutError('This checkout session has expired. Please try again.', 403);
+}
+
+// Re-prices a PayPal order from the catalog; throws if anything doesn't match.
+function verifyOrder(order) {
+  const pu = (order.purchase_units || [])[0];
+  if (!pu || !pu.amount || pu.amount.currency_code !== settings.currency) throw new CheckoutError('Order does not match our prices.', 409);
+  const items = pu.items || [];
+  if (!items.length) throw new CheckoutError('Order does not match our prices.', 409);
+  let itemCents = 0;
+  for (const it of items) {
+    const [idPart, ...sizeParts] = String(it.sku || '').split('-');
+    const p = catalog.PRODUCTS.find((x) => x.id === Number(idPart));
+    const size = sizeParts.join('-');
+    const qty = Number(it.quantity);
+    if (!p || !p.sizes.includes(size) || !Number.isInteger(qty) || qty < 1 || qty > MAX_QTY
+      || cents(Number((it.unit_amount || {}).value)) !== cents(p.price)) {
+      throw new CheckoutError('Order does not match our prices.', 409);
+    }
+    itemCents += cents(p.price) * qty;
+  }
+  const shipCents = itemCents < cents(settings.freeShippingOver) ? cents(settings.shippingFee) : 0;
+  if (cents(Number(pu.amount.value)) !== itemCents + shipCents) throw new CheckoutError('Order does not match our prices.', 409);
 }
 
 function send(res, status, data) {
@@ -120,4 +161,4 @@ function endpoint(fn) {
   };
 }
 
-module.exports = { paypalEnv, accessToken, priceCart, readBody, send, endpoint, CheckoutError };
+module.exports = { paypalEnv, accessToken, priceCart, readBody, send, endpoint, CheckoutError, orderToken, checkOrderToken, verifyOrder };

@@ -1,6 +1,6 @@
 // POST /api/paypal/create-order  body: { items: [{ id, size, qty }] }
 // Prices, shipping and totals are worked out here from the catalog.
-const { endpoint, readBody, priceCart, accessToken, send } = require('../_paypal');
+const { endpoint, readBody, priceCart, accessToken, send, orderToken } = require('../_paypal');
 
 module.exports = endpoint(async (req, res, env) => {
   const order = priceCart(readBody(req).items);
@@ -12,5 +12,5 @@ module.exports = endpoint(async (req, res, env) => {
   });
   const data = await r.json();
   if (!r.ok || !data.id) throw new Error(`create order failed (${r.status}): ${JSON.stringify(data).slice(0, 500)}`);
-  return send(res, 200, { id: data.id });
+  return send(res, 200, { id: data.id, pass: orderToken(data.id, env) });
 });
