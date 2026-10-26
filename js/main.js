@@ -184,7 +184,7 @@
       : `<span class="lc${cls || ''}"><span>${ch}</span></span>`)).join('');
     const html = `
       <span class="loader__tag loader__tag--tl">Press-ons &amp; stick-ons</span>
-      <span class="loader__tag loader__tag--r">Handcrafted with love</span>
+      <span class="loader__tag loader__tag--r">Every girl is beautiful ♡</span>
       <span class="loader__tag loader__tag--bl">@nailsbyshanaya_</span>
       <span class="loader__count"><b>0</b>%</span>
       <div class="loader__word"><span class="loader__grp loader__grp--a">${letters('NAILS BY')}</span><span class="lc lc--sp"> </span><span class="loader__name"><span class="loader__grp loader__grp--s">${letters('S')}</span><span class="loader__grp">${letters('HANAYA', ' lc--drop')}</span></span></div>

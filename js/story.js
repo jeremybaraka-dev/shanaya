@@ -3,7 +3,7 @@
    Builds the scenes from the catalog and exposes
    window.SHANAYA_STORY = { layout(), update(y, vh, mx, my) },
    which main.js calls from its Lenis-driven frame loop.
-     1. hero    — a cut-out case with seven sets orbiting it on a 3D ring
+     1. hero    — a huge staggered wordmark; the two lines drift apart on scroll
      2. craft   — one set pinned centre stage, callouts change per step
      3. coll    — all twelve sets roll past, details swap per set
      4. words   — giant words glide behind a changing photo card
@@ -36,143 +36,19 @@
     return sc;
   }
 
-  /* ─── 1. HERO: the case, with sets orbiting it ───
-     A cut-out case sits centre stage, bleeding off the bottom. Seven sets
-     orbit it on a tilted 3D ring: on the back half they pass behind the case
-     (and show through its clear lid), on the front half in front of it.
-     Each frame, any card that drifts near the text fades out, so the copy
-     is never covered at any screen size. Scrolling speeds the ring up and
-     widens it while the copy lifts away. On phones the ring is hidden and
-     the case floats on its own. */
+  /* ─── 1. HERO: brand wordmark ───
+     "Nails by" / "Shanaya" set huge and staggered over two soft circles.
+     As you scroll past, the two lines drift apart sideways; the photos and
+     circles get their parallax from main.js ([data-speed]). */
   const hero = $('[data-scene="hero"]');
   if (hero) {
-    const ring = $('.wk__ring', hero), subject = $('.wk__subject', hero);
-    const copy = $('.wk__copy', hero), note = $('.wk__note', hero), badge = $('.wk__badge', hero);
-    const loader = $('#loader');
-    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const picks = [109, 104, 103, 111, 101, 106, 110].map(byId);
-    ring.innerHTML = picks.map((p) => `
-      <button class="wk__card" data-quick="${p.id}" data-cursor="View set" tabindex="-1" aria-label="Quick look: ${esc(p.name)}">
-        <img src="${p.thumb}" alt="" loading="lazy">
-      </button>`).join('');
-    const cards = $$('.wk__card', ring);
-    const N = cards.length;
-    const TILT = -12 * Math.PI / 180;
-    let speed = 0.11, p = 0, mx = 0, my = 0, last = performance.now(), born = 0, visible = true, hovered = false;
-    let geo = null;
-
-    // Everything is measured in the pinned panel's own coordinates (the cards
-    // are positioned inside it). offsetLeft/Top ignore the CSS translate and
-    // the rise animation, so the ring centres on the case's resting spot.
-    const stage = $('.wk__sticky', hero);
-    const measure = () => {
-      const vw = stage.clientWidth, vh = stage.clientHeight, mobile = mqMobile.matches;
-      const w = subject.offsetWidth, h = subject.offsetHeight;
-      const top = subject.offsetTop;
-      geo = {
-        cx: subject.offsetLeft, // left is the centre: the case is shifted back by translate -50%
-        // the ring wraps the lower part of the case, so the front pass runs
-        // along its bottom edge instead of across the nails
-        cy: mobile ? top + h * 0.8 : Math.min(top + h * 0.72, vh * 0.78),
-        rx: mobile ? vw * 0.56 : Math.min(vw * 0.42, w * 1.02),
-        ry: mobile ? vh * 0.06 : vh * 0.125,
-        cw: cards[0].offsetWidth, ch: cards[0].offsetHeight,
-      };
-    };
-
-    // Cards are spaced by distance along the ring as it appears on screen (not
-    // by angle), so they stay evenly apart instead of bunching at the ends.
-    const SAMPLES = 360;
-    const path = { th: new Float32Array(SAMPLES + 1), len: new Float32Array(SAMPLES + 1), total: 1 };
-    const buildPath = (rx, ry) => {
-      let px = rx, py = 0, acc = 0;
-      for (let k = 0; k <= SAMPLES; k++) {
-        const th = (k / SAMPLES) * Math.PI * 2;
-        const x = Math.cos(th) * rx, y = Math.sin(th) * ry;
-        acc += Math.hypot(x - px, y - py);
-        path.th[k] = th; path.len[k] = acc;
-        px = x; py = y;
-      }
-      path.total = acc;
-    };
-    const thetaAt = (s) => {
-      let lo = 0, hi = SAMPLES;
-      while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (path.len[mid] < s) lo = mid; else hi = mid; }
-      const span = path.len[hi] - path.len[lo] || 1;
-      return path.th[lo] + ((s - path.len[lo]) / span) * (path.th[hi] - path.th[lo]);
-    };
-    let travel = 0; // how far along the ring the first card has moved, as a fraction of a lap
-
-    const overlap = (a, b) => {
-      const w = Math.min(a.r, b.r) - Math.max(a.l, b.l), h = Math.min(a.b, b.b) - Math.max(a.t, b.t);
-      return w > 0 && h > 0 ? w * h : 0;
-    };
-    const rectOf = (el, pad, origin) => {
-      const r = el.getBoundingClientRect();
-      return { l: r.left - origin.left - pad, t: r.top - origin.top - pad, r: r.right - origin.left + pad, b: r.bottom - origin.top + pad };
-    };
-
-    const frame = (now) => {
-      const dt = Math.min(0.05, (now - last) / 1000); last = now;
-      const ready = !loader || loader.classList.contains('is-open') || loader.classList.contains('is-done');
-      // the ring is desktop-only (hidden by CSS on phones), so skip the work there
-      if (visible && ready && geo && ring.offsetParent !== null) {
-        if (!born) born = now;
-        const intro = clamp((now - born) / 1600);
-        if (!reduceMotion && !hovered) travel = (travel + dt * (speed + p * 0.45) / (Math.PI * 2)) % 1;
-        const e = easeOut(p);
-        const rx = geo.rx * (1 + e * 0.25), ry = geo.ry * (1 + e * 0.6);
-        buildPath(rx, ry);
-        const origin = stage.getBoundingClientRect();
-        const avoid = [copy, note, badge]
-          .filter((el) => el.offsetParent !== null)
-          .map((el) => rectOf(el, el === copy ? 28 : 40, origin));
-        const sh = stage.clientHeight;
-        const cx = geo.cx + mx * 18, cy = geo.cy - e * sh * 0.08 + my * 10;
-        cards.forEach((card, i) => {
-          const th = thetaAt((((travel + i / N) % 1) + 1) % 1 * path.total);
-          const ex = Math.cos(th) * rx, ey = Math.sin(th) * ry;
-          const x = cx + ex * Math.cos(TILT) - ey * Math.sin(TILT);
-          const y = cy + ex * Math.sin(TILT) + ey * Math.cos(TILT);
-          const depth = Math.sin(th); // +1 front, -1 back
-          const s = 0.72 + 0.28 * (depth + 1) / 2;
-          // fly in from below on load, one after another
-          const k = clamp(intro * 1.6 - i * 0.08);
-          const yIn = (1 - easeOut(k)) * sh * 0.5;
-          const w = geo.cw * s, h = geo.ch * s;
-          const box = { l: x - w / 2, r: x + w / 2, t: y + yIn - h / 2, b: y + yIn + h / 2 };
-          let o = k;
-          avoid.forEach((a) => { o *= 1 - clamp((overlap(box, a) / (w * h)) * 10); });
-          const rotY = clamp(-Math.cos(th) * 58, -58, 58);
-          const rotZ = (TILT * 180 / Math.PI) + Math.cos(th) * -6;
-          card.style.transform = `translate3d(${(x - geo.cw / 2).toFixed(1)}px,${(y + yIn - geo.ch / 2).toFixed(1)}px,0) perspective(900px) rotateY(${rotY.toFixed(1)}deg) rotateZ(${rotZ.toFixed(2)}deg) scale(${s.toFixed(3)})`;
-          card.style.opacity = o.toFixed(3);
-          card.style.zIndex = depth > 0 ? String(40 + Math.round(depth * 10)) : String(10 + Math.round((depth + 1) * 10));
-          card.style.pointerEvents = o > 0.6 ? '' : 'none';
-          card.style.filter = depth < 0 ? `brightness(${(0.82 + 0.18 * (depth + 1)).toFixed(3)})` : '';
-        });
-      }
-      requestAnimationFrame(frame);
-    };
-    requestAnimationFrame(frame);
-    ring.addEventListener('mouseover', (e) => { hovered = !!e.target.closest('.wk__card'); });
-    ring.addEventListener('mouseleave', () => { hovered = false; });
-    new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(hero);
-
-    const sc = pinned(hero);
-    sc.measure = ((m) => () => {
-      m();
-      subject.style.transform = '';
-      measure();
-    })(sc.measure);
-    sc.update = (y, vh, mxx, myy) => {
-      p = sc.progress(y); mx = mxx; my = myy;
-      const e = easeOut(p);
-      copy.style.transform = `translate3d(0,${(-e * vh * 0.22).toFixed(1)}px,0)`;
-      copy.style.opacity = String(clamp(1 - p * 1.7));
-      note.style.opacity = String(clamp(1 - p * 2.5));
-      subject.style.transform = `translate3d(${(mx * -10).toFixed(1)}px,${(-e * vh * 0.1 + my * -6).toFixed(1)}px,0) scale(${(1 + e * 0.08).toFixed(3)})`;
-      badge.style.transform = `translate3d(${(mx * 12).toFixed(1)}px,${(-e * vh * 0.35).toFixed(1)}px,0)`;
+    const l1 = $('.sm__line--1', hero), l2 = $('.sm__line--2', hero);
+    const sc = { el: hero, h: 1, measure() { sc.h = hero.offsetHeight || window.innerHeight; } };
+    sc.update = (y, vh, mx, my) => {
+      const e = easeOut(clamp(y / sc.h));
+      const vw = window.innerWidth;
+      l1.style.transform = `translate3d(${(-e * vw * 0.14 + mx * -8).toFixed(1)}px,${(my * -4).toFixed(1)}px,0)`;
+      l2.style.transform = `translate3d(${(e * vw * 0.14 + mx * 8).toFixed(1)}px,${(my * 4).toFixed(1)}px,0)`;
     };
     scenes.push(sc);
   }
