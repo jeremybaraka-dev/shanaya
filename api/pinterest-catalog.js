@@ -8,13 +8,10 @@ const settings = require('../js/payments.js');
 const SITE_URL = 'https://nailsbyshanaya.vercel.app';
 const COLUMNS =['id', 'title', 'description', 'link', 'image_link', 'price', 'sale_price', 'availability', 'condition', 'brand', 'product_type'];
 const TYPES = {
-  'press-on': 'Beauty > Nails > Press-On Nails',
-  gel: 'Beauty > Nails > Press-On Nails',
-  french: 'Beauty > Nails > Press-On Nails',
-  chrome: 'Beauty > Nails > Press-On Nails',
-  limited: 'Beauty > Nails > Press-On Nails',
-  custom: 'Beauty > Nails > Custom Nail Art',
-  'stick-on': 'Beauty > Nails > Nail Stickers',
+  floral: 'Beauty > Nails > Press-On Nails > Floral',
+  animal: 'Beauty > Nails > Press-On Nails > Animal Print',
+  chrome: 'Beauty > Nails > Press-On Nails > Chrome',
+  charms: 'Beauty > Nails > Press-On Nails > Charms',
 };
 
 const cell = (v) => {
@@ -44,7 +41,7 @@ module.exports = async (req, res) => {
   const base = local ? `http://${host}` : SITE_URL;
 
   const items = await Promise.all(catalog.PRODUCTS.map(async (p) => {
-    const image = `${base}/${p.img}`;
+    const image = `${base}/${p.img.replace(/\.webp$/, '.jpg')}`; // Pinterest gets the JPEG copy
     if (!(await photoExists(image))) return null;
     const onSale = p.oldPrice && p.oldPrice > p.price;
     return {

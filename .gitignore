@@ -12,3 +12,6 @@ node_modules/
 # OS files
 Thumbs.db
 .DS_Store
+
+# Original full-size product photos (web versions are generated from these)
+images/products/now (*).png

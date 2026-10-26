@@ -56,10 +56,10 @@
         <span>Nails by <b>Shanaya</b></span>
       </a>
       <nav class="hdr__nav" aria-label="Main">
-        <a href="#arrivals" class="hdr__link">New Arrivals</a>
-        <a href="#collections" class="hdr__link">Collections</a>
+        <a href="#craft" class="hdr__link">The Craft</a>
+        <a href="#collection" class="hdr__link">Collection</a>
         <a href="#about" class="hdr__link">About</a>
-        <a href="#bestsellers" class="hdr__link">Best Sellers</a>
+        <a href="#how" class="hdr__link">How it works</a>
       </nav>
       <div class="hdr__actions">
         <a href="shop.html" class="btn btn--ink btn--sm hdr__shop" data-magnetic>
@@ -79,10 +79,10 @@
   <div class="menu" id="menu" aria-hidden="true" data-lenis-prevent>
     <nav class="menu__nav" aria-label="Mobile">
       <a href="shop.html" class="menu__link"><span class="menu__num">01</span>Shop All</a>
-      <a href="#arrivals" class="menu__link"><span class="menu__num">02</span>New Arrivals</a>
-      <a href="#collections" class="menu__link"><span class="menu__num">03</span>Collections</a>
+      <a href="#craft" class="menu__link"><span class="menu__num">02</span>The Craft</a>
+      <a href="#collection" class="menu__link"><span class="menu__num">03</span>Collection</a>
       <a href="#about" class="menu__link"><span class="menu__num">04</span>About</a>
-      <a href="#bestsellers" class="menu__link"><span class="menu__num">05</span>Best Sellers</a>
+      <a href="#how" class="menu__link"><span class="menu__num">05</span>How it works</a>
     </nav>
     <div class="menu__foot">
       <p class="menu__script">Cute nails, bigger dreams ♡</p>
@@ -95,57 +95,27 @@
 
   <main>
 
-    <!-- ─── HERO ─── -->
-    <section class="hero" id="top">
-      <div class="hero__bg" aria-hidden="true">
-        <span class="blob blob--1" data-speed="-0.2" data-depth="-30"></span>
-        <span class="blob blob--2" data-speed="0.15" data-depth="24"></span>
-      </div>
-
-      <div class="container hero__grid">
-        <div class="hero__copy">
-          <p class="eyebrow" data-reveal>Handcrafted press-ons &amp; stick-ons</p>
-          <span class="hero__ast" aria-hidden="true"><svg viewBox="0 0 100 100"><g fill="currentColor"><rect x="41" y="2" width="18" height="96" rx="9"/><rect x="41" y="2" width="18" height="96" rx="9" transform="rotate(60 50 50)"/><rect x="41" y="2" width="18" height="96" rx="9" transform="rotate(120 50 50)"/></g></svg></span>
-          <h1 class="hero__title" data-split>Everyday <em>glam.</em><br />Effortless nails.</h1>
-          <p class="hero__sub" data-reveal style="--d:.35s">Press-on nails, nail art sets and stick-ons crafted for every mood and every occasion — no salon, no wait.</p>
-          <div class="hero__ctas" data-reveal style="--d:.45s">
-            <a href="shop.html" class="btn btn--pink" data-magnetic>
-              <span class="roll"><span>Shop the drop</span><span>Shop the drop</span></span>
-              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <!-- ─── 1. HERO: the hand ─── -->
+    <section class="sh" id="top" data-scene="hero" aria-labelledby="hero-title">
+      <div class="sh__sticky">
+        <div class="sh__glow" aria-hidden="true"></div>
+        <div class="sh__copy">
+          <p class="eyebrow sh__kicker" data-reveal>Handmade press-on nails<span class="sh__kicker-more"> · New sets every Friday</span></p>
+          <h1 class="sh__title" id="hero-title" data-split>Wear <em>the art.</em></h1>
+        </div>
+        <div class="hand" aria-label="Featured sets"></div>
+        <div class="sh__lede">
+          <p data-reveal style="--d:.5s">Twelve hand-painted sets, sculpted one nail at a time by Shanaya — florals, leopard, chrome and charms.</p>
+          <div class="sh__ctas" data-reveal style="--d:.6s">
+            <a href="#collection" class="btn btn--pink" data-magnetic>
+              <span class="roll"><span>See the sets</span><span>See the sets</span></span>
+              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
             </a>
-            <a href="#about" class="btn btn--ghost"><span class="roll"><span>Meet Shanaya</span><span>Meet Shanaya</span></span></a>
+            <a href="shop.html" class="btn btn--ghost"><span class="roll"><span>Shop all</span><span>Shop all</span></span></a>
           </div>
-          <ul class="hero__stats" data-reveal style="--d:.55s">
-            <li><b><span data-count="500">500</span>+</b><span>happy customers</span></li>
-            <li><b><span data-count="100">100</span>+</b><span>unique designs</span></li>
-            <li><b>2 wks</b><span>of wear</span></li>
-            <li class="hero__stats-go"><a href="shop.html" aria-label="Shop all sets"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
-          </ul>
         </div>
-
-        <div class="hero__visual">
-          <div class="hero__arch" data-reveal="clip" style="--d:.15s">
-            <div id="hero-slides"></div>
-          </div>
-          <div class="hero__badge" data-speed="0.08" data-depth="-18" aria-hidden="true">
-            <svg class="hero__badge-ring spin" viewBox="0 0 120 120">
-              <defs><path id="ring-hero" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0" /></defs>
-              <circle cx="60" cy="60" r="59" fill="#fff" />
-              <text font-family="Manrope, sans-serif" font-size="10.5" font-weight="800" letter-spacing="3.1" fill="#23233A"><textPath href="#ring-hero">CUSTOM NAILS ✦ JUST FOR YOU ✦ </textPath></text>
-            </svg>
-            <span class="hero__badge-core"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.3 3 4.5 6.6 4.5c2 0 3.4 1.1 4.2 2.3.3.4.9.4 1.2 0 .8-1.2 2.2-2.3 4.2-2.3 3.6 0 5.8 3.8 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg></span>
-          </div>
-          <div class="hero__note float" data-speed="-0.06" data-depth="22">New drop<br />every Friday ♡<small>Just landed</small></div>
-          <span class="spark spark--1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C13 7 17 11 24 12C17 13 13 17 12 24C11 17 7 13 0 12C7 11 11 7 12 0Z"/></svg></span>
-          <span class="spark spark--2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C13 7 17 11 24 12C17 13 13 17 12 24C11 17 7 13 0 12C7 11 11 7 12 0Z"/></svg></span>
-          <span class="spark spark--3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C13 7 17 11 24 12C17 13 13 17 12 24C11 17 7 13 0 12C7 11 11 7 12 0Z"/></svg></span>
-        </div>
-
-        <div class="hero__picker" data-reveal style="--d:.65s">
-          <div class="picker" id="picker" role="tablist" aria-label="Featured styles"></div>
-        </div>
+        <div class="sh__scroll" aria-hidden="true">Scroll<span></span></div>
       </div>
-      <div class="hero__scroll" aria-hidden="true">Scroll<span></span></div>
     </section>
 
     <!-- ─── CROSSED BANDS ─── -->
@@ -166,106 +136,69 @@
       </div>
     </section>
 
-    <!-- ─── LOOKS ─── -->
-    <section class="section looks" id="explore" aria-labelledby="looks-title">
-      <div class="container sec-head sec-head--row">
-        <div class="sec-head">
-          <p class="eyebrow" data-reveal>Looks of the week</p>
-          <h2 class="sec-title" id="looks-title" data-split>Sets that <em>steal</em><br />the show</h2>
+    <!-- ─── 2. CRAFT: one set centre stage ─── -->
+    <section class="craft" id="craft" data-scene="craft" aria-labelledby="craft-title">
+      <div class="craft__sticky">
+        <div class="craft__word" aria-hidden="true">Handmade ✦ Handmade ✦ Handmade</div>
+        <div class="craft__copy">
+          <p class="eyebrow">The craft</p>
+          <h2 class="sr-only" id="craft-title">How every set is made</h2>
+          <p class="craft__count" aria-hidden="true"><b>01</b> / 04</p>
+          <ol class="craft__steps">
+            <li class="craft__step is-on"><h3>Sculpted by hand</h3><p>Every nail is shaped, filed and painted by Shanaya — no printing, no shortcuts.</p></li>
+            <li class="craft__step"><h3>Chrome, charms &amp; 3D florals</h3><p>Gold chains, cherries, sculpted petals and mirror chrome, set one piece at a time.</p></li>
+            <li class="craft__step"><h3>Fitted to you</h3><p>Choose XS to XL. Not sure? Send us a photo and we'll help you find your fit.</p></li>
+            <li class="craft__step"><h3>Ready in minutes</h3><p>Prep, press, done. With good prep, a set can last up to two weeks.</p></li>
+          </ol>
         </div>
-        <p class="sec-head__sub" data-reveal style="--d:.2s">From glazed minimal to full Y2K chrome — every look is designed, painted and packed by hand.</p>
-      </div>
-      <div class="container">
-        <div class="looks__grid">
-          <figure class="look" data-reveal style="--d:0s">
-            <div class="look__frame" data-cursor="Shop" data-reveal="clip">
-              <a href="shop.html?cat=press-on" class="look__inner" aria-label="Shop glazed sets">
-                <img data-art="glazed" alt="" class="zoom" />
-                <img src="images/home/looks-glazed.jpg" alt="Glazed donut press-on nail set" class="zoom" data-photo />
-              </a>
-              <span class="look__tag">Glazed Sets</span>
-            </div>
-            <figcaption class="look__cap"><h3>Milky &amp; glazed</h3><span>01</span></figcaption>
-          </figure>
-          <figure class="look" data-reveal style="--d:.1s">
-            <div class="look__frame" data-cursor="Shop" data-reveal="clip" style="--d:.1s">
-              <a href="shop.html?cat=stick-on" class="look__inner" aria-label="Shop nail stickers">
-                <img data-art="stickers" alt="" class="zoom" />
-                <img src="images/home/looks-stickers.jpg" alt="Nail art sticker collection flat lay" class="zoom" data-photo />
-              </a>
-              <span class="look__tag">Nail Stickers</span>
-            </div>
-            <figcaption class="look__cap"><h3>Sweet stick-ons</h3><span>02</span></figcaption>
-          </figure>
-          <figure class="look" data-reveal style="--d:.2s">
-            <div class="look__frame" data-cursor="Shop" data-reveal="clip" style="--d:.2s">
-              <a href="shop.html?cat=chrome" class="look__inner" aria-label="Shop chrome sets">
-                <img data-art="chrome" alt="" class="zoom" />
-                <img src="images/home/looks-chrome.jpg" alt="Chrome and metallic nail sets by Shanaya" class="zoom" data-photo />
-              </a>
-              <span class="look__tag">Chrome Sets</span>
-            </div>
-            <figcaption class="look__cap"><h3>Mirror chrome</h3><span>03</span></figcaption>
-          </figure>
-        </div>
+        <div class="craft__stage"><div class="craft__nail"></div></div>
+        <div class="craft__bar" aria-hidden="true"><span></span></div>
       </div>
     </section>
 
-    <!-- ─── NEW ARRIVALS ─── -->
-    <section class="section arrivals" id="arrivals" aria-labelledby="arrivals-title" style="padding-top:0">
-      <div class="container sec-head sec-head--row">
-        <div class="sec-head">
-          <p class="eyebrow" data-reveal>Fresh this Friday</p>
-          <h2 class="sec-title" id="arrivals-title" data-split>New <em>arrivals</em></h2>
-        </div>
-        <a href="shop.html" class="link-arrow" data-reveal>View all sets <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="container">
-        <div class="pgrid" id="arrivals-grid" data-list></div>
-      </div>
-    </section>
-
-    <!-- ─── COLLECTIONS (horizontal scroll) ─── -->
-    <section class="hs" id="collections" aria-labelledby="collections-title">
-      <div class="hs__sticky">
-        <div class="container hs__head">
-          <div class="sec-head" style="margin:0">
-            <p class="eyebrow eyebrow--light">Shop by style</p>
-            <h2 class="sec-title" id="collections-title" data-split>Every vibe,<br />every <em>length</em></h2>
+    <!-- ─── 3. COLLECTION: every set rolls past ─── -->
+    <section class="coll" id="collection" data-scene="coll" aria-labelledby="coll-title">
+      <div class="coll__sticky">
+        <header class="coll__head">
+          <p class="eyebrow">The collection</p>
+          <h2 class="coll__title" id="coll-title">Twelve sets. <em>Zero duplicates.</em></h2>
+        </header>
+        <div class="coll__track" data-list></div>
+        <div class="coll__info" aria-live="polite">
+          <p class="coll__cat"></p>
+          <h3 class="coll__name"></h3>
+          <p class="coll__desc"></p>
+          <div class="coll__buy">
+            <span class="coll__price"></span>
+            <button class="btn btn--pink btn--sm coll__btn" data-quick=""><span class="roll"><span>Choose size</span><span>Choose size</span></span><span class="btn__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
           </div>
-          <p>Every vibe, every length, every occasion. Pick a collection and find your next set.</p>
         </div>
-        <div class="hs__track" id="hs-track">
-          <a href="shop.html?cat=press-on" class="hs__card" data-cursor="Explore">
-            <img data-art="ombre" alt="" />
-            <img src="images/home/collection-press-ons.jpg" alt="Press-on nail sets" data-photo />
-            <span class="hs__num">01</span>
-            <div class="hs__info"><div><h3>Press-On Sets</h3><p>60+ designs</p></div><span class="hs__go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></div>
-          </a>
-          <a href="shop.html?cat=stick-on" class="hs__card" data-cursor="Explore">
-            <img data-art="lilac" alt="" />
-            <img src="images/home/collection-stick-ons.jpg" alt="Nail stick-ons and stickers" data-photo />
-            <span class="hs__num">02</span>
-            <div class="hs__info"><div><h3>Stick-Ons</h3><p>40+ sheets</p></div><span class="hs__go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></div>
-          </a>
-          <a href="shop.html?cat=chrome" class="hs__card" data-cursor="Explore">
-            <img data-art="chrome" alt="" />
-            <img src="images/home/collection-chrome-foil.jpg" alt="Chrome and metallic nail sets" data-photo />
-            <span class="hs__num">03</span>
-            <div class="hs__info"><div><h3>Chrome &amp; Foil</h3><p>25+ designs</p></div><span class="hs__go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></div>
-          </a>
-          <a href="shop.html?cat=custom" class="hs__card" data-cursor="Explore">
-            <img data-art="y2k" alt="" />
-            <img src="images/home/collection-custom-orders.jpg" alt="Custom nail art orders" data-photo />
-            <span class="hs__num">04</span>
-            <div class="hs__info"><div><h3>Custom Orders</h3><p>Made for you</p></div><span class="hs__go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span></div>
-          </a>
-          <a href="shop.html" class="hs__card hs__card--end" data-cursor="Shop all">
-            <h3>Can't decide?<br />Shop it all.</h3>
-            <span class="hs__go"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
-          </a>
-        </div>
-        <div class="container"><div class="hs__bar" aria-hidden="true"><span></span></div></div>
+        <div class="coll__meta" aria-hidden="true"><span><b class="coll__now">01</b> / <span class="coll__total">12</span></span><span class="coll__bar"><span></span></span></div>
+      </div>
+    </section>
+
+    <!-- ─── 4. WORDS: giant words behind a changing card ─── -->
+    <section class="words" data-scene="words" aria-label="Styles">
+      <div class="words__sticky">
+        <p class="words__line" aria-hidden="true"><span class="words__item" data-product="101">Florals</span> <i>✦</i> <span class="words__item" data-product="110">Leopard</span> <i>✦</i> <span class="words__item" data-product="104">Chrome</span> <i>✦</i> <span class="words__item" data-product="111">Cherries</span> <i>✦</i> <span class="words__item" data-product="109">Bows</span> <i>✦</i> <span class="words__item" data-product="107">Gold</span></p>
+        <button class="words__card" data-quick="101" data-cursor="View set" aria-label="Quick look at this set"></button>
+        <p class="words__note">Every set tells a story — <a href="shop.html">find yours</a></p>
+      </div>
+    </section>
+
+    <!-- ─── 5. HOW: the ribbon ─── -->
+    <section class="how" id="how" data-scene="how" aria-labelledby="how-title">
+      <div class="container">
+        <p class="eyebrow" data-reveal>How it works</p>
+        <h2 class="sec-title how__title" id="how-title" data-split>Salon nails in <em>three</em> easy steps</h2>
+      </div>
+      <div class="how__stage">
+        <svg class="how__ribbon" viewBox="0 0 1000 1400" aria-hidden="true"><path pathLength="1" d="M180 0C180 160 820 120 820 330S180 520 180 720S820 900 820 1080S500 1300 500 1400"/></svg>
+        <ol class="how__steps">
+          <li class="how__step"><span class="how__dot">01</span><div><h3>Pick your set</h3><p>Browse the collection, or DM @nailsbyshanaya_ for something made just for you.</p></div></li>
+          <li class="how__step"><span class="how__dot">02</span><div><h3>Find your fit</h3><p>Choose XS to XL so every nail sits perfectly. Size M fits most hands.</p></div></li>
+          <li class="how__step"><span class="how__dot">03</span><div><h3>Press &amp; go</h3><p>Prep, press and hold — no salon, no wait. Wear them for up to two weeks.</p></div></li>
+        </ol>
       </div>
     </section>
 
@@ -306,53 +239,13 @@
       </div>
     </section>
 
-    <!-- ─── HOW IT WORKS ─── -->
-    <section class="steps" id="how" aria-labelledby="steps-title">
-      <div class="container sec-head">
-        <p class="eyebrow eyebrow--light" data-reveal>How it works</p>
-        <h2 class="sec-title" id="steps-title" data-split>Salon nails in <em>three</em> easy steps</h2>
-      </div>
-      <div class="container steps__list">
-        <article class="step step--1">
-          <span class="step__num">01</span>
-          <div><h3>Pick your set</h3><p>Browse press-ons, chrome, French tips and stick-ons — or DM @nailsbyshanaya_ for something made just for you.</p></div>
-          <div class="step__art"><img data-art="glazed" alt="" /></div>
-        </article>
-        <article class="step step--2">
-          <span class="step__num">02</span>
-          <div><h3>Find your fit</h3><p>Choose from XS to XL so every nail sits perfectly. Not sure? Size M fits most hands.</p></div>
-          <div class="step__art"><img data-art="gel" alt="" /></div>
-        </article>
-        <article class="step step--3">
-          <span class="step__num">03</span>
-          <div><h3>Press &amp; go</h3><p>Prep, press and hold — no salon, no wait. Wear them for up to two weeks.</p></div>
-          <div class="step__art"><img data-art="chrome" alt="" /></div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ─── BEST SELLERS ─── -->
-    <section class="section bs" id="bestsellers" aria-labelledby="bs-title">
-      <div class="container sec-head sec-head--row">
-        <div class="sec-head">
-          <p class="eyebrow" data-reveal>Best sellers</p>
-          <h2 class="sec-title" id="bs-title" data-split>The sets my girls keep <em>coming back</em> for</h2>
-        </div>
-        <a href="shop.html" class="link-arrow" data-reveal>Shop all <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="container">
-        <ol class="bs__list" id="bs-list" data-list></ol>
-      </div>
-      <div class="bs__preview" aria-hidden="true"><img alt="" /></div>
-    </section>
-
     <!-- ─── CTA ─── -->
     <section class="cta" aria-labelledby="cta-title">
       <div class="container">
         <div class="cta__box" data-reveal="scale">
-          <span class="cta__bubble cta__bubble--1" data-speed="-0.12"><img data-art="y2k" alt="" /></span>
-          <span class="cta__bubble cta__bubble--2" data-speed="0.14"><img data-art="chrome" alt="" /></span>
-          <span class="cta__bubble cta__bubble--3" data-speed="-0.2"><img data-art="floral" alt="" /></span>
+          <span class="cta__bubble cta__bubble--1" data-speed="-0.12"><img src="images/products/bow-and-cherry-sm.webp" alt="" loading="lazy" /></span>
+          <span class="cta__bubble cta__bubble--2" data-speed="0.14"><img src="images/products/mocha-chrome-sm.webp" alt="" loading="lazy" /></span>
+          <span class="cta__bubble cta__bubble--3" data-speed="-0.2"><img src="images/products/orchid-tortoise-sm.webp" alt="" loading="lazy" /></span>
           <p class="cta__script">xoxo, Shanaya</p>
           <h2 class="cta__title" id="cta-title" data-split>Your next set is <em>waiting</em> for you.</h2>
           <div class="cta__actions">
@@ -385,10 +278,10 @@
         <div class="ftr__col">
           <h3>Shop</h3>
           <ul>
-            <li><a href="#arrivals">New Arrivals</a></li>
-            <li><a href="shop.html?cat=press-on">Press-Ons</a></li>
-            <li><a href="shop.html?cat=stick-on">Stick-Ons</a></li>
-            <li><a href="#bestsellers">Best Sellers</a></li>
+            <li><a href="shop.html">All sets</a></li>
+            <li><a href="shop.html?cat=floral">Florals</a></li>
+            <li><a href="shop.html?cat=animal">Animal Print</a></li>
+            <li><a href="shop.html?cat=charms">Charms &amp; 3D</a></li>
           </ul>
         </div>
         <div class="ftr__col">
@@ -396,7 +289,7 @@
           <ul>
             <li><a href="#about">Our Story</a></li>
             <li><a href="#how">How it works</a></li>
-            <li><a href="shop.html?cat=custom">Custom Orders</a></li>
+            <li><a href="policies.html#contact">Custom Orders</a></li>
           </ul>
         </div>
         <div class="ftr__col">
@@ -428,16 +321,17 @@
   <!-- Mobile tab bar -->
   <nav class="tabbar" aria-label="Quick navigation">
     <a href="#top" class="tabbar__item is-active" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1z"/></svg><span>Home</span></a>
-    <a href="#collections" class="tabbar__item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>Styles</span></a>
+    <a href="#collection" class="tabbar__item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>Sets</span></a>
     <button class="tabbar__bag" data-cart-open aria-label="Open your bag"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="tabbar__count" data-cart-count data-zero>0</span></button>
     <a href="shop.html" class="tabbar__item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Shop</span></a>
-    <a href="#bestsellers" class="tabbar__item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg><span>Best</span></a>
+    <a href="#craft" class="tabbar__item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg><span>Craft</span></a>
   </nav>
 
   <script src="js/lenis.min.js"></script>
   <script src="js/products.js"></script>
   <script src="js/payments.js"></script>
   <script src="js/receipt.js"></script>
+  <script src="js/story.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

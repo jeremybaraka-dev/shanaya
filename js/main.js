@@ -451,14 +451,14 @@
 
     const box = $('#drawer-items');
     if (!cart.length) {
-      box.innerHTML = `<div class="drawer__empty"><img src="${S.nailArt('stickers')}" alt=""><p>Your bag is empty.</p><span>Add something beautiful!</span><a href="shop.html" class="btn btn--ghost btn--sm">Browse the shop</a></div>`;
+      box.innerHTML = `<div class="drawer__empty"><img src="${S.PRODUCTS[8].thumb}" alt=""><p>Your bag is empty.</p><span>Add something beautiful!</span><a href="shop.html" class="btn btn--ghost btn--sm">Browse the shop</a></div>`;
       return;
     }
     box.innerHTML = cart.map((it) => {
       const p = byId(it.id);
       const key = `${it.id}|${it.size}`;
       return `<div class="citem">
-        <div class="citem__img"><img src="${S.nailArt(p.art)}" alt=""><img src="${p.img}" alt="" data-photo></div>
+        <div class="citem__img"><img src="${p.thumb}" alt=""></div>
         <div>
           <p class="citem__name">${p.name}</p>
           <p class="citem__meta">Size ${it.size}</p>
@@ -482,7 +482,7 @@
     const found = cart.find((it) => it.id === p.id && it.size === size);
     if (found) found.qty = Math.min(MAX_QTY, found.qty + 1); else cart.push({ id: p.id, size, qty: 1 });
     saveCart();
-    showToast(`${p.name} added to your bag`, S.nailArt(p.art));
+    showToast(`${p.name} added to your bag`, p.thumb);
     $$('.hdr__bag, .tabbar__bag').forEach((b) => { b.classList.remove('is-bump'); void b.offsetWidth; b.classList.add('is-bump'); });
   }
 
@@ -622,7 +622,7 @@
     cart = [];
     saveCart();
     $('#drawer-items').innerHTML = `<div class="drawer__empty drawer__done">
-      <img src="${S.nailArt('glazed')}" alt="">
+      <img src="${S.PRODUCTS[0].thumb}" alt="">
       <p></p>
       <span>Your order is confirmed. PayPal is emailing you a receipt too, and your set ships to the address on your PayPal.</span>
       <small class="drawer__order"></small>
@@ -693,14 +693,14 @@
     wishlist = on ? wishlist.concat(id) : wishlist.filter((w) => w !== id);
     store.set('shanaya-wishlist', wishlist);
     $$(`[data-wish="${id}"]`).forEach((w) => { w.classList.toggle('is-on', on); w.setAttribute('aria-pressed', String(on)); });
-    if (on) showToast('Saved to your wishlist ♡', S.nailArt(byId(id).art));
+    if (on) showToast('Saved to your wishlist ♡', byId(id).thumb);
   });
 
   /* ─────────────── QUICK VIEW ─────────────── */
   const qv = $('#qv');
   let qvList = [], qvIndex = 0, qvSize = 'M';
   function fillQuick(p) {
-    $('#qv-media').innerHTML = `<img src="${S.nailArt(p.art)}" alt=""><img src="${p.img}" alt="${p.name}" data-photo>`;
+    $('#qv-media').innerHTML = `<img src="${p.thumb}" alt="" class="qv__blur"><img src="${p.img}" alt="${p.name}">`;
     $('#qv-cat').textContent = S.CATEGORY_LABELS[p.category] || p.category;
     $('#qv-name').textContent = p.name;
     $('#qv-price').innerHTML = `$${p.price}${p.oldPrice ? `<s>$${p.oldPrice}</s>` : ''}`;
@@ -803,8 +803,7 @@
         </div>` : '';
     return `<article class="pcard" data-product="${p.id}" style="--i:${i};--d:${(i * 0.08).toFixed(2)}s"${shop ? '' : ' data-reveal'}>
       <div class="pcard__media" data-quick="${p.id}" data-cursor="Quick look">
-        <img src="${S.nailArt(p.art)}" alt="" loading="lazy">
-        <img src="${p.img}" alt="${p.name}" loading="lazy" data-photo>
+        <img src="${p.thumb}" srcset="${p.thumb} 480w, ${p.img} 900w" sizes="(max-width: 900px) 46vw, 25vw" alt="${p.name}" loading="lazy">
         ${badge}
         <button class="pcard__wish${wished ? ' is-on' : ''}" data-wish="${p.id}" aria-pressed="${wished}" aria-label="Save ${p.name} to wishlist">${ICON.heart}</button>
         <button class="pcard__quick" data-quick="${p.id}" aria-label="Quick look: ${p.name}">${ICON.eye}<span>Quick look</span></button>
@@ -816,24 +815,6 @@
         ${shopBits}
       </div>
     </article>`;
-  }
-
-  // Home: new arrivals + best sellers
-  const arrivals = $('#arrivals-grid');
-  if (arrivals) arrivals.innerHTML = [10, 11, 12, 13].map((id, i) => cardHTML(byId(id), false, i)).join('');
-
-  const bsList = $('#bs-list');
-  if (bsList) {
-    bsList.innerHTML = [10, 14, 15, 11].map((id, i) => {
-      const p = byId(id);
-      return `<li class="bs__row" data-product="${p.id}" data-reveal style="--d:${i * 0.08}s">
-        <span class="bs__rank">0${i + 1}</span>
-        <div class="bs__thumb"><img src="${S.nailArt(p.art)}" alt=""><img src="${p.img}" alt="" data-photo></div>
-        <div class="bs__info"><h3>${p.name}</h3><p>${S.CATEGORY_LABELS[p.category]} <span class="bs__mprice">· $${p.price}</span></p></div>
-        <span class="bs__price">$${p.price}</span>
-        <button class="bs__add" data-quick="${p.id}" aria-label="Add ${p.name} to bag">${ICON.plus}<span>Add</span></button>
-      </li>`;
-    }).join('');
   }
 
   // Shop page
@@ -905,73 +886,6 @@
     renderShop(false);
   }
 
-  /* ─────────────── HERO SLIDER ─────────────── */
-  const SLIDES = [
-    { label: 'Classic', art: 'classic', id: 1 },
-    { label: 'Gel', art: 'gel', id: 2 },
-    { label: 'French', art: 'french', id: 3 },
-    { label: 'Custom', art: 'y2k', id: 4 },
-    { label: 'Stick-On', art: 'stickers', id: 5 },
-  ];
-  const slidesEl = $('#hero-slides');
-  const picker = $('#picker');
-  let slideIndex = 0;
-  if (slidesEl && picker) {
-    slidesEl.innerHTML = SLIDES.map((s, i) => {
-      const p = byId(s.id);
-      return `<div class="hero__slide${i === 0 ? ' is-active' : ''}" aria-hidden="${i !== 0}">
-        <img src="${S.nailArt(s.art)}" alt="" class="zoom">
-        <img src="${p.img}" alt="${p.name}" class="zoom" data-photo>
-        <button class="hero__slide-label" data-quick="${p.id}" tabindex="${i === 0 ? 0 : -1}"><i></i>${p.name} — $${p.price}</button>
-      </div>`;
-    }).join('');
-    picker.innerHTML = SLIDES.map((s, i) => `<button class="picker__btn${i === 0 ? ' is-active' : ''}" role="tab" aria-selected="${i === 0}" data-slide="${i}"><img src="${S.nailArt(s.art)}" alt="">${s.label}<span class="picker__bar"></span></button>`).join('');
-
-    const slides = $$('.hero__slide', slidesEl);
-    const btns = $$('.picker__btn', picker);
-    function go(i) {
-      slideIndex = (i + SLIDES.length) % SLIDES.length;
-      slides.forEach((s, k) => {
-        const on = k === slideIndex;
-        s.classList.toggle('is-active', on);
-        s.setAttribute('aria-hidden', String(!on));
-        $('.hero__slide-label', s).tabIndex = on ? 0 : -1;
-      });
-      btns.forEach((b, k) => {
-        const on = k === slideIndex;
-        b.classList.remove('is-active');
-        b.setAttribute('aria-selected', String(on));
-      });
-      void picker.offsetWidth; // restart progress animation
-      btns[slideIndex].classList.add('is-active');
-      const b = btns[slideIndex];
-      const left = b.offsetLeft - (picker.clientWidth - b.offsetWidth) / 2;
-      picker.scrollTo({ left, behavior: reduce ? 'auto' : 'smooth' });
-    }
-    picker.addEventListener('click', (e) => { const b = e.target.closest('[data-slide]'); if (b) go(Number(b.dataset.slide)); });
-    picker.addEventListener('animationend', (e) => { if (!reduce && e.target.classList.contains('picker__bar')) go(slideIndex + 1); });
-    $('#hero-prev') && $('#hero-prev').addEventListener('click', () => go(slideIndex - 1));
-    $('#hero-next') && $('#hero-next').addEventListener('click', () => go(slideIndex + 1));
-    if (finePointer) {
-      ['.hero__visual', '#picker'].forEach((sel) => {
-        const el = $(sel);
-        el.addEventListener('mouseenter', () => picker.classList.add('is-paused'));
-        el.addEventListener('mouseleave', () => picker.classList.remove('is-paused'));
-      });
-    }
-    const hero = $('.hero');
-    new IntersectionObserver(([en]) => picker.classList.toggle('is-off', !en.isIntersecting)).observe(hero);
-    // swipe on the arch
-    let sx = null;
-    slidesEl.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
-    slidesEl.addEventListener('touchend', (e) => {
-      if (sx === null) return;
-      const dx = e.changedTouches[0].clientX - sx;
-      if (Math.abs(dx) > 40) go(slideIndex + (dx < 0 ? 1 : -1));
-      sx = null;
-    }, { passive: true });
-  }
-
   /* ─────────────── MARQUEES ─────────────── */
   const marquees = $$('[data-marquee]').map((m) => {
     const track = $('.marquee__track', m);
@@ -997,47 +911,13 @@
   }));
   marquees.forEach((q) => mio.observe(q.m));
 
-  /* ─────────────── SCROLL-LINKED FX ─────────────── */
+  /* ─────────────── SCROLL-LINKED FX ───────────────
+     Home-page scenes live in js/story.js; this loop drives them. */
+  const story = window.SHANAYA_STORY || null;
   const parallax = $$('[data-speed]').map((el) => ({ el, speed: parseFloat(el.dataset.speed) || 0, depth: parseFloat(el.dataset.depth) || 0 }));
-  const lookInners = $$('.look__inner');
   const quote = $('[data-words]');
   const quoteWords = quote ? $$('.wd', quote) : [];
   let litCount = -1;
-  const steps = $$('.step');
-  steps.forEach((s, i) => s.style.setProperty('--i', i));
-  const hs = $('.hs'), hsTrack = $('#hs-track'), hsBar = $('.hs__bar span');
-  let hsTop = 0, hsDist = 0, hsPinned = false;
-
-  function layoutHS() {
-    if (!hs) return;
-    hsPinned = !mqMobile.matches;
-    if (!hsPinned) { hs.style.height = ''; hsTrack.style.transform = ''; return; }
-    hsDist = Math.max(0, hsTrack.scrollWidth - window.innerWidth);
-    hs.style.height = `${window.innerHeight + hsDist}px`;
-    hsTop = hs.getBoundingClientRect().top + window.scrollY;
-  }
-  if (hsTrack) {
-    hsTrack.addEventListener('scroll', () => {
-      if (hsPinned) return;
-      const max = hsTrack.scrollWidth - hsTrack.clientWidth;
-      hsBar.style.transform = `scaleX(${max > 0 ? hsTrack.scrollLeft / max : 0})`;
-    }, { passive: true });
-  }
-
-  // rails progress bars (mobile)
-  $$('.rail-progress').forEach((bar) => {
-    const rail = bar.previousElementSibling;
-    const span = $('span', bar);
-    const upd = () => {
-      const cw = rail.clientWidth, sw = rail.scrollWidth;
-      span.style.width = `${clamp(cw / sw) * 100}%`;
-      span.style.transform = `translateX(${(rail.scrollLeft / cw) * 100}%)`;
-    };
-    rail.addEventListener('scroll', upd, { passive: true });
-    window.addEventListener('resize', upd);
-    setTimeout(upd, 100);
-  });
-
   // mouse for hero depth + cursor
   let mx = 0, my = 0, smx = 0, smy = 0;
   let lastY = -1, dirSign = 1, hdrHidden = false;
@@ -1081,18 +961,6 @@
           const off = (r.top + r.height / 2 - vh / 2) * p.speed;
           p.el.style.transform = `translate3d(${(smx * p.depth).toFixed(2)}px,${(off + smy * p.depth).toFixed(2)}px,0)`;
         });
-        lookInners.forEach((el) => {
-          const r = el.parentElement.getBoundingClientRect();
-          if (r.bottom < 0 || r.top > vh) return;
-          const prog = clamp((vh - r.top) / (vh + r.height));
-          el.style.transform = `translate3d(0,${((prog - 0.5) * 18).toFixed(2)}%,0)`;
-        });
-        steps.forEach((s, i) => {
-          const next = steps[i + 1];
-          if (!next) return;
-          const p = clamp((vh - next.getBoundingClientRect().top) / vh);
-          s.style.transform = `scale(${(1 - p * 0.07).toFixed(4)})`;
-        });
       }
 
       if (quote && quoteWords.length) {
@@ -1105,11 +973,7 @@
         }
       }
 
-      if (hsPinned && hsDist) {
-        const p = clamp((y - hsTop) / hsDist);
-        hsTrack.style.transform = `translate3d(${(-p * hsDist).toFixed(2)}px,0,0)`;
-        hsBar.style.transform = `scaleX(${p})`;
-      }
+      if (story) story.update(y, vh, smx, smy);
     }
     lastY = y;
   }
@@ -1141,28 +1005,9 @@
       if (big) label.textContent = big.dataset.cursor;
     });
 
-    // best seller floating preview
-    const preview = $('.bs__preview');
-    const pimg = preview ? $('img', preview) : null;
-    let px = 0, py = 0;
-    if (preview && bsList) {
-      bsList.addEventListener('mouseover', (e) => {
-        const row = e.target.closest('.bs__row');
-        if (!row) return;
-        const p = byId(row.dataset.product);
-        pimg.src = S.nailArt(p.art);
-        preview.classList.add('is-on');
-      });
-      bsList.addEventListener('mouseleave', () => preview.classList.remove('is-on'));
-    }
-
     (function follow() {
       cx = lerp(cx, tx, 0.2); cy = lerp(cy, ty, 0.2);
       if (cursor) cursor.style.transform = `translate3d(${cx}px,${cy}px,0)`;
-      if (preview) {
-        px = lerp(px, tx + 30, 0.12); py = lerp(py, ty - 150, 0.12);
-        preview.style.transform = `translate3d(${px}px,${py}px,0) rotate(${((tx + 30 - px) * 0.05).toFixed(2)}deg)`;
-      }
       requestAnimationFrame(follow);
     })();
 
@@ -1180,7 +1025,7 @@
 
   function onResize() {
     layoutMarquees();
-    layoutHS();
+    if (story) story.layout();
     lastY = -1;
   }
   let rt;
@@ -1190,7 +1035,7 @@
   /* ─────────────── BOOT ─────────────── */
   renderCart();
   layoutMarquees();
-  layoutHS();
+  if (story) story.layout();
   requestAnimationFrame(raf);
   if (document.fonts) document.fonts.ready.then(onResize);
   window.addEventListener('load', onResize);

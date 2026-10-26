@@ -14,8 +14,9 @@ PayPal checkout API, hosted on Vercel.
 
 - **Products and prices:** `js/products.js` (the checkout server charges these prices)
 - **Shipping and currency:** `js/payments.js`
-- **Photos:** drop them into `images/products/` and `images/home/` using the names
-  listed in each folder's `_PHOTO-NAMES.txt`
+- **Photos:** each set has web-sized photos in `images/products/` (see
+  `_PHOTO-NAMES.txt` there); originals stay on your computer only
+- **Home page story:** the scroll scenes are built in `js/story.js`
 
 ## Payments (one-time setup)
 

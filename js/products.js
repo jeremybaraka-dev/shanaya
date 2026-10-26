@@ -1,63 +1,48 @@
 /* ═══════════════════════════════════════════════════════
    NAILS BY SHANAYA — catalog + nail-art illustrations
-   Product photos load from `img` when the file exists;
-   until then each product shows a generated nail-set SVG.
+   Each product's photo lives in images/products/<slug>.webp
+   (with a -sm.webp thumbnail and a .jpg copy for Pinterest).
 ═══════════════════════════════════════════════════════ */
 (function (root) {
   'use strict';
 
   // ─── CATALOG ───  (prices here are what the checkout server charges)
+  const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
+  const set = (id, slug, name, category, price, extra) => Object.assign({
+    id, slug, name, category, price, sizes: SIZES, stars: 5,
+    img: `images/products/${slug}.webp`,
+    thumb: `images/products/${slug}-sm.webp`,
+  }, extra);
+
   const PRODUCTS = [
-    { id: 10, name: 'Glazed Donut Set', category: 'press-on', price: 28, badge: 'New', art: 'glazed', isNew: true, stars: 5,
-      img: 'images/products/glazed-donut-set.jpg', sizes: ['XS', 'S', 'M', 'L', 'XL'],
-      desc: 'A dreamy glazed-finish press-on set in soft milky white. 24 pieces included.' },
-    { id: 11, name: 'French Coffin Kit', category: 'french', price: 22, badge: 'New', art: 'french2', isNew: true, stars: 5,
-      img: 'images/products/french-coffin-kit.jpg', sizes: ['XS', 'S', 'M', 'L', 'XL'],
-      desc: 'Classic French coffin press-ons with a clean thin line. So elegant.' },
-    { id: 12, name: 'Midnight Chrome Set', category: 'chrome', price: 32, badge: 'New', art: 'midnight', isNew: true, stars: 5,
-      img: 'images/products/midnight-chrome-set.jpg', sizes: ['S', 'M', 'L'],
-      desc: 'Mirror-finish chrome nails for a bold statement look. 24 pieces.' },
-    { id: 13, name: 'Soft Lilac Stickers', category: 'stick-on', price: 12, badge: 'New', art: 'lilac', isNew: true, stars: 5,
-      img: 'images/products/soft-lilac-stickers.jpg', sizes: ['One size'],
-      desc: 'Peel & stick lilac nail art stickers. Easy to apply, no glue needed.' },
-    { id: 14, name: 'Y2K Chrome Kit', category: 'chrome', price: 35, badge: 'Bestseller', art: 'y2k-chrome', stars: 5,
-      img: 'images/products/y2k-chrome-kit.jpg', sizes: ['S', 'M', 'L'],
-      desc: 'Holographic chrome with a rainbow shift that catches every light.' },
-    { id: 15, name: 'Floral Sticker Sheet', category: 'stick-on', price: 10, badge: 'Bestseller', art: 'floral', stars: 5,
-      img: 'images/products/floral-sticker-sheet.jpg', sizes: ['One size'],
-      desc: 'Delicate floral nail stickers. Peel, press, done.' },
-    { id: 1, name: 'Classic Glam Set', category: 'press-on', price: 18, badge: 'New', art: 'classic', isNew: true, stars: 5,
-      img: 'images/products/classic-glam-set.jpg', sizes: ['XS', 'S', 'M', 'L', 'XL'],
-      desc: 'Timeless oval nails with a glossy finish. Perfect for everyday glam.' },
-    { id: 2, name: 'Gel Glow Set', category: 'gel', price: 22, oldPrice: 28, badge: 'Sale', art: 'gel', stars: 5,
-      img: 'images/products/gel-glow-set.jpg', sizes: ['S', 'M', 'L', 'XL'],
-      desc: 'Gel-effect press-ons with high-shine finish. Long lasting & durable.' },
-    { id: 3, name: 'French Luxe Tips', category: 'french', price: 16, badge: 'Bestseller', art: 'french', stars: 4,
-      img: 'images/products/french-luxe-tips.jpg', sizes: ['XS', 'S', 'M', 'L', 'XL'],
-      desc: 'Classic French tips with a modern thin line. Clean & sophisticated.' },
-    { id: 4, name: 'Custom Nail Art', category: 'custom', price: 32, art: 'y2k', stars: 5,
-      img: 'images/products/custom-nail-art.jpg', sizes: ['S', 'M', 'L'],
-      desc: 'Fully custom hand-painted nail art. Send us your inspo!' },
-    { id: 5, name: 'Stick-On Starter Kit', category: 'stick-on', price: 14, badge: 'New', art: 'stickers', isNew: true, stars: 4,
-      img: 'images/products/stick-on-starter-kit.jpg', sizes: ['XS', 'S', 'M', 'L', 'XL'],
-      desc: 'Easy peel & stick nails, perfect for beginners. 24 pieces included.' },
-    { id: 6, name: 'Ombre Dreams Set', category: 'press-on', price: 20, art: 'ombre', stars: 5,
-      img: 'images/products/ombre-dreams-set.jpg', sizes: ['S', 'M', 'L', 'XL'],
-      desc: 'Soft gradient ombre nails fading from blush to ivory. So dreamy.' },
-    { id: 7, name: 'Chrome Finish Set', category: 'chrome', price: 24, badge: 'Limited', art: 'chrome', stars: 5,
-      img: 'images/products/chrome-finish-set.jpg', sizes: ['S', 'M', 'L'],
-      desc: 'Mirror chrome nails that catch every light. Statement nails done right.' },
-    { id: 8, name: 'Floral Garden Set', category: 'custom', price: 26, oldPrice: 30, badge: 'Sale', art: 'floral', stars: 4,
-      img: 'images/products/floral-garden-set.jpg', sizes: ['XS', 'S', 'M', 'L'],
-      desc: 'Delicate hand-drawn florals on a sheer pink base. Spring forever.' },
-    { id: 9, name: 'Limited Rose Gold', category: 'limited', price: 35, badge: 'Limited', art: 'rosegold', stars: 5,
-      img: 'images/products/limited-rose-gold.jpg', sizes: ['S', 'M', 'L'],
-      desc: 'Exclusive rose gold foil nails. Only 30 sets made — get yours fast.' },
+    set(101, 'merlot-garden', 'Merlot Garden', 'floral', 38, { badge: 'Bestseller', art: 'rosegold', shape: 'Stiletto',
+      desc: 'Burgundy marble, sculpted pink blossoms, a touch of leopard and gold charms. Set of 10 stiletto nails.' }),
+    set(102, 'downtown-charm', 'Downtown Charm', 'charms', 36, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
+      desc: 'Nude French tips with cocoa stars, cherries, an NY charm and leopard and zebra accents. Set of 10.' }),
+    set(103, 'polka-blossom', 'Polka Blossom', 'floral', 34, { art: 'floral', shape: 'Stiletto',
+      desc: 'Pink and burgundy polka dots with hand-sculpted 3D blossoms and soft French tips. Set of 10.' }),
+    set(104, 'mocha-chrome', 'Mocha Chrome', 'chrome', 34, { badge: 'New', isNew: true, art: 'midnight', shape: 'Almond',
+      desc: 'Rich chocolate with liquid silver chrome swirls and a tortoiseshell accent. Set of 10.' }),
+    set(105, 'safari-butterfly', 'Safari Butterfly', 'animal', 36, { art: 'y2k', shape: 'Almond',
+      desc: 'Leopard and zebra on a nude base, finished with gold chains and a butterfly charm. Set of 10.' }),
+    set(106, 'tropic-wild', 'Tropic Wild', 'animal', 34, { badge: 'New', isNew: true, art: 'ombre', shape: 'Almond',
+      desc: 'Leopard, zebra and painted hibiscus with bold orange and black tips. Set of 10.' }),
+    set(107, 'rose-gold-swirl', 'Rose Gold Swirl', 'chrome', 36, { badge: 'Limited', art: 'rosegold', shape: 'Almond',
+      desc: 'Blush pink with sculpted gold swirls, chrome lines and soft ombre. Set of 10.' }),
+    set(108, 'scarlet-lily', 'Scarlet Lily', 'floral', 34, { art: 'gel', shape: 'Coffin',
+      desc: 'Hand-painted red lilies, leopard and gold star charms on a pink coffin shape. Set of 10.' }),
+    set(109, 'bow-and-cherry', 'Bow & Cherry', 'charms', 38, { badge: 'Bestseller', art: 'stickers', shape: 'Stiletto',
+      desc: 'Sculpted 3D bows, cherries, a spider charm and cow print in pink and burgundy. Set of 10.' }),
+    set(110, 'berry-leopard', 'Berry Leopard', 'animal', 34, { art: 'gel', shape: 'Stiletto',
+      desc: 'Berry marble, pink leopard and zebra with a white chrome flower. Set of 10.' }),
+    set(111, 'big-apple-eight', 'Big Apple Eight', 'charms', 38, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
+      desc: 'Leopard, cherries, an NY charm, 8-ball art and gold chains. Set of 10.' }),
+    set(112, 'orchid-tortoise', 'Orchid Tortoise', 'floral', 36, { art: 'floral', shape: 'Almond',
+      desc: 'Sculpted orchids, magenta marble, tortoiseshell and leopard with gold charms. Set of 10.' }),
   ];
 
   const CATEGORY_LABELS = {
-    'press-on': 'Press-On', gel: 'Gel Set', french: 'French', custom: 'Custom Art',
-    'stick-on': 'Stick-On', chrome: 'Chrome & Foil', limited: 'Limited',
+    floral: 'Florals', animal: 'Animal Print', chrome: 'Chrome & Gold', charms: 'Charms & 3D',
   };
 
   // ─── NAIL ART GENERATOR ───
