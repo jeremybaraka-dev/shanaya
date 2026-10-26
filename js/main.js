@@ -111,9 +111,27 @@
   $$('.ftr__word').forEach((el) => {
     el.innerHTML = el.textContent.trim().split('').map((ch, i) => `<span style="--i:${i}">${ch}</span>`).join('');
   });
+  $$('[data-letters]').forEach((el) => {
+    el.innerHTML = el.textContent.trim().split('').map((ch, i) => `<span class="lt"><span style="--i:${i}">${ch === ' ' ? '&nbsp;' : ch}</span></span>`).join('');
+  });
+
+  // Giant words that run edge to edge: size the font to the parent's width.
+  function fitWords() {
+    $$('[data-fit]').forEach((el) => {
+      el.style.fontSize = '100px';
+      const box = el.parentElement, cs = getComputedStyle(box);
+      const w = el.scrollWidth, room = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (w) el.style.fontSize = `${((100 * room) / w).toFixed(2)}px`;
+    });
+  }
+
+  // Live catalog numbers used in copy
+  $$('[data-total-sets]').forEach((el) => { el.textContent = S.PRODUCTS.length; });
+  $$('[data-total-styles]').forEach((el) => { el.textContent = new Set(S.PRODUCTS.map((p) => p.category)).size; });
+  $$('[data-from-price]').forEach((el) => { el.textContent = Math.min(...S.PRODUCTS.map((p) => p.price)); });
 
   /* ─────────────── REVEALS ─────────────── */
-  const REVEAL_SEL = '[data-reveal], [data-split], .ftr__word, [data-count]';
+  const REVEAL_SEL = '[data-reveal], [data-split], .ftr__word, [data-count], [data-letters]';
   function initReveals() {
     // A clip-path'd element is invisible to IntersectionObserver, so clip
     // reveals watch their parent and reveal the child.
@@ -817,6 +835,27 @@
     </article>`;
   }
 
+  // Shop hero: one big photo that cycles through every set
+  const sxPhoto = $('.sx__photo');
+  if (sxPhoto) {
+    const frames = $('.sx__frames', sxPhoto);
+    frames.innerHTML = S.PRODUCTS.map((p, i) => `<img src="${p.img}" alt=""${i ? ' loading="lazy"' : ' fetchpriority="high"'}>`).join('');
+    const imgs = $$('img', frames);
+    const cap = $('.sx__caption', sxPhoto);
+    let at = -1;
+    const showSet = (i) => {
+      at = i % S.PRODUCTS.length;
+      const p = S.PRODUCTS[at];
+      imgs.forEach((im, k) => im.classList.toggle('is-on', k === at));
+      $('b', cap).textContent = p.name;
+      $('span', cap).textContent = `${S.CATEGORY_LABELS[p.category]} · $${p.price}`;
+      sxPhoto.dataset.quick = p.id;
+      sxPhoto.setAttribute('aria-label', `Quick look: ${p.name}, $${p.price}`);
+    };
+    showSet(0);
+    if (!reduce) setInterval(() => { if (!document.hidden) showSet(at + 1); }, 2600);
+  }
+
   // Shop page
   const shopGrid = $('#shop-grid');
   if (shopGrid) {
@@ -831,8 +870,6 @@
       const n = f === 'all' ? S.PRODUCTS.length : S.PRODUCTS.filter((p) => p.category === f).length;
       c.insertAdjacentHTML('beforeend', `<sup>${n}</sup>`);
     });
-    $$('[data-total-sets]').forEach((el) => { el.textContent = S.PRODUCTS.length; });
-    $$('[data-total-styles]').forEach((el) => { el.textContent = new Set(S.PRODUCTS.map((p) => p.category)).size; });
 
     function list() {
       let l = filter === 'all' ? S.PRODUCTS.slice() : S.PRODUCTS.filter((p) => p.category === filter);
@@ -944,7 +981,8 @@
     const moved = Math.abs(smx - mx) > 0.001 || Math.abs(smy - my) > 0.001;
 
     if (y !== lastY || moved) {
-      // header hide/show
+      // header: see-through at the very top, hides while scrolling down
+      if (hdr) hdr.classList.toggle('is-top', y < 80);
       if (hdr && !openLayers.size) {
         const hide = y > 160 && dirSign > 0;
         if (hide !== hdrHidden && (Math.abs(v) > 0.5 || y < 160)) {
@@ -1024,6 +1062,7 @@
   /* ─────────────── MISC ─────────────── */
 
   function onResize() {
+    fitWords();
     layoutMarquees();
     if (story) story.layout();
     lastY = -1;
@@ -1034,6 +1073,7 @@
 
   /* ─────────────── BOOT ─────────────── */
   renderCart();
+  fitWords();
   layoutMarquees();
   if (story) story.layout();
   requestAnimationFrame(raf);

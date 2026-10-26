@@ -51,17 +51,19 @@
   <!-- Header -->
   <header class="hdr" id="hdr">
     <div class="hdr__bar">
+      <nav class="hdr__nav hdr__nav--l" aria-label="Main">
+        <a href="#craft" class="hdr__link">The Craft</a>
+        <a href="#collection" class="hdr__link">Collection</a>
+      </nav>
       <a href="#top" class="hdr__logo" aria-label="Nails by Shanaya — back to top">
         <img src="images/logo-small.webp" alt="" width="48" height="48" />
         <span>Nails by <b>Shanaya</b></span>
       </a>
-      <nav class="hdr__nav" aria-label="Main">
-        <a href="#craft" class="hdr__link">The Craft</a>
-        <a href="#collection" class="hdr__link">Collection</a>
-        <a href="#about" class="hdr__link">About</a>
-        <a href="#how" class="hdr__link">How it works</a>
-      </nav>
       <div class="hdr__actions">
+        <nav class="hdr__nav hdr__nav--r" aria-label="More">
+          <a href="#about" class="hdr__link">About</a>
+          <a href="#how" class="hdr__link">How it works</a>
+        </nav>
         <a href="shop.html" class="btn btn--ink btn--sm hdr__shop" data-magnetic>
           <span class="roll"><span>Shop now</span><span>Shop now</span></span>
           <span class="btn__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
@@ -95,26 +97,24 @@
 
   <main>
 
-    <!-- ─── 1. HERO: the hand ─── -->
-    <section class="sh" id="top" data-scene="hero" aria-labelledby="hero-title">
-      <div class="sh__sticky">
-        <div class="sh__glow" aria-hidden="true"></div>
-        <div class="sh__copy">
-          <p class="eyebrow sh__kicker" data-reveal>Handmade press-on nails<span class="sh__kicker-more"> · New sets every Friday</span></p>
-          <h1 class="sh__title" id="hero-title" data-split>Wear <em>the art.</em></h1>
+    <!-- ─── 1. HERO: the deck ─── -->
+    <section class="fh" id="top" data-scene="hero" aria-labelledby="hero-title">
+      <div class="fh__sticky">
+        <div class="fh__lines">
+          <p class="fh__line" data-reveal>Your nails tell a story.</p>
+          <p class="fh__line fh__line--r" data-reveal style="--d:.12s">Make it a <em>beautiful</em> one.</p>
         </div>
-        <div class="hand" aria-label="Featured sets"></div>
-        <div class="sh__lede">
-          <p data-reveal style="--d:.5s">Twelve hand-painted sets, sculpted one nail at a time by Shanaya — florals, leopard, chrome and charms.</p>
-          <div class="sh__ctas" data-reveal style="--d:.6s">
-            <a href="#collection" class="btn btn--pink" data-magnetic>
-              <span class="roll"><span>See the sets</span><span>See the sets</span></span>
-              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
-            </a>
-            <a href="shop.html" class="btn btn--ghost"><span class="roll"><span>Shop all</span><span>Shop all</span></span></a>
-          </div>
+        <h1 class="fh__word" id="hero-title">
+          <span class="sr-only">Nails by Shanaya — handmade press-on nails</span>
+          <span class="fh__fit" aria-hidden="true" data-fit data-letters>Shanaya</span>
+        </h1>
+        <div class="deck" aria-label="Featured sets"></div>
+        <p class="fh__side fh__side--l" data-reveal style="--d:.3s">Handmade press-on nails.<br />Sculpted one nail at a time.</p>
+        <p class="fh__side fh__side--r" data-reveal style="--d:.35s"><span class="fh__dot"></span>New sets every Friday<br /><span data-total-sets>12</span> sets · from $<span data-from-price>34</span></p>
+        <div class="fh__ctas" data-reveal style="--d:.45s">
+          <a href="#collection" class="fh__cta fh__cta--dark">Shop the sets <svg width="22" height="16" viewBox="0 0 22 16" fill="currentColor" aria-hidden="true"><path d="M0 0l22 8-22 8 5-8z"/></svg></a>
+          <a href="#how" class="fh__cta fh__cta--light"><svg width="22" height="16" viewBox="0 0 22 16" fill="currentColor" aria-hidden="true"><path d="M22 0L0 8l22 8-5-8z"/></svg> How it works</a>
         </div>
-        <div class="sh__scroll" aria-hidden="true">Scroll<span></span></div>
       </div>
     </section>
 
