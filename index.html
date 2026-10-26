@@ -97,24 +97,36 @@
 
   <main>
 
-    <!-- ─── 1. HERO: the deck ─── -->
-    <section class="fh" id="top" data-scene="hero" aria-labelledby="hero-title">
-      <div class="fh__sticky">
-        <div class="fh__lines">
-          <p class="fh__line" data-reveal>Your nails tell a story.</p>
-          <p class="fh__line fh__line--r" data-reveal style="--d:.12s">Make it a <em>beautiful</em> one.</p>
+    <!-- ─── 1. HERO: one star set, editorial ─── -->
+    <section class="fw" id="top" data-scene="hero" aria-labelledby="hero-title">
+      <div class="fw__sticky">
+        <div class="fw__copy">
+          <h1 class="fw__title" id="hero-title" data-split>Turn heads <br />with every <br /><em>gesture.</em></h1>
+          <p class="fw__sub" data-reveal style="--d:.45s">Hand-painted press-on nails by Shanaya — sculpted one nail at a time, ready in minutes.</p>
+          <div class="fw__ctas" data-reveal style="--d:.55s">
+            <a href="#collection" class="btn btn--ink" data-magnetic>
+              <span class="roll"><span>Shop the sets</span><span>Shop the sets</span></span>
+              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </a>
+            <span class="fw__note"><span class="fh__dot"></span>New sets every Friday</span>
+          </div>
         </div>
-        <h1 class="fh__word" id="hero-title">
-          <span class="sr-only">Nails by Shanaya — handmade press-on nails</span>
-          <span class="fh__fit" aria-hidden="true" data-fit data-letters>Shanaya</span>
-        </h1>
-        <div class="deck" aria-label="Featured sets"></div>
-        <p class="fh__side fh__side--l" data-reveal style="--d:.3s">Handmade press-on nails.<br />Sculpted one nail at a time.</p>
-        <p class="fh__side fh__side--r" data-reveal style="--d:.35s"><span class="fh__dot"></span>New sets every Friday<br /><span data-total-sets>12</span> sets · from $<span data-from-price>34</span></p>
-        <div class="fh__ctas" data-reveal style="--d:.45s">
-          <a href="#collection" class="fh__cta fh__cta--dark">Shop the sets <svg width="22" height="16" viewBox="0 0 22 16" fill="currentColor" aria-hidden="true"><path d="M0 0l22 8-22 8 5-8z"/></svg></a>
-          <a href="#how" class="fh__cta fh__cta--light"><svg width="22" height="16" viewBox="0 0 22 16" fill="currentColor" aria-hidden="true"><path d="M22 0L0 8l22 8-5-8z"/></svg> How it works</a>
+        <div class="fw__hero">
+          <button class="fw__nail" data-quick="101" data-cursor="View set" data-reveal="clip" style="--d:.2s" aria-label="Quick look: Merlot Garden, $38">
+            <img src="images/products/merlot-garden.webp" alt="Merlot Garden press-on nail set" fetchpriority="high" />
+          </button>
+          <span class="fw__tag"><b>Merlot Garden</b><span>$38</span></span>
         </div>
+        <div class="fw__badge" aria-hidden="true">
+          <svg class="hero__badge-ring spin" viewBox="0 0 120 120">
+            <defs><path id="ring-fw" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0" /></defs>
+            <text font-family="Manrope, sans-serif" font-size="10" font-weight="800" letter-spacing="3" fill="#23233A"><textPath href="#ring-fw">HANDMADE ✦ ONE NAIL AT A TIME ✦ </textPath></text>
+          </svg>
+          <span class="fw__badge-core">✦</span>
+        </div>
+        <div class="fw__stk fw__stk--1" data-reveal="sticker" style="--r:-9deg;--d:.7s"><button class="fw__card" data-quick="109" aria-label="Quick look: Bow &amp; Cherry"><img src="images/products/bow-and-cherry-sm.webp" alt="" /></button></div>
+        <div class="fw__stk fw__stk--2" data-reveal="sticker" style="--r:8deg;--d:.85s"><button class="fw__card" data-quick="111" aria-label="Quick look: Big Apple Eight"><img src="images/products/big-apple-eight-sm.webp" alt="" /></button></div>
+        <div class="fw__stk fw__stk--3" data-reveal="sticker" style="--r:-14deg;--d:1s"><button class="fw__card" data-quick="104" aria-label="Quick look: Mocha Chrome"><img src="images/products/mocha-chrome-sm.webp" alt="" /></button></div>
       </div>
     </section>
 

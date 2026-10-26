@@ -3,7 +3,7 @@
    Builds the scenes from the catalog and exposes
    window.SHANAYA_STORY = { layout(), update(y, vh, mx, my) },
    which main.js calls from its Lenis-driven frame loop.
-     1. hero    — a shuffling 3D deck of sets that fans into a row
+     1. hero    — one star set in a nail-shaped frame, stickers drift away
      2. craft   — one set pinned centre stage, callouts change per step
      3. coll    — all twelve sets roll past, details swap per set
      4. words   — giant words glide behind a changing photo card
@@ -36,81 +36,24 @@
     return sc;
   }
 
-  /* ─── 1. HERO: the deck ───
-     A 3D stack of sets that shuffles on its own (front card flies out and
-     tucks in at the back), tilts with the mouse, and fans into a row as you
-     scroll. Cards ease toward their target pose every frame. */
+  /* ─── 1. HERO: one star set, editorial ───
+     A tall nail-shaped photo of the star set, a calm headline, and three
+     small sticker cards at the edges. On scroll the stickers drift away,
+     the headline lifts and the star set eases up. */
   const hero = $('[data-scene="hero"]');
   if (hero) {
-    const deck = $('.deck', hero);
-    const picks = [101, 109, 104, 107, 111, 103].map(byId);
-    deck.innerHTML = picks.map((p, i) => `
-      <button class="deck__card" data-quick="${p.id}" data-cursor="View set" aria-label="Quick look: ${esc(p.name)}, $${p.price}" tabindex="${i ? -1 : 0}">
-        <img src="${p.thumb}" srcset="${p.thumb} 480w, ${p.img} 900w" sizes="(max-width: 900px) 52vw, 22vw" alt=""${i === 0 ? ' fetchpriority="high"' : ''}>
-        <span class="deck__tag"><b>${esc(p.name)}</b><span>$${p.price}</span></span>
-      </button>`).join('');
-    const cards = $$('.deck__card', deck);
-    const n = cards.length;
-    const loader = $('#loader');
-    const fade = $$('.fh__lines, .fh__side, .fh__ctas', hero);
-    const word = $('.fh__word', hero);
-    let slot = cards.map((_, i) => i); // slot[i] = depth of card i (0 = front)
-    let out = -1, p = 0, mx = 0, my = 0, visible = true, hover = false;
-    const pose = cards.map(() => ({ x: 0, y: window.innerHeight * 0.7, z: 0, ry: -24, rz: 10, s: 0.9, o: 0 }));
-    const mix = (a, b, t) => a + (b - a) * t;
-
-    const target = (k, i) => {
-      const mobile = mqMobile.matches, vw = window.innerWidth, e = easeOut(p);
-      const c = k - (n - 1) / 2;
-      const t = {
-        x: mix(k * (mobile ? 22 : 54), c * vw * (mobile ? 0.36 : 0.155), e),
-        y: mix(-k * (mobile ? 10 : 16), Math.abs(c) * (mobile ? 10 : 18), e),
-        z: mix(-k * (mobile ? 90 : 150), 0, e),
-        ry: mix(-24, 0, e) + mx * 10,
-        rz: mix(0, c * 3.5, e) - my * 2,
-        s: mix(1, mobile ? 0.8 : 0.86, e),
-        o: k < 5 || e > 0.2 ? 1 : 0,
-      };
-      if (i === out) Object.assign(t, { x: -vw * (mobile ? 0.75 : 0.36), y: 60, z: 60, ry: 12, rz: -16, o: 1 });
-      return t;
-    };
-
-    const frame = () => {
-      const ready = !loader || loader.classList.contains('is-open') || loader.classList.contains('is-done');
-      if (visible && ready) {
-        cards.forEach((card, i) => {
-          const t = target(slot[i], i), q = pose[i];
-          Object.keys(t).forEach((key) => { q[key] += (t[key] - q[key]) * 0.09; });
-          card.style.transform = `translate3d(${q.x.toFixed(1)}px,${q.y.toFixed(1)}px,${q.z.toFixed(1)}px) rotateY(${q.ry.toFixed(2)}deg) rotateZ(${q.rz.toFixed(2)}deg) scale(${q.s.toFixed(3)})`;
-          card.style.opacity = q.o.toFixed(3);
-          card.style.zIndex = String(i === out ? n + 1 : n - slot[i]);
-        });
-      }
-      requestAnimationFrame(frame);
-    };
-    requestAnimationFrame(frame);
-
-    const shuffle = () => {
-      if (!visible || hover || p > 0.02 || document.hidden || out !== -1) return;
-      out = slot.indexOf(0);
-      setTimeout(() => {
-        slot = slot.map((s) => (s === 0 ? n - 1 : s - 1));
-        out = -1;
-        cards.forEach((card, i) => { card.tabIndex = slot[i] === 0 ? 0 : -1; });
-      }, 700);
-    };
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(shuffle, 3000);
-    deck.addEventListener('mouseenter', () => { hover = true; });
-    deck.addEventListener('mouseleave', () => { hover = false; });
-    new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(hero);
-
+    const copy = $('.fw__copy', hero), star = $('.fw__hero', hero), badge = $('.fw__badge', hero);
+    const stickers = $$('.fw__stk', hero).map((el, i) => ({ el, dir: [-1, 1, 1][i], lift: [0.55, 0.7, 0.4][i], depth: [14, 22, 18][i] }));
     const sc = pinned(hero);
-    sc.update = (y, vh, mxx, myy) => {
-      p = sc.progress(y); mx = mxx; my = myy;
-      const e = easeOut(p);
-      word.style.transform = `translate3d(0,${(-e * vh * 0.2).toFixed(1)}px,0)`;
-      word.style.opacity = String(clamp(1 - p * 1.5));
-      fade.forEach((el) => { el.style.opacity = String(clamp(1 - p * 2.6)); });
+    sc.update = (y, vh, mx, my) => {
+      const p = sc.progress(y), e = easeOut(p);
+      copy.style.transform = `translate3d(0,${(-e * vh * 0.16).toFixed(1)}px,0)`;
+      copy.style.opacity = String(clamp(1 - p * 1.8));
+      star.style.transform = `translate3d(${(mx * -8).toFixed(1)}px,${(-e * vh * 0.07 + my * -6).toFixed(1)}px,0) scale(${(1 + e * 0.06).toFixed(3)})`;
+      badge.style.transform = `translate3d(${(mx * 10).toFixed(1)}px,${(-e * vh * 0.3).toFixed(1)}px,0)`;
+      stickers.forEach((s) => {
+        s.el.style.transform = `translate3d(${(s.dir * e * 160 + mx * s.depth).toFixed(1)}px,${(-e * vh * s.lift + my * s.depth).toFixed(1)}px,0) rotate(${(s.dir * e * 12).toFixed(2)}deg)`;
+      });
     };
     scenes.push(sc);
   }
