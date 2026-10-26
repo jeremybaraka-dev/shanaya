@@ -217,6 +217,39 @@
       deck.style.setProperty('--open', p.toFixed(3));
     };
     scenes.push(sc);
+
+    // one shade at a time steps forward; the pin and caption take its colour and name
+    const tips = $$('.shade__tip', deck);
+    const pin = $('.shade__pin', deck);
+    const now = $('.shade__now', shade);
+    let lit = -1, timer = 0, held = 0;
+    const light = (i) => {
+      if (i === lit) return;
+      lit = i;
+      const t = tips[i];
+      tips.forEach((el) => el.classList.toggle('is-lit', el === t));
+      deck.style.setProperty('--pin', t.style.getPropertyValue('--c'));
+      deck.style.setProperty('--pin-fg', i < 4 ? 'var(--wine)' : 'var(--beige)');
+      now.textContent = $('b', t).textContent;
+      now.classList.remove('is-swap');
+      void now.offsetWidth; // restart the swap animation
+      now.classList.add('is-swap');
+    };
+    tips.forEach((t, i) => {
+      const pick = () => { held = performance.now(); light(i); };
+      $('i', t).addEventListener('pointerenter', pick);
+      $('i', t).addEventListener('click', pick);
+    });
+    if (!still) {
+      new IntersectionObserver(([en]) => {
+        clearInterval(timer);
+        if (!en.isIntersecting) return;
+        timer = setInterval(() => {
+          if (document.hidden || last < 0.95 || performance.now() - held < 3500) return;
+          light((lit + 1) % tips.length);
+        }, 1500);
+      }, { threshold: 0.3 }).observe(deck);
+    }
   }
 
   /* ─── 7. CTA: sets trail behind the cursor ───

@@ -145,6 +145,8 @@
       </div>
     </section>
 
+    <!-- the filter bar only sticks while the grid is on screen -->
+    <div class="shop-wrap">
     <!-- ─── FILTERS ─── -->
     <div class="filters" id="shop-top">
       <div class="container">
@@ -181,21 +183,19 @@
       </div>
     </section>
 
-    <!-- ─── CTA ─── -->
-    <section class="cta" aria-labelledby="cta-title">
-      <div class="container">
-        <div class="cta__box" data-reveal="scale">
-          <span class="cta__bubble cta__bubble--1" data-speed="-0.12"><img data-art="rosegold" alt="" /></span>
-          <span class="cta__bubble cta__bubble--2" data-speed="0.14"><img data-art="y2k" alt="" /></span>
-          <span class="cta__bubble cta__bubble--3" data-speed="-0.2"><img data-art="lilac" alt="" /></span>
-          <p class="cta__script">Dream it, we'll paint it</p>
-          <h2 class="cta__title" id="cta-title" data-split>Want something <em>custom?</em></h2>
-          <div class="cta__actions">
-            <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn btn--pink" data-magnetic>
-              <span class="roll"><span>DM @nailsbyshanaya_</span><span>DM @nailsbyshanaya_</span></span>
-              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
-            </a>
-          </div>
+    </div>
+
+    <!-- ─── CTA: custom orders, sets trail behind the cursor ─── -->
+    <section class="cta" data-scene="cta" aria-labelledby="cta-title">
+      <div class="cta__trail" aria-hidden="true"></div>
+      <div class="container cta__inner">
+        <p class="cta__script" data-reveal>Dream it, we&rsquo;ll paint it ♡</p>
+        <h2 class="cta__title" id="cta-title" data-split>Want something<br /><em>custom?</em></h2>
+        <div class="cta__actions" data-reveal style="--d:.2s">
+          <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic>
+            <span class="roll"><span>DM @nailsbyshanaya_</span><span>DM @nailsbyshanaya_</span></span>
+            <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+          </a>
         </div>
       </div>
     </section>
@@ -271,6 +271,7 @@
   <script src="js/products.js"></script>
   <script src="js/payments.js"></script>
   <script src="js/receipt.js"></script>
+  <script src="js/story.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
