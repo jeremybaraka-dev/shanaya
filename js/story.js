@@ -8,6 +8,8 @@
      3. coll    — all twelve sets roll past, details swap per set
      4. words   — giant words glide behind a changing photo card
      5. how     — a ribbon draws itself through three steps
+     6. shade   — a swatch fan of skin tones opens as it scrolls in
+     7. cta     — product photos trail behind the cursor
 ═══════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -197,6 +199,86 @@
       steps.forEach((s, i) => s.classList.toggle('is-on', p >= marks[i] - 0.06));
     };
     scenes.push(sc);
+  }
+
+  /* ─── 6. SHADE: the swatch fan opens as it scrolls in ─── */
+  const shade = $('[data-scene="shade"]');
+  if (shade) {
+    const deck = $('.shade__deck', shade);
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let last = -1;
+    const sc = { el: shade, measure() {} };
+    sc.update = (y, vh) => {
+      const r = deck.getBoundingClientRect();
+      if (r.bottom < -vh || r.top > vh * 2) return;
+      const p = still ? 1 : easeOut(clamp((vh - r.top) / (vh * 0.7)));
+      if (Math.abs(p - last) < 0.002) return;
+      last = p;
+      deck.style.setProperty('--open', p.toFixed(3));
+    };
+    scenes.push(sc);
+  }
+
+  /* ─── 7. CTA: sets trail behind the cursor ───
+     Moving the mouse drops a photo every ~110px. When the pointer is still
+     (and on touch screens) photos pop up on their own around the headline. */
+  const cta = $('[data-scene="cta"]');
+  if (cta && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const layer = $('.cta__trail', cta);
+    const inner = $('.cta__inner', cta);
+    let pool = null, k = 0, lx = -999, ly = -999, lastMove = 0, timer = 0;
+
+    const build = () => {
+      pool = S.PRODUCTS.map((p) => {
+        const im = document.createElement('img');
+        im.src = p.thumb; im.alt = ''; im.decoding = 'async';
+        layer.appendChild(im);
+        return im;
+      });
+    };
+    const spawn = (x, y) => {
+      const im = pool[k % pool.length];
+      k++;
+      const rot = (Math.random() * 14 - 7).toFixed(1);
+      const at = `translate3d(${x.toFixed(0)}px,${y.toFixed(0)}px,0) translate(-50%,-50%)`;
+      im.getAnimations().forEach((a) => a.cancel());
+      im.style.zIndex = String(k);
+      im.animate([
+        { opacity: 0, transform: `${at} scale(0.5) rotate(${rot}deg)` },
+        { opacity: 1, transform: `${at} scale(1) rotate(${rot}deg)`, offset: 0.16 },
+        { opacity: 1, transform: `${at} scale(1) rotate(${rot}deg)`, offset: 0.72 },
+        { opacity: 0, transform: `${at} scale(0.86) rotate(${rot}deg)` },
+      ], { duration: 1700, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' });
+    };
+    // somewhere in the section that isn't on top of the headline
+    const autoSpawn = () => {
+      if (performance.now() - lastMove < 1400) return;
+      const box = cta.getBoundingClientRect(), t = inner.getBoundingClientRect();
+      const pad = 40;
+      for (let n = 0; n < 12; n++) {
+        const x = pad + Math.random() * (box.width - pad * 2);
+        const y = pad + Math.random() * (box.height - pad * 2);
+        const ax = x + box.left, ay = y + box.top;
+        if (ax > t.left - 60 && ax < t.right + 60 && ay > t.top - 60 && ay < t.bottom + 60) continue;
+        spawn(x, y);
+        return;
+      }
+    };
+    cta.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse' || !pool) return;
+      const r = cta.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      lastMove = performance.now();
+      if (Math.hypot(x - lx, y - ly) < 110) return;
+      lx = x; ly = y;
+      spawn(x, y);
+    });
+    new IntersectionObserver(([en]) => {
+      clearInterval(timer);
+      if (!en.isIntersecting) return;
+      if (!pool) build();
+      timer = setInterval(() => { if (!document.hidden) autoSpawn(); }, 520);
+    }, { rootMargin: '0px 0px -10% 0px' }).observe(cta);
   }
 
   window.SHANAYA_STORY = {

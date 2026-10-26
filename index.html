@@ -128,28 +128,34 @@
       <p class="sm__tag" data-reveal style="--d:.8s">Custom press-on nails<br />made for <em>your vibe.</em></p>
     </section>
 
-    <!-- ─── 2. EVERY SHADE: the message ─── -->
-    <section class="shade" id="shade" aria-labelledby="shade-title">
-      <div class="container shade__inner">
-        <p class="eyebrow shade__eyebrow" data-reveal>Our promise ♡</p>
-        <h2 class="shade__title" id="shade-title" data-split>Beauty has no race, <em>shade</em> or limits.</h2>
-        <ul class="shade__nails" data-reveal aria-hidden="true">
-          <li style="--c:#F7DCCB;--i:0"></li>
-          <li style="--c:#EDC4A8;--i:1"></li>
-          <li style="--c:#DDA884;--i:2"></li>
-          <li style="--c:#C68C66;--i:3"></li>
-          <li style="--c:#A66E4C;--i:4"></li>
-          <li style="--c:#83533A;--i:5"></li>
-          <li style="--c:#613C2A;--i:6"></li>
-          <li style="--c:#3F281D;--i:7"></li>
-        </ul>
-        <p class="shade__sub" data-reveal style="--d:.15s">Every girl is beautiful in her own way ✨ Every set is made to flatter every skin tone, every hand and every vibe — and you can book or order yours right here.</p>
-        <div data-reveal style="--d:.25s">
-          <a href="#collection" class="btn btn--ink" data-magnetic>
-            <span class="roll"><span>Find your set</span><span>Find your set</span></span>
-            <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
-          </a>
+    <!-- ─── 2. EVERY SHADE: a swatch fan that opens as you scroll ─── -->
+    <section class="shade" id="shade" data-scene="shade" aria-labelledby="shade-title">
+      <div class="container shade__grid">
+        <div class="shade__copy">
+          <p class="eyebrow shade__eyebrow" data-reveal>Our promise ♡</p>
+          <h2 class="shade__title" id="shade-title" data-split>Beauty has<br />no race, <em>shade</em><br />or limits.</h2>
+          <p class="shade__sub" data-reveal style="--d:.15s">Every girl is beautiful in her own way ✨ Every set is made to flatter every skin tone, every hand and every vibe &mdash; and you can book or order yours right here.</p>
+          <div class="shade__cta" data-reveal style="--d:.25s">
+            <a href="#collection" class="btn" data-magnetic>
+              <span class="roll"><span>Find your set</span><span>Find your set</span></span>
+              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
+            </a>
+          </div>
         </div>
+        <figure class="shade__fan">
+          <div class="shade__deck" aria-hidden="true">
+            <span class="shade__tip" style="--c:#F7DCCB;--i:0"><i></i><b>Pearl</b></span>
+            <span class="shade__tip" style="--c:#EDC4A8;--i:1"><i></i><b>Peach</b></span>
+            <span class="shade__tip" style="--c:#DDA884;--i:2"><i></i><b>Honey</b></span>
+            <span class="shade__tip" style="--c:#C68C66;--i:3"><i></i><b>Caramel</b></span>
+            <span class="shade__tip" style="--c:#A66E4C;--i:4"><i></i><b>Toffee</b></span>
+            <span class="shade__tip" style="--c:#83533A;--i:5"><i></i><b>Cocoa</b></span>
+            <span class="shade__tip" style="--c:#613C2A;--i:6"><i></i><b>Mocha</b></span>
+            <span class="shade__tip" style="--c:#3F281D;--i:7"><i></i><b>Ebony</b></span>
+            <span class="shade__pin">♡</span>
+          </div>
+          <figcaption class="shade__cap">8 shades &middot; every one of them beautiful</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -210,7 +216,7 @@
         <h2 class="sec-title how__title" id="how-title" data-split>Salon nails in <em>three</em> easy steps</h2>
       </div>
       <div class="how__stage">
-        <svg class="how__ribbon" viewBox="0 0 1000 1400" aria-hidden="true"><path pathLength="1" d="M180 0C180 160 820 120 820 330S180 520 180 720S820 900 820 1080S500 1300 500 1400"/></svg>
+        <svg class="how__ribbon" viewBox="0 0 1000 1400" aria-hidden="true"><path pathLength="1" d="M180 0C180 160 820 120 820 330S180 520 180 720S820 900 820 1080S500 1300 500 1400L500 1760"/></svg>
         <ol class="how__steps">
           <li class="how__step"><span class="how__dot">01</span><div><h3>Pick your set</h3><p>Browse the collection, or DM @nailsbyshanaya_ for something made just for you.</p></div></li>
           <li class="how__step"><span class="how__dot">02</span><div><h3>Find your fit</h3><p>Choose XS to XL so every nail sits perfectly. Size M fits most hands.</p></div></li>
@@ -219,59 +225,47 @@
       </div>
     </section>
 
-    <!-- ─── ABOUT ─── -->
+    <!-- ─── ABOUT: a note from Shanaya ─── -->
     <section class="section about" id="about" aria-labelledby="about-title">
-      <div class="container about__grid">
-        <div class="about__media">
-          <div class="about__arch" data-reveal="clip">
-            <img src="images/logo.webp" alt="" class="about__logo zoom" loading="lazy" />
-            <img src="images/home/about-shanaya.jpg" alt="Shanaya working on a custom nail set" class="zoom" data-photo />
-          </div>
-          <div class="about__badge" data-speed="-0.08" aria-hidden="true">
-            <svg class="hero__badge-ring spin" viewBox="0 0 120 120">
-              <defs><path id="ring-about" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0" /></defs>
-              <circle cx="60" cy="60" r="59" fill="#D38492" />
-              <text font-family="Manrope, sans-serif" font-size="10.5" font-weight="800" letter-spacing="3.4" fill="#401F28"><textPath href="#ring-about">HANDCRAFTED ✦ WITH LOVE ✦ </textPath></text>
-            </svg>
-            <span class="about__badge-core"><span><b>100+</b><small>Designs</small></span></span>
-          </div>
+      <div class="container">
+        <p class="eyebrow eyebrow--light" data-reveal>Meet the artist</p>
+        <h2 class="sr-only" id="about-title">Meet Shanaya</h2>
+        <div class="about__sigwrap">
+          <svg class="about__sig" data-reveal="sig" viewBox="0 0 1000 300" aria-hidden="true"><text x="500" y="222" text-anchor="middle">Shanaya</text></svg>
+          <img class="about__sticker" src="images/logo.webp" alt="" loading="lazy" />
         </div>
-        <div class="about__copy">
-          <p class="eyebrow eyebrow--light" data-reveal>Meet Shanaya</p>
-          <h2 class="sr-only" id="about-title">About Shanaya</h2>
-          <blockquote class="about__quote" data-words>&ldquo;Every set is handcrafted with love &mdash; because your nails deserve to be <em>art.</em>&rdquo;</blockquote>
-          <p class="about__body" data-reveal>Hi, I&rsquo;m Shanaya! I create press-on nail sets and stick-ons designed to be effortless, beautiful, and uniquely you. No salon, no wait &mdash; just gorgeous nails delivered to your door. Every design is made with intention and care &mdash; because beauty has no race, shade or limits, and every girl deserves nails that feel like her.</p>
-          <div class="about__stats" data-reveal style="--d:.1s">
-            <div><b><span data-count="500">500</span>+</b><span>Happy customers</span></div>
-            <div><b><span data-count="100">100</span>+</b><span>Unique designs</span></div>
-            <div><b>Fri</b><span>New drops weekly</span></div>
-          </div>
-          <div data-reveal style="--d:.2s">
-            <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn btn--light" data-magnetic>
-              <span class="roll"><span>Follow along</span><span>Follow along</span></span>
-              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
-            </a>
+        <div class="about__grid">
+          <blockquote class="about__quote" data-split>&ldquo;Every set is handcrafted with love&nbsp;&mdash; because your nails deserve to be&nbsp;<em>art.</em>&rdquo;</blockquote>
+          <div class="about__copy">
+            <p class="about__body" data-reveal>Hi, I&rsquo;m Shanaya! I create press-on nail sets and stick-ons designed to be effortless, beautiful, and uniquely you. No salon, no wait &mdash; just gorgeous nails delivered to your door. Every design is made with intention and care &mdash; because beauty has no race, shade or limits, and every girl deserves nails that feel like her.</p>
+            <div class="about__stats" data-reveal style="--d:.1s">
+              <div><b><span data-count="500">500</span>+</b><span>Happy customers</span></div>
+              <div><b><span data-count="100">100</span>+</b><span>Unique designs</span></div>
+              <div><b>Fri</b><span>New drops weekly</span></div>
+            </div>
+            <div data-reveal style="--d:.2s">
+              <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn btn--light" data-magnetic>
+                <span class="roll"><span>Follow along</span><span>Follow along</span></span>
+                <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ─── CTA ─── -->
-    <section class="cta" aria-labelledby="cta-title">
-      <div class="container">
-        <div class="cta__box" data-reveal="scale">
-          <span class="cta__bubble cta__bubble--1" data-speed="-0.12"><img src="images/products/bow-and-cherry-sm.webp" alt="" loading="lazy" /></span>
-          <span class="cta__bubble cta__bubble--2" data-speed="0.14"><img src="images/products/mocha-chrome-sm.webp" alt="" loading="lazy" /></span>
-          <span class="cta__bubble cta__bubble--3" data-speed="-0.2"><img src="images/products/orchid-tortoise-sm.webp" alt="" loading="lazy" /></span>
-          <p class="cta__script">xoxo, Shanaya</p>
-          <h2 class="cta__title" id="cta-title" data-split>Your next set is <em>waiting</em> for you.</h2>
-          <div class="cta__actions">
-            <a href="shop.html" class="btn btn--pink" data-magnetic>
-              <span class="roll"><span>Shop now</span><span>Shop now</span></span>
-              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-            </a>
-            <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn btn--ghost-light"><span class="roll"><span>@nailsbyshanaya_</span><span>@nailsbyshanaya_</span></span></a>
-          </div>
+    <!-- ─── CTA: sets trail behind the cursor ─── -->
+    <section class="cta" data-scene="cta" aria-labelledby="cta-title">
+      <div class="cta__trail" aria-hidden="true"></div>
+      <div class="container cta__inner">
+        <p class="cta__script" data-reveal>xoxo, Shanaya ♡</p>
+        <h2 class="cta__title" id="cta-title" data-split>Your next set<br />is <em>waiting.</em></h2>
+        <div class="cta__actions" data-reveal style="--d:.2s">
+          <a href="shop.html" class="btn" data-magnetic>
+            <span class="roll"><span>Shop the sets</span><span>Shop the sets</span></span>
+            <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn btn--ghost"><span class="roll"><span>@nailsbyshanaya_</span><span>@nailsbyshanaya_</span></span></a>
         </div>
       </div>
     </section>
