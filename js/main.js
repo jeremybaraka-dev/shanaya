@@ -108,9 +108,6 @@
   }
   $$('[data-split]').forEach((el) => splitWords(el, 'sw'));
   $$('[data-words]').forEach((el) => splitWords(el, 'wd'));
-  $$('.ftr__word').forEach((el) => {
-    el.innerHTML = el.textContent.trim().split('').map((ch, i) => `<span style="--i:${i}">${ch}</span>`).join('');
-  });
   $$('[data-letters]').forEach((el) => {
     el.innerHTML = el.textContent.trim().split('').map((ch, i) => `<span class="lt"><span style="--i:${i}">${ch === ' ' ? '&nbsp;' : ch}</span></span>`).join('');
   });
@@ -131,7 +128,8 @@
   $$('[data-from-price]').forEach((el) => { el.textContent = Math.min(...S.PRODUCTS.map((p) => p.price)); });
 
   /* ─────────────── REVEALS ─────────────── */
-  const REVEAL_SEL = '[data-reveal], [data-split], .ftr__word, [data-count], [data-letters]';
+  const REVEAL_SEL = '[data-reveal], [data-split], [data-count], [data-letters]';
+  const ftrEl = $('.ftr'), mainEl = $('main');
   function initReveals() {
     // A clip-path'd element is invisible to IntersectionObserver, so clip
     // reveals watch their parent and reveal the child.
@@ -149,6 +147,7 @@
       });
     }, { rootMargin: '0px 0px -6% 0px', threshold: 0.12 });
     $$(REVEAL_SEL).forEach((el) => {
+      if (ftrEl && ftrEl.contains(el)) return;   // revealed by showFooter()
       if (el.dataset.reveal !== 'clip') { io.observe(el); return; }
       const host = el.parentElement;
       if (!proxies.has(host)) proxies.set(host, []);
@@ -1012,6 +1011,7 @@
       }
 
       if (story) story.update(y, vh, smx, smy);
+      showFooter(vh);
     }
     lastY = y;
   }
@@ -1059,11 +1059,40 @@
     });
   }
 
+  /* ─────────────── FOOTER CURTAIN ───────────────
+     When the footer fits on screen it sits fixed behind the page and main
+     scrolls up off it; main gets a bottom margin of the footer's height so the
+     page can scroll far enough. Taller footers (phones) stay in the flow. */
+  function layoutFooter() {
+    if (!ftrEl || !mainEl) return;
+    const root = document.documentElement;
+    root.classList.remove('ftr-reveal');
+    mainEl.style.marginBottom = '';
+    // with min-height: 100svh the footer is exactly one screen unless its
+    // content is taller (phones); only then does it stay in the flow
+    const fits = ftrEl.offsetHeight <= window.innerHeight + 1;
+    root.classList.toggle('ftr-reveal', fits);
+    if (fits) mainEl.style.marginBottom = `${ftrEl.offsetHeight}px`;
+  }
+  let ftrShown = false;
+  function showFooter(vh) {
+    if (ftrShown || !ftrEl || !mainEl) return;
+    if (mainEl.getBoundingClientRect().bottom > vh * 0.95) return;
+    ftrShown = true;
+    ftrEl.classList.add('is-shown');
+    $$(REVEAL_SEL, ftrEl).forEach((el) => {
+      el.classList.add('is-in');
+      if (el.hasAttribute('data-count')) countUp(el);
+    });
+  }
+
   /* ─────────────── MISC ─────────────── */
 
   function onResize() {
     fitWords();
+    requestAnimationFrame(fitWords);   // again once fonts/letters have settled
     layoutMarquees();
+    layoutFooter();
     if (story) story.layout();
     lastY = -1;
   }
@@ -1075,6 +1104,7 @@
   renderCart();
   fitWords();
   layoutMarquees();
+  layoutFooter();
   if (story) story.layout();
   requestAnimationFrame(raf);
   if (document.fonts) document.fonts.ready.then(onResize);

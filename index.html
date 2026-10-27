@@ -128,43 +128,56 @@
       <p class="sm__tag" data-reveal style="--d:.8s">Custom press-on nails<br />made for <em>your vibe.</em></p>
     </section>
 
-    <!-- ─── 2. EVERY SHADE: a swatch fan that opens as you scroll ─── -->
-    <section class="shade" id="shade" data-scene="shade" aria-labelledby="shade-title">
-      <div class="container shade__grid">
-        <div class="shade__copy">
-          <p class="eyebrow shade__eyebrow" data-reveal>Our promise ♡</p>
-          <h2 class="shade__title" id="shade-title" data-split>Beauty has<br />no race, <em>shade</em><br />or limits.</h2>
-          <p class="shade__sub" data-reveal style="--d:.15s">Every girl is beautiful in her own way ✨ Every set is made to flatter every skin tone, every hand and every vibe &mdash; and you can book or order yours right here.</p>
-          <div class="shade__cta" data-reveal style="--d:.25s">
+    <!-- ─── 2. ABOUT: the promise as one big statement + product highlights ─── -->
+    <section class="ab" id="shade" aria-labelledby="shade-title">
+      <div class="container">
+        <svg class="ab__ast" viewBox="0 0 100 100" aria-hidden="true" data-reveal="scale"><g fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round"><path d="M50 9v82M14.5 29.5l71 41M14.5 70.5l71-41"/></g></svg>
+        <p class="ab__label" data-reveal>About Shanaya</p>
+        <h2 class="ab__title" id="shade-title" data-split><span class="ab__hl"><i>[</i>Beauty<i>]</i></span> has no race, shade or limits. Every set is <svg class="ab__arrow ab__arrow--r" viewBox="0 0 48 24" aria-hidden="true"><path d="M2 12h42M33 2l11 10-11 10"/></svg> <span class="ab__caps">handcrafted</span> to flatter <svg class="ab__arrow ab__arrow--l" viewBox="0 0 48 24" aria-hidden="true"><path d="M46 12H4M15 2L4 12l11 10"/></svg> every skin tone, every hand and every <span class="ab__hl"><i>[</i>vibe<i>]</i></span></h2>
+        <div class="ab__aside">
+          <p class="ab__lead" data-reveal style="--d:.15s">Every girl is beautiful in her own way ✨ Every set is made to flatter every skin tone, every hand and every vibe &mdash; and you can book or order yours right here.</p>
+          <div data-reveal style="--d:.25s">
             <a href="#collection" class="btn" data-magnetic>
               <span class="roll"><span>Find your set</span><span>Find your set</span></span>
               <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
             </a>
           </div>
         </div>
-        <figure class="shade__fan">
-          <div class="shade__deck" aria-hidden="true">
-            <span class="shade__tip" style="--c:#F7DCCB;--i:0"><i></i><b>Pearl</b></span>
-            <span class="shade__tip" style="--c:#EDC4A8;--i:1"><i></i><b>Peach</b></span>
-            <span class="shade__tip" style="--c:#DDA884;--i:2"><i></i><b>Honey</b></span>
-            <span class="shade__tip" style="--c:#C68C66;--i:3"><i></i><b>Caramel</b></span>
-            <span class="shade__tip" style="--c:#A66E4C;--i:4"><i></i><b>Toffee</b></span>
-            <span class="shade__tip" style="--c:#83533A;--i:5"><i></i><b>Cocoa</b></span>
-            <span class="shade__tip" style="--c:#613C2A;--i:6"><i></i><b>Mocha</b></span>
-            <span class="shade__tip" style="--c:#3F281D;--i:7"><i></i><b>Ebony</b></span>
-            <span class="shade__pin">♡</span>
-          </div>
-          <figcaption class="shade__cap"><span class="sr-only">Eight skin-tone swatches &mdash; </span><em class="shade__now">Every shade</em> is beautiful ♡</figcaption>
-        </figure>
-      </div>
-      <div class="shade__band marquee" data-marquee data-mspeed="0.6" aria-hidden="true">
-        <div class="marquee__track">
-          <div class="marquee__group">
-            <span class="marquee__item">Every shade</span><span class="marquee__item">✦</span>
-            <span class="marquee__item">Every girl</span><span class="marquee__item">✦</span>
-            <span class="marquee__item">Every vibe</span><span class="marquee__item">✦</span>
-          </div>
-        </div>
+        <p class="ab__label ab__label--hl" data-reveal>Product highlights <span class="ab__count" aria-live="polite">01—04 / 12</span></p>
+        <ul class="ab__grid">
+          <li data-reveal style="--d:0.00s">
+            <button type="button" class="ab__card" data-quick="101" data-cursor="Quick look" aria-label="Quick look: Merlot Garden">
+              <span class="ab__media"><img src="images/products/merlot-garden.webp" alt="Merlot Garden press-on nails" loading="lazy" decoding="async" /></span>
+              <span class="ab__name">Merlot Garden</span>
+              <span class="ab__tag">Floral · Stiletto</span>
+              <span class="ab__desc">Burgundy marble, sculpted pink blossoms, a touch of leopard and gold charms. Ten stiletto nails.</span>
+            </button>
+          </li>
+          <li data-reveal style="--d:0.08s">
+            <button type="button" class="ab__card" data-quick="109" data-cursor="Quick look" aria-label="Quick look: Bow &amp; Cherry">
+              <span class="ab__media"><img src="images/products/bow-and-cherry.webp" alt="Bow &amp; Cherry press-on nails" loading="lazy" decoding="async" /></span>
+              <span class="ab__name">Bow &amp; Cherry</span>
+              <span class="ab__tag">Charms &amp; 3D · Stiletto</span>
+              <span class="ab__desc">Sculpted 3D bows, cherries, a spider charm and cow print in pink and burgundy.</span>
+            </button>
+          </li>
+          <li data-reveal style="--d:0.16s">
+            <button type="button" class="ab__card" data-quick="104" data-cursor="Quick look" aria-label="Quick look: Mocha Chrome">
+              <span class="ab__media"><img src="images/products/mocha-chrome.webp" alt="Mocha Chrome press-on nails" loading="lazy" decoding="async" /></span>
+              <span class="ab__name">Mocha Chrome</span>
+              <span class="ab__tag">Chrome · Almond</span>
+              <span class="ab__desc">Rich chocolate with liquid silver chrome swirls and a tortoiseshell accent.</span>
+            </button>
+          </li>
+          <li data-reveal style="--d:0.24s">
+            <button type="button" class="ab__card" data-quick="107" data-cursor="Quick look" aria-label="Quick look: Rose Gold Swirl">
+              <span class="ab__media"><img src="images/products/rose-gold-swirl.webp" alt="Rose Gold Swirl press-on nails" loading="lazy" decoding="async" /></span>
+              <span class="ab__name">Rose Gold Swirl</span>
+              <span class="ab__tag">Chrome · Almond</span>
+              <span class="ab__desc">Blush pink with sculpted gold swirls, chrome lines and a soft ombre finish.</span>
+            </button>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -209,29 +222,66 @@
       </div>
     </section>
 
-    <!-- ─── 5. WORDS: giant words behind a changing card ─── -->
-    <section class="words" data-scene="words" aria-label="Styles">
-      <div class="words__sticky">
-        <p class="words__line" aria-hidden="true"><span class="words__item" data-product="101">Florals</span> <i>✦</i> <span class="words__item" data-product="110">Leopard</span> <i>✦</i> <span class="words__item" data-product="104">Chrome</span> <i>✦</i> <span class="words__item" data-product="111">Cherries</span> <i>✦</i> <span class="words__item" data-product="109">Bows</span> <i>✦</i> <span class="words__item" data-product="107">Gold</span></p>
-        <button class="words__card" data-quick="101" data-cursor="View set" aria-label="Quick look at this set"></button>
-        <p class="words__note">Every girl, every shade — <a href="shop.html">find your set</a></p>
+    <!-- ─── 5. ARCHIVE: the sets as a gallery wall ─── -->
+    <section class="ar" id="archive" aria-labelledby="archive-title">
+      <div class="ar__top">
+        <ul class="ar__labels"><li data-reveal style="--d:0.00s"><b>Berry Leopard</b><span>Animal print</span></li><li data-reveal style="--d:0.06s"><b>Downtown Charm</b><span>Charms &amp; 3D</span></li><li data-reveal style="--d:0.12s"><b>Scarlet Lily</b><span>Floral</span></li></ul>
+        <h2 class="ar__title" id="archive-title" data-reveal>The set archive <span>(Ed.&nbsp;&mdash;&nbsp;26)</span></h2>
+        <ul class="ar__labels ar__labels--r"><li data-reveal style="--d:0.20s"><b>Tropic Wild</b><span>Animal print</span></li><li data-reveal style="--d:0.26s"><b>Orchid Tortoise</b><span>Floral</span></li></ul>
       </div>
+      <div class="ar__collage">
+          <figure class="ar__item ar__item--1" data-reveal style="--d:0.00s"><figcaption>Berry Leopard &mdash; Animal print</figcaption><button type="button" class="ar__frame" data-quick="110" data-cursor="Quick look" aria-label="Quick look: Berry Leopard"><img src="images/products/berry-leopard.webp" alt="Berry Leopard press-on nails" loading="lazy" decoding="async" data-speed="0.065" /></button></figure>
+          <figure class="ar__item ar__item--2" data-reveal style="--d:0.10s"><button type="button" class="ar__frame" data-quick="102" data-cursor="Quick look" aria-label="Quick look: Downtown Charm"><img src="images/products/downtown-charm.webp" alt="Downtown Charm press-on nails" loading="lazy" decoding="async" data-speed="0.090" /></button><figcaption>Downtown Charm &mdash; Charms &amp; 3D</figcaption></figure>
+          <figure class="ar__item ar__item--3" data-reveal style="--d:0.20s"><figcaption>Scarlet Lily &mdash; Floral</figcaption><button type="button" class="ar__frame" data-quick="108" data-cursor="Quick look" aria-label="Quick look: Scarlet Lily"><img src="images/products/scarlet-lily.webp" alt="Scarlet Lily press-on nails" loading="lazy" decoding="async" data-speed="0.040" /></button></figure>
+          <figure class="ar__item ar__item--4" data-reveal style="--d:0.30s"><button type="button" class="ar__frame" data-quick="106" data-cursor="Quick look" aria-label="Quick look: Tropic Wild"><img src="images/products/tropic-wild.webp" alt="Tropic Wild press-on nails" loading="lazy" decoding="async" data-speed="0.065" /></button><figcaption>Tropic Wild &mdash; Animal print</figcaption></figure>
+          <figure class="ar__item ar__item--5" data-reveal style="--d:0.40s"><figcaption>Orchid Tortoise &mdash; Floral</figcaption><button type="button" class="ar__frame" data-quick="112" data-cursor="Quick look" aria-label="Quick look: Orchid Tortoise"><img src="images/products/orchid-tortoise.webp" alt="Orchid Tortoise press-on nails" loading="lazy" decoding="async" data-speed="0.090" /></button></figure>
+      </div>
+      <p class="ar__giant" aria-hidden="true"><span data-letters data-fit>PRESS-ONS®&#160;01—12</span></p>
+      <p class="ar__note" data-reveal>Every girl, every shade &mdash; <a href="shop.html">find your set</a></p>
     </section>
 
-    <!-- ─── 6. HOW: the ribbon ─── -->
+    <!-- ─── 6. HOW: giant type, three steps ─── -->
     <section class="how" id="how" data-scene="how" aria-labelledby="how-title">
-      <div class="container">
-        <p class="eyebrow" data-reveal>How it works</p>
-        <h2 class="sec-title how__title" id="how-title" data-split>Salon nails in <em>three</em> easy steps</h2>
+      <div class="how__bg" aria-hidden="true">
+        <div class="how__row how__row--1">Press-ons</div>
+        <div class="how__row how__row--2">Custom sets</div>
+        <div class="how__row how__row--3">Chrome</div>
+        <div class="how__row how__row--4">Florals <span class="how__outline">French tips</span></div>
+        <div class="how__row how__row--5">Leopard</div>
+        <div class="how__row how__row--6">Bows</div>
+        <div class="how__row how__row--7">XS — XL</div>
+        <div class="how__row how__row--8">(Made by hand)</div>
+        <div class="how__row how__row--9">Stick-ons</div>
       </div>
-      <div class="how__stage">
-        <svg class="how__ribbon" viewBox="0 0 1000 1400" aria-hidden="true"><path pathLength="1" d="M180 0C180 160 820 120 820 330S180 520 180 720S820 900 820 1080S500 1300 500 1400L500 1760"/></svg>
+
+      <div class="how__rule" aria-hidden="true"><span class="how__square"></span><span class="how__line"></span></div>
+
+      <div class="how__meta">
+        <span>how it works</span>
+        <span class="how__meta-mid">three steps</span>
+        <span>@nailsbyshanaya_</span>
+      </div>
+
+      <div class="how__fg">
+        <h2 class="how__title" id="how-title">
+          <span class="how__big how__big--1">salon nails</span>
+          <span class="how__big how__big--2">in three</span>
+          <span class="how__big how__big--3">easy</span>
+          <span class="how__big how__big--4">steps</span>
+        </h2>
         <ol class="how__steps">
-          <li class="how__step"><span class="how__dot">01</span><div><h3>Pick your set</h3><p>Browse the collection, or DM @nailsbyshanaya_ for something made just for you.</p></div></li>
-          <li class="how__step"><span class="how__dot">02</span><div><h3>Find your fit</h3><p>Choose XS to XL so every nail sits perfectly. Size M fits most hands.</p></div></li>
-          <li class="how__step"><span class="how__dot">03</span><div><h3>Press &amp; go</h3><p>Prep, press and hold — no salon, no wait. Wear them for up to two weeks.</p></div></li>
+          <li class="how__step"><span class="how__num">01</span><h3>pick your set</h3><p>browse the collection, or DM @nailsbyshanaya_ for something made just for you.</p></li>
+          <li class="how__step"><span class="how__num">02</span><h3>find your fit</h3><p>choose XS to XL so every nail sits perfectly. size M fits most hands.</p></li>
+          <li class="how__step"><span class="how__num">03</span><h3>press &amp; go</h3><p>prep, press and hold — no salon, no wait. wear them for up to two weeks.</p></li>
         </ol>
       </div>
+
+      <svg class="how__nail" viewBox="0 0 100 140" aria-hidden="true">
+        <path d="M50 4C76 4 92 28 92 62v66a8 8 0 0 1-8 8H16a8 8 0 0 1-8-8V62C8 28 24 4 50 4Z" fill="#D38492"/>
+        <path d="M30 26c6-8 14-12 22-12" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.7"/>
+        <circle cx="38" cy="96" r="4" fill="#401F28"/><circle cx="62" cy="96" r="4" fill="#401F28"/>
+        <path d="M40 110q10 8 20 0" stroke="#401F28" stroke-width="4" stroke-linecap="round" fill="none"/>
+      </svg>
     </section>
 
     <!-- ─── ABOUT: a note from Shanaya ─── -->
@@ -264,18 +314,26 @@
     </section>
 
     <!-- ─── CTA: sets trail behind the cursor ─── -->
-    <section class="cta" data-scene="cta" aria-labelledby="cta-title">
-      <div class="cta__trail" aria-hidden="true"></div>
-      <div class="container cta__inner">
-        <p class="cta__script" data-reveal>xoxo, Shanaya ♡</p>
-        <h2 class="cta__title" id="cta-title" data-split>Your next set<br />is <em>waiting.</em></h2>
-        <div class="cta__actions" data-reveal style="--d:.2s">
-          <a href="shop.html" class="btn" data-magnetic>
-            <span class="roll"><span>Shop the sets</span><span>Shop the sets</span></span>
-            <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </a>
-          <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn btn--ghost"><span class="roll"><span>@nailsbyshanaya_</span><span>@nailsbyshanaya_</span></span></a>
+    <!-- ─── 7. NEXT: the sets roll past, magazine style ─── -->
+    <section class="nx" id="next" data-scene="next" aria-labelledby="next-title">
+      <div class="nx__pin">
+        <p class="nx__word" aria-hidden="true">NEXT SET</p>
+        <div class="nx__track">
+          <div class="nx__cards">
+            <div class="nx__end">
+              <svg class="nx__arrow" viewBox="0 0 300 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10,50 C40,10 70,90 100,50 C130,10 160,90 190,50 C220,10 260,10 260,60 L260,100 M245,85 L260,100 L275,85"/></svg>
+              <p class="nx__script">xoxo, Shanaya ♡</p>
+              <div class="nx__actions">
+                <a href="shop.html" class="btn" data-magnetic>
+                  <span class="roll"><span>Shop the sets</span><span>Shop the sets</span></span>
+                  <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                </a>
+                <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn btn--ghost nx__ghost"><span class="roll"><span>@nailsbyshanaya_</span><span>@nailsbyshanaya_</span></span></a>
+              </div>
+            </div>
+          </div>
         </div>
+        <h2 class="nx__hint" id="next-title">Your next set is <em>waiting.</em> <span>Scroll to see</span></h2>
       </div>
     </section>
 
@@ -283,58 +341,59 @@
 
   <!-- ─── FOOTER ─── -->
   <footer class="ftr" id="footer">
-    <div class="container ftr__top">
-      <div class="ftr__brand">
-        <h2>Every girl is beautiful <em>in her own way.</em><br />Get first dibs on every drop.</h2>
-        <div class="ftr__follow">
-          <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn btn--pink" data-magnetic>
-            <span class="roll"><span>Follow @nailsbyshanaya_</span><span>Follow @nailsbyshanaya_</span></span>
-            <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
-          </a>
-          <p>New drops land every Friday — follow so you never miss one.</p>
-        </div>
+    <div class="fx__cols">
+      <div class="fx__col">
+        <h3>Shop</h3>
+        <ul>
+          <li><a href="shop.html">All sets</a></li>
+          <li><a href="shop.html?cat=floral">Florals</a></li>
+          <li><a href="shop.html?cat=animal">Animal print</a></li>
+          <li><a href="shop.html?cat=charms">Charms &amp; 3D</a></li>
+        </ul>
       </div>
-      <div class="ftr__cols">
-        <div class="ftr__col">
-          <h3>Shop</h3>
-          <ul>
-            <li><a href="shop.html">All sets</a></li>
-            <li><a href="shop.html?cat=floral">Florals</a></li>
-            <li><a href="shop.html?cat=animal">Animal Print</a></li>
-            <li><a href="shop.html?cat=charms">Charms &amp; 3D</a></li>
-          </ul>
-        </div>
-        <div class="ftr__col">
-          <h3>About</h3>
-          <ul>
-            <li><a href="#about">Our Story</a></li>
-            <li><a href="#how">How it works</a></li>
-            <li><a href="policies.html#contact">Custom Orders</a></li>
-          </ul>
-        </div>
-        <div class="ftr__col">
-          <h3>Help</h3>
-          <ul>
-            <li><a href="policies.html#shipping">Shipping</a></li>
-            <li><a href="policies.html#returns">Returns &amp; refunds</a></li>
-            <li><a href="policies.html#sizing">Sizing help</a></li>
-            <li><a href="policies.html#privacy">Privacy</a></li>
-            <li><a href="policies.html#contact">Contact</a></li>
-          </ul>
-        </div>
+      <div class="fx__col">
+        <h3>About</h3>
+        <ul>
+          <li><a href="#about">Our story</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="policies.html#contact">Custom orders</a></li>
+        </ul>
+      </div>
+      <div class="fx__col">
+        <h3>Help</h3>
+        <ul>
+          <li><a href="policies.html#shipping">Shipping</a></li>
+          <li><a href="policies.html#returns">Returns &amp; refunds</a></li>
+          <li><a href="policies.html#sizing">Sizing help</a></li>
+          <li><a href="policies.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="fx__col">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+          <li><a href="https://www.pinterest.com/nailsbyshanaya_/" target="_blank" rel="noopener noreferrer">Pinterest</a></li>
+          <li><a href="#top">Back to top</a></li>
+        </ul>
+      </div>
+      <div class="fx__col fx__col--cta">
+        <h3>Get first dibs on every drop</h3>
+        <a class="fx__pill" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg><span><span class="fx__pre">Follow on </span>TikTok</span></a>
+        <a class="fx__pill" href="https://www.pinterest.com/nailsbyshanaya_/" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z"/></svg><span><span class="fx__pre">Follow on </span>Pinterest</span></a>
       </div>
     </div>
-    <div class="container ftr__mid">
-      <div class="ftr__socials">
-        <a href="https://www.tiktok.com/@nailsbyshanaya_" aria-label="TikTok" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.73a8.18 8.18 0 004.78 1.52V6.79a4.83 4.83 0 01-1.01-.1z"/></svg></a>
-        <a href="https://www.pinterest.com/nailsbyshanaya_/" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
-      </div>
-      <a href="#top" class="ftr__top-btn">Back to top <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span></a>
-    </div>
-    <div class="ftr__word" aria-hidden="true">Shanaya</div>
-    <div class="container ftr__bottom">
-      <span>&copy; Nails by Shanaya 2026</span>
-      <span>Handcrafted with love ♡</span>
+
+    <div class="fx__giant" aria-hidden="true"><span class="fx__word">SHANAYA</span></div>
+
+    <div class="fx__bar">
+      <span>&copy; 2026 Nails by Shanaya. All rights reserved.</span>
+      <span class="fx__status"><i></i>New drops every Friday</span>
+      <span class="fx__love">Every girl is beautiful in her own way ♡</span>
+      <nav class="fx__legal" aria-label="Policies">
+        <a href="policies.html#privacy">Privacy</a>
+        <a href="policies.html#returns">Returns</a>
+        <a href="policies.html#shipping">Shipping</a>
+      </nav>
     </div>
   </footer>
 
