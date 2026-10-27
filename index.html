@@ -229,21 +229,27 @@
     <!-- ─── 4. COLLECTION: every set rolls past ─── -->
     <section class="coll" id="collection" data-scene="coll" aria-labelledby="coll-title">
       <div class="coll__sticky">
-        <header class="coll__head">
-          <p class="eyebrow">The collection</p>
-          <h2 class="coll__title" id="coll-title">Twelve sets. <em>Zero duplicates.</em></h2>
-        </header>
-        <div class="coll__track" data-list></div>
-        <div class="coll__info" aria-live="polite">
-          <p class="coll__cat"></p>
-          <h3 class="coll__name"></h3>
-          <p class="coll__desc"></p>
-          <div class="coll__buy">
-            <span class="coll__price"></span>
-            <button class="btn btn--pink btn--sm coll__btn" data-quick=""><span class="roll"><span>Choose size</span><span>Choose size</span></span><span class="btn__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+        <div class="cd__frame">
+          <nav class="cd__top" aria-hidden="true"><b>Nails by Shanaya</b><span class="is-on">Sets</span><span>Stick-ons</span><span>Index <i class="coll__now">01</i>/<i class="coll__total">12</i></span></nav>
+          <p class="cd__side cd__side--l" aria-hidden="true">The collection</p>
+          <p class="cd__side cd__side--r" aria-hidden="true">2026</p>
+          <div class="cd__stage" data-cd-stage></div>
+          <div class="coll__info" aria-live="polite">
+            <h3 class="coll__name"></h3>
+            <dl class="cd__rows">
+              <div><dt>Style</dt><dd class="cd__cat"></dd></div>
+              <div><dt>Shape</dt><dd class="cd__shape"></dd></div>
+              <div><dt>Price</dt><dd class="coll__price"></dd></div>
+              <div><dt>Sizes</dt><dd>XS &ndash; XL</dd></div>
+            </dl>
+            <p class="coll__desc"></p>
+            <button class="cd__btn coll__btn" data-quick="">Choose size <span aria-hidden="true">+</span></button>
           </div>
+          <header class="cd__quotes coll__head">
+            <div><span>The collection</span><h2 class="coll__title" id="coll-title">&ldquo;Twelve sets. Zero duplicates.&rdquo;</h2></div>
+            <div><span>Handmade</span><p>&ldquo;Every nail painted by hand&rdquo;</p></div>
+          </header>
         </div>
-        <div class="coll__meta" aria-hidden="true"><span><b class="coll__now">01</b> / <span class="coll__total">12</span></span><span class="coll__bar"><span></span></span></div>
       </div>
       <div class="mt m-only">
         <div class="mt__head"><div><p class="mt__label">The collection</p><h3 class="mt__title">Trending now</h3></div><a class="mt__all" href="shop.html">See all <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
@@ -275,15 +281,15 @@
     <!-- ─── 6. HOW: giant type, three steps ─── -->
     <section class="how" id="how" data-scene="how" aria-labelledby="how-title">
       <div class="how__bg" aria-hidden="true">
-        <div class="how__row how__row--1">Press-ons</div>
-        <div class="how__row how__row--2">Custom sets</div>
-        <div class="how__row how__row--3">Chrome</div>
-        <div class="how__row how__row--4">Florals <span class="how__outline">French tips</span></div>
-        <div class="how__row how__row--5">Leopard</div>
-        <div class="how__row how__row--6">Bows</div>
-        <div class="how__row how__row--7">XS — XL</div>
-        <div class="how__row how__row--8">(Made by hand)</div>
-        <div class="how__row how__row--9">Stick-ons</div>
+        <div class="how__row how__row--1">Pick your set</div>
+        <div class="how__row how__row--2">Find your fit</div>
+        <div class="how__row how__row--3">Prep</div>
+        <div class="how__row how__row--4">Press <span class="how__outline">&amp; hold</span></div>
+        <div class="how__row how__row--5">No salon</div>
+        <div class="how__row how__row--6">No wait</div>
+        <div class="how__row how__row--7">Up to two weeks</div>
+        <div class="how__row how__row--8">(Ten nails a set)</div>
+        <div class="how__row how__row--9">Repeat</div>
       </div>
 
       <div class="how__rule" aria-hidden="true"><span class="how__square"></span><span class="how__line"></span></div>

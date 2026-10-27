@@ -108,21 +108,23 @@
     scenes.push(sc);
   }
 
-  /* ─── 3. COLLECTION: every set rolls past ─── */
+  /* ─── 3. COLLECTION: the sets as spinning discs (after A24's film index) ───
+     The discs sit on a rising diagonal, growing to the right. Scrolling
+     slides them along it and spins each one; the disc in the middle is the
+     featured set, whose details fill the panel top left. */
   const coll = $('[data-scene="coll"]');
   if (coll) {
-    const track = $('.coll__track', coll);
+    const stage = $('[data-cd-stage]', coll);
     const list = S.PRODUCTS;
-    track.innerHTML = list.map((p, i) => `
-      <button class="coll__card" data-product="${p.id}" data-quick="${p.id}" data-cursor="Choose size" aria-label="${esc(p.name)}, $${p.price}. Choose a size">
-        <img src="${p.thumb}" srcset="${p.thumb} 480w, ${p.img} 900w" sizes="(max-width: 900px) 60vw, 26vw" alt="${esc(p.name)} press-on nail set" loading="lazy">
-        <span class="coll__num">${pad(i + 1)}</span>
+    stage.innerHTML = list.map((p, i) => `
+      <button class="cd__disc" data-product="${p.id}" data-quick="${p.id}" data-cursor="Choose size" aria-label="${esc(p.name)}, $${p.price}. Choose a size" tabindex="-1">
+        <span class="cd__tilt"><span class="cd__spin"><img src="${p.img}" alt="" loading="lazy" decoding="async"><span class="cd__hole"></span></span></span>
       </button>`).join('');
-    const cards = $$('.coll__card', track);
+    const discs = $$('.cd__disc', stage);
     const info = $('.coll__info', coll);
     const out = {
-      name: $('.coll__name', info), cat: $('.coll__cat', info), price: $('.coll__price', info),
-      desc: $('.coll__desc', info), btn: $('.coll__btn', info), now: $('.coll__now', coll), bar: $('.coll__bar span', coll),
+      name: $('.coll__name', info), cat: $('.cd__cat', info), shape: $('.cd__shape', info), price: $('.coll__price', info),
+      desc: $('.coll__desc', info), btn: $('.coll__btn', info), now: $('.coll__now', coll),
     };
     $('.coll__total', coll).textContent = pad(list.length);
     let active = -1;
@@ -132,7 +134,8 @@
       void info.offsetWidth; // restart the swap animation
       info.classList.add('is-swap');
       out.name.textContent = p.name;
-      out.cat.textContent = `${S.CATEGORY_LABELS[p.category]} · ${p.shape}`;
+      out.cat.textContent = S.CATEGORY_LABELS[p.category];
+      out.shape.textContent = p.shape;
       out.price.textContent = `$${p.price}`;
       out.desc.textContent = p.desc;
       out.btn.dataset.quick = p.id;
@@ -140,34 +143,39 @@
       out.now.textContent = pad(i + 1);
     };
     const sc = pinned(coll);
-    sc.update = (y) => {
-      const p = sc.progress(y);
-      const f = p * (list.length - 1);
-      const mobile = mqMobile.matches;
-      const w = cards[0].offsetWidth || 300;
-      const gap = w * (mobile ? 0.78 : 0.86);
-      cards.forEach((c, i) => {
-        const d = i - f, ad = Math.abs(d);
-        if (ad > 4.5) { c.style.visibility = 'hidden'; return; }
+    let W = 1, H = 1;
+    sc.measure = ((m) => () => { m(); W = stage.clientWidth || 1; H = stage.clientHeight || 1; })(sc.measure);
+    const render = scrubber(0.6, (f) => {
+      const D = Math.min(W * 0.3, H * 0.62);           // featured disc size
+      const cx = W * 0.5, cy = H * 0.56;
+      discs.forEach((c, i) => {
+        const d = i - f;
+        if (d < -3.6 || d > 2.2) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        const x = d * gap;
-        const yOff = ad * ad * (mobile ? 10 : 16);
-        const s = 1 - Math.min(ad, 3) * 0.14;
-        c.style.transform = `translate3d(${x.toFixed(1)}px,${yOff.toFixed(1)}px,0) rotate(${(d * 6).toFixed(2)}deg) scale(${s.toFixed(3)})`;
-        c.style.opacity = String(clamp(1 - Math.max(0, ad - 2.6)));
-        c.style.zIndex = String(100 - Math.round(ad * 10));
-        c.classList.toggle('is-active', ad < 0.5);
-        c.tabIndex = ad < 0.5 ? 0 : -1;
+        const s = Math.pow(1.32, d);                    // grows to the right
+        const along = D * 1.04 * (s - 1) / 0.32;         // spacing scales with size
+        const x = cx + along, y = cy - along * 0.27;
+        c.style.width = `${D.toFixed(1)}px`;
+        c.style.transform = `translate3d(${(x - D / 2).toFixed(1)}px,${(y - D / 2).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
+        c.style.zIndex = String(50 + Math.round(d * 10));
+        c.style.opacity = String(clamp(Math.min(d + 3.6, 2.2 - d)));
+        c.firstElementChild.firstElementChild.style.transform = `rotate(${(f * 140 + i * 37).toFixed(1)}deg)`;
+        const on = Math.abs(d) < 0.5;
+        c.classList.toggle('is-active', on);
+        c.tabIndex = on ? 0 : -1;
       });
-      const a = Math.round(f);
+      const a = Math.round(clamp(f, 0, list.length - 1));
       if (a !== active) { active = a; show(a); }
-      out.bar.style.transform = `scaleX(${p.toFixed(4)})`;
+    });
+    sc.update = (y) => {
+      if (mqMobile.matches) return;
+      render(sc.progress(y) * (list.length - 1));
     };
     scenes.push(sc);
   }
 
   /* ─── 4. ABOUT: product highlights rotate ───
-     Every few seconds the four cards wipe out one after another and come
+     Every three seconds the four cards wipe out one after another and come
      back with the next four sets (paused while hovered or off screen). */
   const about = $('.ab');
   if (about) {
@@ -218,13 +226,14 @@
     grid.addEventListener('pointerenter', () => { hovered = true; });
     grid.addEventListener('pointerleave', () => { hovered = false; });
     new IntersectionObserver(([en]) => { visible = en.isIntersecting; }, { threshold: 0.25 }).observe(grid);
-    setInterval(next, 6000);
+    setInterval(next, 3000);
   }
 
   /* ─── 5. HOW: giant type, three steps ───
      One scrubbed timeline from "section top at 60% of the screen" to
      "section bottom at the top": every background row rises 150px, each
-     starting a beat after the one above; the lettering rises 400px and the
+     starting a beat after the one above; the lettering glides 400px (resting
+     in place as the section arrives, so its top line is never cut) and the
      rule 200px in the first half. The rule and letters animate in once. */
   const how = $('[data-scene="how"]');
   if (how) {
@@ -236,8 +245,8 @@
     const render = scrubber(1, (p) => {
       const t = p * TL, k = mqMobile.matches ? 0.5 : 1;
       rows.forEach((row, i) => { row.style.transform = `translate3d(0,${(-150 * k * seg(t, i * 0.05)).toFixed(1)}px,0)`; });
-      fg.style.transform = `translate3d(0,${(-400 * k * seg(t, 0)).toFixed(1)}px,0)`;
-      rule.style.transform = `translate3d(0,${(-200 * k * seg(t, 0)).toFixed(1)}px,0)`;
+      fg.style.transform = `translate3d(0,${(400 * k * (0.55 - seg(t, 0))).toFixed(1)}px,0)`;
+      rule.style.transform = `translate3d(0,${(200 * k * (0.55 - seg(t, 0))).toFixed(1)}px,0)`;
     });
     const sc = { el: how, measure() {} };
     sc.update = (y, vh) => {
