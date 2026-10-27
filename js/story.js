@@ -8,7 +8,6 @@
      3. coll    — all twelve sets roll past, details swap per set
      4. about   — the product highlights rotate through the catalog
      5. how     — giant faded words with three steps in oversized type
-     7. cta     — product photos trail behind the cursor (shop page)
      8. next    — the sets roll past sideways, magazine style (home)
 ═══════════════════════════════════════════════════════ */
 (function () {
@@ -250,68 +249,6 @@
     scenes.push(sc);
   }
 
-  /* ─── 7. CTA: sets trail behind the cursor ───
-     Moving the mouse drops a photo every ~110px. When the pointer is still
-     (and on touch screens) photos pop up on their own around the headline. */
-  const cta = $('[data-scene="cta"]');
-  if (cta && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const layer = $('.cta__trail', cta);
-    const inner = $('.cta__inner', cta);
-    let pool = null, k = 0, lx = -999, ly = -999, lastMove = 0, timer = 0;
-
-    const build = () => {
-      pool = S.PRODUCTS.map((p) => {
-        const im = document.createElement('img');
-        im.src = p.thumb; im.alt = ''; im.decoding = 'async';
-        layer.appendChild(im);
-        return im;
-      });
-    };
-    const spawn = (x, y) => {
-      const im = pool[k % pool.length];
-      k++;
-      const rot = (Math.random() * 14 - 7).toFixed(1);
-      const at = `translate3d(${x.toFixed(0)}px,${y.toFixed(0)}px,0) translate(-50%,-50%)`;
-      im.getAnimations().forEach((a) => a.cancel());
-      im.style.zIndex = String(k);
-      im.animate([
-        { opacity: 0, transform: `${at} scale(0.5) rotate(${rot}deg)` },
-        { opacity: 1, transform: `${at} scale(1) rotate(${rot}deg)`, offset: 0.16 },
-        { opacity: 1, transform: `${at} scale(1) rotate(${rot}deg)`, offset: 0.72 },
-        { opacity: 0, transform: `${at} scale(0.86) rotate(${rot}deg)` },
-      ], { duration: 1700, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' });
-    };
-    // somewhere in the section that isn't on top of the headline
-    const autoSpawn = () => {
-      if (performance.now() - lastMove < 1400) return;
-      const box = cta.getBoundingClientRect(), t = inner.getBoundingClientRect();
-      const pad = 40;
-      for (let n = 0; n < 12; n++) {
-        const x = pad + Math.random() * (box.width - pad * 2);
-        const y = pad + Math.random() * (box.height - pad * 2);
-        const ax = x + box.left, ay = y + box.top;
-        if (ax > t.left - 60 && ax < t.right + 60 && ay > t.top - 60 && ay < t.bottom + 60) continue;
-        spawn(x, y);
-        return;
-      }
-    };
-    cta.addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'mouse' || !pool) return;
-      const r = cta.getBoundingClientRect();
-      const x = e.clientX - r.left, y = e.clientY - r.top;
-      lastMove = performance.now();
-      if (Math.hypot(x - lx, y - ly) < 110) return;
-      lx = x; ly = y;
-      spawn(x, y);
-    });
-    new IntersectionObserver(([en]) => {
-      clearInterval(timer);
-      if (!en.isIntersecting) return;
-      if (!pool) build();
-      timer = setInterval(() => { if (!document.hidden) autoSpawn(); }, 520);
-    }, { rootMargin: '0px 0px -10% 0px' }).observe(cta);
-  }
-
   /* ─── 7. NEXT: the sets roll past, magazine style ───
      The panel pins while the cards slide left (scrubbed), then holds for a
      beat before the page carries on. Cards open the quick look. */
@@ -333,6 +270,7 @@
     const sc = { el: next, top: 0, dist: 0 };
     const render = scrubber(0.6, (x) => { cards.style.transform = `translate3d(${(-x).toFixed(1)}px,0,0)`; });
     sc.measure = () => {
+      if (mqMobile.matches) { next.style.height = ''; sc.dist = 0; return; }   // phones get .mx instead
       if (reduceMotion) { next.classList.add('is-static'); return; }
       const vw = window.innerWidth;
       const gap = parseFloat(getComputedStyle(end).marginRight) || 0;   // room after the last panel
@@ -346,6 +284,39 @@
       render(Math.min(travelled, sc.dist));
     };
     scenes.push(sc);
+  }
+
+  /* ─── PHONES: trending rail (filterable) + craft rail dots ─── */
+  const mtRail = $('[data-mt-rail]');
+  if (mtRail) {
+    const KIND = { floral: 'Floral', charms: 'Charms & 3D', chrome: 'Chrome', animal: 'Animal print' };
+    const render = (cat) => {
+      const list = cat === 'all' ? S.PRODUCTS : S.PRODUCTS.filter((p) => p.category === cat);
+      mtRail.innerHTML = list.map((p, i) => `<button type="button" class="mt__card" data-quick="${p.id}" aria-label="Quick look: ${esc(p.name)}" style="--i:${i}">
+          <span class="mt__media"><img src="${p.img}" alt="" loading="lazy" decoding="async" />${p.badge ? `<span class="mt__badge">${esc(p.badge)}</span>` : ''}</span>
+          <span class="mt__name">${esc(p.name)}</span><span class="mt__meta">${esc(KIND[p.category] || p.category)} · ${esc(p.shape || '')}</span>
+          <span class="mt__row"><b>$${p.price}</b><span class="mt__plus" aria-hidden="true">+</span></span>
+        </button>`).join('');
+      mtRail.scrollLeft = 0;
+    };
+    render('all');
+    const chips = $('[data-mt-chips]');
+    chips.addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-cat]');
+      if (!b || b.classList.contains('is-on')) return;
+      $$('button', chips).forEach((x) => x.classList.toggle('is-on', x === b));
+      render(b.dataset.cat);
+    });
+  }
+  const mcRail = $('[data-mc-rail]');
+  if (mcRail) {
+    const dots = $$('.mc__dots i');
+    mcRail.addEventListener('scroll', () => {
+      const cards = $$('.mc__card', mcRail);
+      const w = cards[0] ? cards[0].offsetWidth + 14 : 1;
+      const i = Math.min(dots.length - 1, Math.round(mcRail.scrollLeft / w));
+      dots.forEach((d, k) => d.classList.toggle('is-on', k === i));
+    }, { passive: true });
   }
 
   window.SHANAYA_STORY = {
