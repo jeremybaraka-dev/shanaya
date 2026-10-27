@@ -115,7 +115,7 @@
   const coll = $('[data-scene="coll"]');
   if (coll) {
     const stage = $('[data-cd-stage]', coll);
-    const list = S.PRODUCTS;
+    const list = S.SETS;
     stage.innerHTML = list.map((p, i) => `
       <button class="cd__disc" data-product="${p.id}" data-quick="${p.id}" data-cursor="Choose size" aria-label="${esc(p.name)}, $${p.price}. Choose a size" tabindex="-1">
         <span class="cd__tilt"><span class="cd__spin"><img src="${p.img}" alt="" loading="lazy" decoding="async"><span class="cd__hole"></span></span></span>
@@ -183,7 +183,7 @@
     const count = $('.ab__count', about);
     const KIND = { floral: 'Floral', charms: 'Charms & 3D', chrome: 'Chrome', animal: 'Animal print' };
     const first = cards.map((c) => byId(Number(c.dataset.quick))).filter(Boolean);
-    const list = first.concat(S.PRODUCTS.filter((p) => !first.includes(p)));
+    const list = first.concat(S.SETS.filter((p) => !first.includes(p)));
     const per = cards.length;
     const groups = [];
     for (let i = 0; i < list.length; i += per) {
@@ -265,7 +265,7 @@
   if (next) {
     const cards = $('.nx__cards', next);
     const end = $('.nx__end', next);
-    cards.insertAdjacentHTML('afterbegin', S.PRODUCTS.map((p, i) => {
+    cards.insertAdjacentHTML('afterbegin', S.SETS.map((p, i) => {
       const [first, ...rest] = p.name.split(' ');
       const blurb = (p.desc || '').split('. ')[0];
       return `<button type="button" class="nx__card" data-quick="${p.id}" data-cursor="Quick look" aria-label="Quick look: ${esc(p.name)}">
@@ -300,11 +300,11 @@
   if (mtRail) {
     const KIND = { floral: 'Floral', charms: 'Charms & 3D', chrome: 'Chrome', animal: 'Animal print' };
     const render = (cat) => {
-      const list = cat === 'all' ? S.PRODUCTS : S.PRODUCTS.filter((p) => p.category === cat);
+      const list = cat === 'all' ? S.SETS : S.PRODUCTS.filter((p) => p.category === cat);
       mtRail.innerHTML = list.map((p, i) => `<button type="button" class="mt__card" data-quick="${p.id}" aria-label="Quick look: ${esc(p.name)}" style="--i:${i}">
           <span class="mt__media"><img src="${p.img}" alt="" loading="lazy" decoding="async" />${p.badge ? `<span class="mt__badge">${esc(p.badge)}</span>` : ''}</span>
           <span class="mt__name">${esc(p.name)}</span><span class="mt__meta">${esc(KIND[p.category] || p.category)} · ${esc(p.shape || '')}</span>
-          <span class="mt__row"><b>$${p.price}</b><span class="mt__plus" aria-hidden="true">+</span></span>
+          <span class="mt__row"><b>${p.soon ? 'Soon' : `$${p.price}`}</b><span class="mt__plus" aria-hidden="true">+</span></span>
         </button>`).join('');
       mtRail.scrollLeft = 0;
     };

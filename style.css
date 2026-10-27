@@ -2428,3 +2428,10 @@ html.js .ar__item.is-in .ar__frame { clip-path: inset(0 0 0 0); }
 /* highlight blocks appear with their words, never as empty boxes */
 html.js .ab__hl, html.js .cx__hl { transition: background-color 0.6s var(--ease) 0.35s, color 0.6s var(--ease) 0.35s; }
 html.js .ab__title:not(.is-in) .ab__hl, html.js .cx__title:not(.is-in) .cx__hl { background-color: transparent; color: inherit; }
+
+/* ─── charms, polish & coming-soon items ─── */
+.pcard__add--soon { background: var(--lime); color: var(--ink); }
+.pcard__badge--soon { background: var(--ink); color: var(--lime); }
+.qv.is-soon .qv__sizes { display: none; }
+.qv.is-soon #qv-add { opacity: 0.55; cursor: not-allowed; }
+.qv.is-soon .qv__label { color: var(--pink-deep); }

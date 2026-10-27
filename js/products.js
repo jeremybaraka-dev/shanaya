@@ -9,10 +9,25 @@
   // ─── CATALOG ───  (prices here are what the checkout server charges)
   const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
   const set = (id, slug, name, category, price, extra) => Object.assign({
-    id, slug, name, category, price, sizes: SIZES, stars: 5,
+    id, slug, name, category, price, type: 'set', sizes: SIZES, optionLabel: 'Size', stars: 5,
     img: `images/products/${slug}.webp`,
     thumb: `images/products/${slug}-sm.webp`,
   }, extra);
+
+  // Nail charms and nail polish. `sizes` holds the buyable options (the
+  // checkout server checks against it); `optionLabel` names them ("Pack",
+  // "Shade"). An item with `soon: true` shows as Coming soon and can't be
+  // bought until it has a real price, photo and options.
+  //   charm(201, 'gold-heart-charms', 'Gold Heart Charms', 12, { sizes: ['Pack of 10'], desc: '…' })
+  //   polish(301, 'merlot-polish', 'Merlot', 14, { sizes: ['15 ml'], desc: '…' })
+  const item = (type, category, optionLabel) => (id, slug, name, price, extra) => Object.assign({
+    id, slug, name, category, price, type, sizes: [], optionLabel, stars: 5,
+    img: `images/products/${slug}.webp`,
+    thumb: `images/products/${slug}-sm.webp`,
+  }, extra);
+  const charm = item('charm', 'nail-charms', 'Pack');
+  const polish = item('polish', 'polish', 'Shade');
+  const soon = (art) => ({ soon: true, badge: 'Soon', stars: 0, img: art, thumb: art });
 
   const PRODUCTS = [
     set(101, 'merlot-garden', 'Merlot Garden', 'floral', 38, { badge: 'Bestseller', art: 'rosegold', shape: 'Stiletto',
@@ -39,10 +54,19 @@
       desc: 'Leopard, cherries, an NY charm, 8-ball art and gold chains. Set of 10.' }),
     set(112, 'orchid-tortoise', 'Orchid Tortoise', 'floral', 36, { art: 'floral', shape: 'Almond',
       desc: 'Sculpted orchids, magenta marble, tortoiseshell and leopard with gold charms. Set of 10.' }),
+
+    // ─── coming soon: replace with the real charms and polishes ───
+    charm(201, 'nail-charms', 'Nail Charms', null, Object.assign(soon('images/products/nail-charms-soon.svg'), {
+      desc: '3D charms to add to any set or your own nails — hearts, bows, cherries, stars and pearls. Coming soon.' })),
+    polish(301, 'nail-polish', 'Nail Polish', null, Object.assign(soon('images/products/nail-polish-soon.svg'), {
+      desc: 'Shanaya’s own polish shades, made to match the sets. Coming soon.' })),
   ];
+  // The nail sets on their own (the home-page scenes and "12 sets" copy use these).
+  const SETS = PRODUCTS.filter((p) => p.type === 'set' && !p.soon);
 
   const CATEGORY_LABELS = {
     floral: 'Florals', animal: 'Animal Print', chrome: 'Chrome & Gold', charms: 'Charms & 3D',
+    'nail-charms': 'Nail Charms', polish: 'Nail Polish',
   };
 
   // ─── NAIL ART GENERATOR ───
@@ -202,7 +226,7 @@
     return cache[key];
   }
 
-  const api = { PRODUCTS, CATEGORY_LABELS, nailArt, FINISHES };
+  const api = { PRODUCTS, SETS, CATEGORY_LABELS, nailArt, FINISHES };
   // The same file feeds the checkout server (api/), so prices only live here.
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.SHANAYA = api;

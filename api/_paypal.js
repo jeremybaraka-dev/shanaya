@@ -52,9 +52,9 @@ function priceCart(lines) {
   const merged = new Map();
   for (const line of lines) {
     const p = catalog.PRODUCTS.find((x) => x.id === Number(line && line.id));
-    if (!p) throw new CheckoutError('A product in your bag is no longer available.');
+    if (!p || p.soon) throw new CheckoutError('A product in your bag is no longer available.');
     const size = String(line.size);
-    if (!p.sizes.includes(size)) throw new CheckoutError(`Please pick a valid size for ${p.name}.`);
+    if (!p.sizes.includes(size)) throw new CheckoutError(`Please pick a valid ${(p.optionLabel || 'size').toLowerCase()} for ${p.name}.`);
     const qty = Number(line.qty);
     if (!Number.isInteger(qty) || qty < 1 || qty > MAX_QTY) throw new CheckoutError('Please check the quantities in your bag.');
     const key = `${p.id}|${size}`;
@@ -68,7 +68,7 @@ function priceCart(lines) {
     itemCents += cents(p.price) * qty;
     return {
       name: p.name.slice(0, 120),
-      description: `Size ${size}`,
+      description: (p.optionLabel && p.optionLabel !== 'Size' ? size : `Size ${size}`).slice(0, 127),
       sku: `${p.id}-${size}`.slice(0, 120),
       unit_amount: { currency_code: cur, value: money(cents(p.price)) },
       quantity: String(qty),
@@ -130,7 +130,7 @@ function verifyOrder(order) {
     const p = catalog.PRODUCTS.find((x) => x.id === Number(idPart));
     const size = sizeParts.join('-');
     const qty = Number(it.quantity);
-    if (!p || !p.sizes.includes(size) || !Number.isInteger(qty) || qty < 1 || qty > MAX_QTY
+    if (!p || p.soon || !p.sizes.includes(size) || !Number.isInteger(qty) || qty < 1 || qty > MAX_QTY
       || cents(Number((it.unit_amount || {}).value)) !== cents(p.price)) {
       throw new CheckoutError('Order does not match our prices.', 409);
     }

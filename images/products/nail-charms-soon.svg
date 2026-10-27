@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#F3D9DA"/><stop offset="1" stop-color="#D38492"/></radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF4C8"/><stop offset=".45" stop-color="#E7C062"/><stop offset="1" stop-color="#A9782A"/></linearGradient>
+    <linearGradient id="pearl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E6D9D2"/></linearGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#401F28" flood-opacity=".35"/></filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <g filter="url(#sh)">
+    <!-- heart -->
+    <path transform="translate(250 270) rotate(-14)" d="M0 40C-60-10-110 30-80 85 -60 120 0 160 0 160 0 160 60 120 80 85 110 30 60-10 0 40Z" fill="url(#gold)"/>
+    <!-- bow -->
+    <g transform="translate(540 260) rotate(10)">
+      <path d="M0 0C-40-50-115-45-110 5-105 50-40 40 0 0Z" fill="url(#gold)"/>
+      <path d="M0 0C40-50 115-45 110 5 105 50 40 40 0 0Z" fill="url(#gold)"/>
+      <path d="M-6 6L-40 95-14 82 0 110 8 80 34 92 6 6Z" fill="url(#gold)"/>
+      <circle r="20" fill="#F7E3A0"/>
+    </g>
+    <!-- cherries -->
+    <g transform="translate(300 540)">
+      <path d="M-30 20C-20-60 30-90 60-110M40 30C40-40 50-80 60-110" stroke="#5C7A2E" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <circle cx="-35" cy="40" r="42" fill="#8F1E33"/><circle cx="45" cy="50" r="42" fill="#A3233C"/>
+      <circle cx="-48" cy="24" r="10" fill="#fff" opacity=".7"/><circle cx="32" cy="34" r="10" fill="#fff" opacity=".7"/>
+    </g>
+    <!-- star -->
+    <path transform="translate(560 540) rotate(12)" d="M0-85L22-28 84-26 35 12 52 72 0 37-52 72-35 12-84-26-22-28Z" fill="url(#gold)"/>
+    <!-- pearls -->
+    <circle cx="430" cy="410" r="26" fill="url(#pearl)"/><circle cx="660" cy="410" r="18" fill="url(#pearl)"/><circle cx="160" cy="430" r="16" fill="url(#pearl)"/>
+  </g>
+  <g fill="#fff"><path d="M120 160l8 20 20 8-20 8-8 20-8-20-20-8 20-8z"/><path d="M690 640l6 15 15 6-15 6-6 15-6-15-15-6 15-6z"/></g>
+  <g font-family="Arial Black, Arial, sans-serif" font-weight="900" text-anchor="middle" fill="#401F28">
+    <rect x="270" y="690" width="260" height="56" rx="28" fill="#401F28"/>
+    <text x="400" y="727" font-size="24" letter-spacing="3" fill="#CFD16D">COMING SOON</text>
+  </g>
+</svg>

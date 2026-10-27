@@ -123,9 +123,9 @@
   }
 
   // Live catalog numbers used in copy
-  $$('[data-total-sets]').forEach((el) => { el.textContent = S.PRODUCTS.length; });
-  $$('[data-total-styles]').forEach((el) => { el.textContent = new Set(S.PRODUCTS.map((p) => p.category)).size; });
-  $$('[data-from-price]').forEach((el) => { el.textContent = Math.min(...S.PRODUCTS.map((p) => p.price)); });
+  $$('[data-total-sets]').forEach((el) => { el.textContent = S.SETS.length; });
+  $$('[data-total-styles]').forEach((el) => { el.textContent = new Set(S.SETS.map((p) => p.category)).size; });
+  $$('[data-from-price]').forEach((el) => { el.textContent = Math.min(...S.PRODUCTS.filter((p) => !p.soon).map((p) => p.price)); });
 
   /* ─────────────── REVEALS ─────────────── */
   const REVEAL_SEL = '[data-reveal], [data-split], [data-count], [data-letters]';
@@ -422,7 +422,7 @@
         <h2 class="qv__name" id="qv-name"></h2>
         <p class="qv__price" id="qv-price"></p>
         <p class="qv__desc" id="qv-desc"></p>
-        <p class="qv__label">Choose your size</p>
+        <p class="qv__label" id="qv-label">Choose your size</p>
         <div class="qv__sizes" id="qv-sizes"></div>
         <button class="btn btn--pink" id="qv-add"><span class="roll"><span>Add to bag</span><span>Add to bag</span></span><span class="btn__icon">${ICON.plus}</span></button>
         <ul class="qv__perks"><li>Handcrafted by Shanaya</li><li>Free shipping on orders $50+</li><li>Lasts up to 2 weeks</li></ul>
@@ -435,9 +435,12 @@
   // known products, known sizes and sane quantities.
   const MAX_QTY = 20;
   const cleanSize = (p, size) => (p.sizes.includes(size) ? size : p.sizes.includes('M') ? 'M' : p.sizes[0]);
+  const optLabel = (p) => (p && p.optionLabel) || 'Size';
+  // "Size M" for nail sets; charms and polish just show their option ("Pack of 10").
+  const optText = (p, v) => (optLabel(p) === 'Size' ? `Size ${v}` : v);
   const savedCart = store.get('shanaya-cart', []);
   let cart = (Array.isArray(savedCart) ? savedCart : [])
-    .filter((it) => it && byId(it.id))
+    .filter((it) => it && byId(it.id) && !byId(it.id).soon)
     .map((it) => {
       const p = byId(it.id);
       return { id: p.id, size: cleanSize(p, it.size), qty: Math.min(MAX_QTY, Math.max(1, Math.floor(Number(it.qty)) || 1)) };
@@ -468,7 +471,7 @@
 
     const box = $('#drawer-items');
     if (!cart.length) {
-      box.innerHTML = `<div class="drawer__empty"><img src="${S.PRODUCTS[8].thumb}" alt=""><p>Your bag is empty.</p><span>Add something beautiful!</span><a href="shop.html" class="btn btn--ghost btn--sm">Browse the shop</a></div>`;
+      box.innerHTML = `<div class="drawer__empty"><img src="${S.SETS[8].thumb}" alt=""><p>Your bag is empty.</p><span>Add something beautiful!</span><a href="shop.html" class="btn btn--ghost btn--sm">Browse the shop</a></div>`;
       return;
     }
     box.innerHTML = cart.map((it) => {
@@ -478,7 +481,7 @@
         <div class="citem__img"><img src="${p.thumb}" alt=""></div>
         <div>
           <p class="citem__name">${p.name}</p>
-          <p class="citem__meta">Size ${it.size}</p>
+          <p class="citem__meta">${optText(byId(it.id), it.size)}</p>
           <div class="citem__qty">
             <button data-qty="-1" data-key="${key}" aria-label="Decrease quantity">−</button>
             <span>${it.qty}</span>
@@ -495,6 +498,7 @@
   function addToCart(id, size) {
     const p = byId(id);
     if (!p) return;
+    if (!p || p.soon || !p.sizes.length) return;
     size = cleanSize(p, size);
     const found = cart.find((it) => it.id === p.id && it.size === size);
     if (found) found.qty = Math.min(MAX_QTY, found.qty + 1); else cart.push({ id: p.id, size, qty: 1 });
@@ -613,7 +617,7 @@
           },
         },
         items: cart.map((it) => ({
-          name: byId(it.id).name, description: `Size ${it.size}`, quantity: String(it.qty),
+          name: byId(it.id).name, description: optText(byId(it.id), it.size), quantity: String(it.qty),
           unit_amount: { currency_code: cur, value: byId(it.id).price.toFixed(2) },
         })),
       }],
@@ -639,7 +643,7 @@
     cart = [];
     saveCart();
     $('#drawer-items').innerHTML = `<div class="drawer__empty drawer__done">
-      <img src="${S.PRODUCTS[0].thumb}" alt="">
+      <img src="${S.SETS[0].thumb}" alt="">
       <p></p>
       <span>Your order is confirmed. PayPal is emailing you a receipt too, and your set ships to the address on your PayPal.</span>
       <small class="drawer__order"></small>
@@ -724,6 +728,14 @@
     $('#qv-desc').textContent = p.desc;
     qvSize = p.sizes.includes('M') ? 'M' : p.sizes[0];
     $('#qv-sizes').innerHTML = p.sizes.map((s) => `<button class="size${s === qvSize ? ' is-on' : ''}" data-size="${s}" aria-pressed="${s === qvSize}">${s}</button>`).join('');
+    // charms, polish and coming-soon items
+    qv.classList.toggle('is-soon', !!p.soon);
+    if (p.soon) $('#qv-price').textContent = 'Coming soon';
+    $('#qv-label').textContent = p.soon ? 'DM @nailsbyshanaya_ to be first to know' : `Choose your ${optLabel(p).toLowerCase()}`;
+    const add = $('#qv-add');
+    add.disabled = !!p.soon;
+    $$('.roll > span', add).forEach((t) => { t.textContent = p.soon ? 'Coming soon' : 'Add to bag'; });
+    $('.qv__perks', qv).hidden = p.type !== 'set';
   }
   function openQuick(id, list) {
     qvList = list && list.length ? list : S.PRODUCTS.map((p) => p.id);
@@ -812,12 +824,16 @@
     const wished = wishlist.includes(p.id);
     const badge = p.badge ? `<span class="pcard__badge pcard__badge--${p.badge.toLowerCase()}">${p.badge}</span>` : '';
     const def = p.sizes.includes('M') ? 'M' : p.sizes[0];
+    const foot = p.soon
+      ? `<a class="pcard__add pcard__add--soon" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">${ICON.heart}<span>DM to pre-order</span></a>`
+      : `<div class="pcard__sizes" role="group" aria-label="${optLabel(p)}">${p.sizes.map((s) => `<button class="size${s === def ? ' is-on' : ''}" data-size="${s}" aria-pressed="${s === def}">${s}</button>`).join('')}</div>
+          <button class="pcard__add" data-add="${p.id}">${ICON.plus}<span>Add to bag</span></button>`;
     const shopBits = shop ? `
         <p class="pcard__desc">${p.desc}</p>
         <div class="pcard__foot">
-          <div class="pcard__sizes" role="group" aria-label="Size">${p.sizes.map((s) => `<button class="size${s === def ? ' is-on' : ''}" data-size="${s}" aria-pressed="${s === def}">${s}</button>`).join('')}</div>
-          <button class="pcard__add" data-add="${p.id}">${ICON.plus}<span>Add to bag</span></button>
+          ${foot}
         </div>` : '';
+    const price = p.soon ? 'Coming soon' : `$${p.price}${p.oldPrice ? `<s>$${p.oldPrice}</s>` : ''}`;
     return `<article class="pcard" data-product="${p.id}" style="--i:${i};--d:${(i * 0.08).toFixed(2)}s"${shop ? '' : ' data-reveal'}>
       <div class="pcard__media" data-quick="${p.id}" data-cursor="Quick look">
         <img src="${p.thumb}" srcset="${p.thumb} 480w, ${p.img} 900w" sizes="(max-width: 900px) 46vw, 25vw" alt="${p.name}" loading="lazy">
@@ -828,7 +844,7 @@
       <div class="pcard__body">
         <p class="pcard__cat">${label}</p>
         <h3 class="pcard__name">${p.name}</h3>
-        <div class="pcard__row"><span class="pcard__price">$${p.price}${p.oldPrice ? `<s>$${p.oldPrice}</s>` : ''}</span><span class="pcard__stars" aria-label="${p.stars} out of 5 stars">${stars(p.stars)}</span><button class="pcard__plus" data-quick="${p.id}" aria-label="Choose a size for ${p.name}">${ICON.plus}</button></div>
+        <div class="pcard__row"><span class="pcard__price">${price}</span>${p.stars ? `<span class="pcard__stars" aria-label="${p.stars} out of 5 stars">${stars(p.stars)}</span>` : ''}<button class="pcard__plus" data-quick="${p.id}" aria-label="Quick look: ${p.name}">${ICON.plus}</button></div>
         ${shopBits}
       </div>
     </article>`;
@@ -838,13 +854,13 @@
   const sxPhoto = $('.sx__photo');
   if (sxPhoto) {
     const frames = $('.sx__frames', sxPhoto);
-    frames.innerHTML = S.PRODUCTS.map((p, i) => `<img src="${p.img}" alt=""${i ? ' loading="lazy"' : ' fetchpriority="high"'}>`).join('');
+    frames.innerHTML = S.SETS.map((p, i) => `<img src="${p.img}" alt=""${i ? ' loading="lazy"' : ' fetchpriority="high"'}>`).join('');
     const imgs = $$('img', frames);
     const cap = $('.sx__caption', sxPhoto);
     let at = -1;
     const showSet = (i) => {
-      at = i % S.PRODUCTS.length;
-      const p = S.PRODUCTS[at];
+      at = i % S.SETS.length;
+      const p = S.SETS[at];
       imgs.forEach((im, k) => im.classList.toggle('is-on', k === at));
       $('b', cap).textContent = p.name;
       $('span', cap).textContent = `${S.CATEGORY_LABELS[p.category]} · $${p.price}`;
@@ -883,7 +899,7 @@
       $$('.chip', chips).forEach((c) => { const on = c.dataset.filter === filter; c.classList.toggle('is-on', on); c.setAttribute('aria-pressed', String(on)); });
       shopGrid.innerHTML = l.map((p, i) => cardHTML(p, true, i)).join('');
       $('#shop-empty').classList.toggle('is-on', !l.length);
-      $('#shop-showing').textContent = `Showing ${l.length} ${l.length === 1 ? 'set' : 'sets'}`;
+      $('#shop-showing').textContent = `Showing ${l.length} ${l.length === 1 ? 'item' : 'items'}`;
       if (scroll) {
         const top = $('#shop-top');
         if (top.getBoundingClientRect().top < 0) scrollToTarget(top, { duration: 1 });

@@ -12,6 +12,8 @@ const TYPES = {
   animal: 'Beauty > Nails > Press-On Nails > Animal Print',
   chrome: 'Beauty > Nails > Press-On Nails > Chrome',
   charms: 'Beauty > Nails > Press-On Nails > Charms',
+  'nail-charms': 'Beauty > Nails > Nail Art > Nail Charms',
+  polish: 'Beauty > Nails > Nail Polish',
 };
 
 const cell = (v) => {
@@ -40,14 +42,14 @@ module.exports = async (req, res) => {
   const local = !process.env.VERCEL && /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host);
   const base = local ? `http://${host}` : SITE_URL;
 
-  const items = await Promise.all(catalog.PRODUCTS.map(async (p) => {
+  const items = await Promise.all(catalog.PRODUCTS.filter((p) => !p.soon).map(async (p) => {
     const image = `${base}/${p.img.replace(/\.webp$/, '.jpg')}`; // Pinterest gets the JPEG copy
     if (!(await photoExists(image))) return null;
     const onSale = p.oldPrice && p.oldPrice > p.price;
     return {
       id: `SHANAYA-${p.id}`,
       title: `${p.name} — Nails by Shanaya`,
-      description: `${p.desc} Handcrafted by Shanaya. Sizes: ${p.sizes.join(', ')}.`,
+      description: `${p.desc} Handcrafted by Shanaya. ${p.optionLabel === 'Size' ? 'Sizes' : `${p.optionLabel}s`}: ${p.sizes.join(', ')}.`,
       link: `${base}/shop.html?cat=${encodeURIComponent(p.category)}`,
       image_link: image,
       price: money(onSale ? p.oldPrice : p.price),
