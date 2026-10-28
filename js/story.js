@@ -152,43 +152,50 @@
       out.now.textContent = pad(i + 1);
     };
     const sc = pinned(coll);
-    // The baskets travel along a row that grows to the right (after A24's
-    // film index): smaller ones behind on the left, bigger ones coming in on
-    // the right. They all stand on one floor just above the quotes, and the
-    // row is placed so no basket ever sits on the panel, the links or the quotes.
+    // The baskets sit on a rising diagonal like A24's film index: small and
+    // low on the left, big and high on the right, each one overlapping the one
+    // behind it, tilted, and turning a little as they slide. The line is placed
+    // so no basket ever sits on the panel, the links or the quotes; any that
+    // would reach them fade out first.
     const top = $('.cd__top', coll), quotes = $('.cd__quotes', coll);
-    const G = 1.3, K = 0.92;                                  // size step between baskets; spacing (a touch of overlap)
+    const G = 1.32, K = 0.62, RISE = 0.5;    // size step between baskets; spacing (about 40% overlap); how steeply the line climbs
     const along = (d) => K * (1 + G) / 2 * (Math.pow(G, d) - 1) / (G - 1); // centre offset of basket d, in featured widths
-    let L = { cx: 0, floor: 1, w0: 1, h0: 1, dmin: 0 };
+    let L = { cx: 0, cy: 0, w0: 1, h0: 1, dmin: 0, dmax: 2 };
     sc.measure = ((m) => () => {
       m();
-      const W = stage.clientWidth, H = stage.clientHeight;
-      const floor = quotes.offsetTop - 16, ceil = top.offsetTop + top.offsetHeight + 16;
-      const h0 = Math.min(H * 0.62, (floor - ceil) / G);    // the next (bigger) basket still clears the links
+      const base = stage.getBoundingClientRect();
+      const rel = (el, pad) => { const r = el.getBoundingClientRect(); return [r.left - base.left - pad, r.top - base.top - pad, r.right - base.left + pad, r.bottom - base.top + pad]; };
+      const W = stage.clientWidth;
+      const text = [rel(info, 24), rel(top, 16), rel(quotes, 16)];
+      const ceil = text[1][3], floor = text[2][1];
+      const h0 = Math.min(stage.clientHeight * 0.56, (floor - ceil) * 0.66);
       const w0 = h0 * 0.78;                                  // the photos are about 4:5
-      const panel = { r: info.offsetLeft + info.offsetWidth + 24, b: info.offsetTop + info.offsetHeight + 16 };
-      const cx = Math.max(W * 0.5, panel.r + w0 * 0.55);    // the featured basket clears the panel
-      let dmin = 0;                                          // the smaller baskets fade out before they reach it
-      while (dmin > -3.6) {
-        const d = dmin - 0.05, s = Math.pow(G, d), left = cx + along(d) * w0 - s * w0 / 2;
-        if (left < 8 || (floor - s * h0 < panel.b && left < panel.r)) break;
-        dmin = d;
-      }
-      L = { cx, floor, w0, h0, dmin };
+      // the next, bigger basket rises just clear of the top links, whatever the screen width
+      const cx = Math.max(W * 0.66, text[1][2] - (along(1) - G / 2) * w0 + 4), cy = (ceil + floor) / 2 + h0 * 0.08;
+      const box = (d) => {
+        const s = Math.pow(G, d), x = cx + along(d) * w0, y = cy - along(d) * w0 * RISE;
+        return [x - (s * w0) / 2, y - (s * h0) / 2, x + (s * w0) / 2, y + (s * h0) / 2];
+      };
+      const hits = (b) => text.some((t) => b[0] < t[2] && t[0] < b[2] && b[1] < t[3] && t[1] < b[3]);
+      // check where baskets come to rest (whole steps); in between they fade in and out
+      let dmin = 0, dmax = 0;
+      while (dmin > -4 && !hits(box(dmin - 1))) dmin -= 1;
+      while (dmax < 2 && !hits(box(dmax + 1))) dmax += 1;
+      L = { cx, cy, w0, h0, dmin: dmin - 0.6, dmax: dmax + 0.6 };
     })(sc.measure);
     const render = scrubber(0.9, (f) => {
-      const { cx, floor, w0, h0, dmin } = L;
+      const { cx, cy, w0, h0, dmin, dmax } = L;
       items.forEach((c, i) => {
         const d = i - f;
-        if (d < dmin || d > 2.6) { c.style.visibility = 'hidden'; return; }
+        if (d < dmin || d > dmax) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        const s = Math.pow(G, d);
-        const x = cx + along(d) * w0 - w0 / 2;
+        const s = Math.pow(G, d), x = cx + along(d) * w0, y = cy - along(d) * w0 * RISE;
+        const tilt = -7 + Math.sin(f * 1.6 + i * 1.3) * 3;   // each one leans and turns a little as it slides
         c.style.width = `${w0.toFixed(1)}px`;
         c.style.height = `${h0.toFixed(1)}px`;
-        c.style.transform = `translate3d(${x.toFixed(1)}px,${(floor - h0).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
+        c.style.transform = `translate3d(${(x - w0 / 2).toFixed(1)}px,${(y - h0 / 2).toFixed(1)}px,0) scale(${s.toFixed(4)}) rotate(${tilt.toFixed(2)}deg)`;
         c.style.zIndex = String(50 + Math.round(d * 10));
-        c.style.opacity = String(clamp(Math.min((d - dmin) / 0.6, 2.6 - d)));
+        c.style.opacity = String(clamp(Math.min((d - dmin) / 0.6, (dmax - d) / 0.5)));
         const on = Math.abs(d) < 0.5;
         c.classList.toggle('is-active', on);
         c.tabIndex = on ? 0 : -1;
@@ -204,15 +211,14 @@
   }
 
   /* ─── 4. ABOUT: product highlights rotate ───
-     Every three seconds the four cards wipe out one after another and come
-     back with the next four sets (paused while hovered or off screen). */
+     The polish edit: every three seconds the four cards wipe out one after
+     another and come back with the next four shades (paused while hovered
+     or off screen). */
   const about = $('.ab');
   if (about) {
     const cards = $$('.ab__card', about);
     const count = $('.ab__count', about);
-    const KIND = { floral: 'Floral', charms: 'Charms & 3D', chrome: 'Chrome', animal: 'Animal print' };
-    const first = cards.map((c) => byId(Number(c.dataset.quick))).filter(Boolean);
-    const list = first.concat(S.SETS.filter((p) => !first.includes(p)));
+    const list = S.PRODUCTS.filter((p) => p.group === 'polish' && !p.soon);
     const per = cards.length;
     const groups = [];
     for (let i = 0; i < list.length; i += per) {
@@ -225,11 +231,12 @@
       card.dataset.quick = p.id;
       card.setAttribute('aria-label', `Quick look: ${p.name}`);
       const img = $('img', card);
-      img.src = p.img; img.alt = `${p.name} press-on nails`;
+      img.src = p.img; img.alt = `${p.name} nail polish`;
       $('.ab__name', card).textContent = p.name;
-      $('.ab__tag', card).textContent = [KIND[p.category] || p.category, p.shape].filter(Boolean).join(' · ');
+      $('.ab__tag', card).innerHTML = `Nail polish · ${usd(p.price)}`;
       $('.ab__desc', card).textContent = `${(p.desc || '').split('. ')[0].replace(/\.$/, '')}.`;
     };
+    cards.forEach((card, i) => { if (groups[0] && groups[0][i]) fill(card, groups[0][i]); });
     const preload = (g) => Promise.all(g.map((p) => new Promise((res) => {
       const im = new Image(); im.onload = im.onerror = res; im.src = p.img;
     })));
