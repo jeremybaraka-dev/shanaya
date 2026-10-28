@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════
    NAILS BY SHANAYA — catalog + nail-art illustrations
-   Photos live in images/press-ons/, images/nail-charms/ and
-   images/nail-polish/ as <slug>.webp
+   Photos live in images/press-ons/, images/nail-charms/,
+   images/nail-polish/ and images/basket/ as <slug>.webp
    (with a -sm.webp thumbnail and a .jpg copy for Pinterest).
 ═══════════════════════════════════════════════════════ */
 (function (root) {
@@ -10,7 +10,7 @@
   // ─── CATALOG ───  (prices here are what the checkout server charges)
   const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
   const set = (id, slug, name, category, price, extra) => Object.assign({
-    id, slug, name, category, price, type: 'set', sizes: SIZES, optionLabel: 'Size', stars: 5,
+    id, slug, name, category, price, type: 'set', group: 'press-ons', sizes: SIZES, optionLabel: 'Size', stars: 5,
     img: `images/press-ons/${slug}.webp`,
     thumb: `images/press-ons/${slug}-sm.webp`,
   }, extra);
@@ -19,12 +19,12 @@
   // checkout server checks against it); `optionLabel` names them ("Pack",
   // "Shade"). An item with `soon: true` shows as Coming soon and can't be
   // bought until it has a real price, photo and options.
-  // Prices for the charm boxes and polish bottles (in dollars). While a price
-  // is null those items show as "Coming soon" and can't be bought.
-  const CHARM_PRICE = null;
-  const POLISH_PRICE = null;
+  // Prices for the charm boxes and polish bottles (in dollars). Set one to
+  // null and those items show as "Coming soon" and can't be bought.
+  const CHARM_PRICE = 14;
+  const POLISH_PRICE = 10;
   const item = (type, category, folder, optionLabel, option, price) => (id, slug, name, desc) => Object.assign({
-    id, slug, name, category, type, price, desc, sizes: [option], optionLabel, stars: 0,
+    id, slug, name, category, type, group: category, price, desc, sizes: [option], optionLabel, stars: 0,
     img: `images/${folder}/${slug}.webp`,
     thumb: `images/${folder}/${slug}-sm.webp`,
   }, price == null ? { soon: true, badge: 'Soon' } : {});
@@ -91,13 +91,64 @@
     polish(319, 'jet-black', 'Jet Black', 'A glossy true black.'),
     polish(320, 'butter-yellow', 'Butter Yellow', 'A pastel butter yellow.'),
   ];
+
+  // ─── BASKETS: bundles of press-ons, charms and polish at a bundle price ───
+  // `has` lists the product ids inside. The price is worked out from them:
+  // BASKET_SAVING off the separate prices, rounded down to end in 4 or 9.
+  // The press-on size the customer picks applies to every set in the basket.
+  const BASKET_SAVING = 0.15;
+  const basket = (id, key, colour, has) => {
+    const items = has.map((i) => PRODUCTS.find((p) => p.id === i));
+    const worth = items.reduce((t, p) => t + p.price, 0);
+    const price = Math.floor((worth * (1 - BASKET_SAVING) + 1) / 5) * 5 - 1;
+    const names = (type) => items.filter((p) => p.type === type).map((p) => p.name);
+    const list = (a) => (a.length > 1 ? `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}` : a[0]);
+    const slug = `${colour.toLowerCase()}-basket`;
+    return {
+      id, slug, name: `The ${colour} Basket`, category: 'baskets', type: 'basket', group: 'baskets', colour, has,
+      price, oldPrice: worth, badge: 'Bundle', sizes: SIZES, optionLabel: 'Size', stars: 0,
+      desc: `${items.length} picks: ${list(names('set'))} press-ons, ${list(names('charm'))} ${names('charm').length > 1 ? 'charm boxes' : 'charm box'}, `
+        + `and ${list(names('polish'))} polish. Pick your press-on size.`,
+      cutout: `images/basket/basket-${key}.webp`,
+      img: `images/basket/${slug}.webp`,
+      thumb: `images/basket/${slug}-sm.webp`,
+    };
+  };
+  PRODUCTS.push(
+    basket(401, 'a', 'Pink', [109, 103, 202, 209, 302, 309, 315]),
+    basket(402, 'b', 'Cocoa', [104, 102, 205, 306, 318]),
+    basket(403, 'c', 'Emerald', [112, 207, 203, 305, 304, 310]),
+    basket(404, 'd', 'Slate', [105, 201, 303, 307, 314]),
+    basket(405, 'e', 'Cherry', [108, 111, 208, 317, 311]),
+    basket(406, 'f', 'Noir', [104, 111, 209, 210, 319, 314]),
+    basket(407, 'g', 'Merlot', [101, 110, 202, 301, 311, 308]),
+    basket(408, 'h', 'Butter', [107, 205, 203, 320, 316, 302]),
+    basket(409, 'i', 'Olive', [106, 105, 206, 318, 304]),
+    basket(410, 'j', 'Toffee', [102, 112, 204, 207, 316, 306, 318]),
+  );
+
   // The nail sets on their own (the home-page scenes and "12 sets" copy use these).
   const SETS = PRODUCTS.filter((p) => p.type === 'set' && !p.soon);
 
+  const BASKETS = PRODUCTS.filter((p) => p.type === 'basket');
+
   const CATEGORY_LABELS = {
     floral: 'Florals', animal: 'Animal Print', chrome: 'Chrome & Gold', charms: 'Charms & 3D',
-    'nail-charms': 'Nail Charms', polish: 'Nail Polish',
+    'nail-charms': 'Nail Charms', polish: 'Nail Polish', baskets: 'Baskets',
   };
+  // The shop's four sections.
+  const GROUP_LABELS = { 'press-ons': 'Press-Ons', 'nail-charms': 'Nail Charms', polish: 'Nail Polish', baskets: 'Baskets' };
+
+  // Everything mixed together for "All": each section spread evenly through
+  // the list, so press-ons, charms, polish and baskets alternate.
+  const MIXED = (() => {
+    const keyed = [];
+    Object.keys(GROUP_LABELS).forEach((g, gi) => {
+      const list = PRODUCTS.filter((p) => p.group === g && !p.soon);
+      list.forEach((p, i) => keyed.push({ p, k: i / list.length + gi * 1e-3 }));
+    });
+    return keyed.sort((a, b) => a.k - b.k).map((x) => x.p).concat(PRODUCTS.filter((p) => p.soon));
+  })();
 
   // ─── NAIL ART GENERATOR ───
   // Palette: Powder Pink #FCB5D0 · Dolphin #626283 · Artichoke #929073 · Pearl #E7E0C1
@@ -256,7 +307,7 @@
     return cache[key];
   }
 
-  const api = { PRODUCTS, SETS, CATEGORY_LABELS, nailArt, FINISHES };
+  const api = { PRODUCTS, SETS, BASKETS, MIXED, CATEGORY_LABELS, GROUP_LABELS, nailArt, FINISHES };
   // The same file feeds the checkout server (api/), so prices only live here.
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.SHANAYA = api;

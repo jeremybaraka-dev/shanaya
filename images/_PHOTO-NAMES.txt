@@ -6,7 +6,9 @@ images/press-ons/    the nail sets. Each set (js/products.js) has three web file
 images/nail-charms/  the charm boxes, same three files per item.
 images/nail-polish/  the polish bottles, same three files per item.
 images/basket/       basket-a.webp ... basket-j.webp: cut-outs (background removed)
-                     shown in the home page's collection.
+                     shown in the home page's collection, and <colour>-basket.webp /
+                     -sm.webp / .jpg: the same baskets on a tinted background,
+                     used as the shop photos for the basket bundles.
 images/home/         nail-1.webp ... nail-4.webp: cut-out nails shown in "The craft".
 
 The full-size originals (now (1).png, box (1).png, polish (1).png, a.png ...,
@@ -14,5 +16,6 @@ nail (1).png) stay on your computer only. They're kept out of GitHub and the
 live site because they're 0.4-3 MB each. To add or change a photo, drop the
 original in the right folder and ask Claude to make the web versions.
 
-Prices for charms and polish are set at the top of js/products.js
-(CHARM_PRICE, POLISH_PRICE). While they're empty those items show "Coming soon".
+Prices: press-on sets are set one by one in js/products.js. Charms and polish
+share one price each (CHARM_PRICE, POLISH_PRICE). Each basket's price is worked
+out from what's inside it, minus BASKET_SAVING (15%), rounded to end in 4 or 9.

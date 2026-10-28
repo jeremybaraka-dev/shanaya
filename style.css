@@ -575,6 +575,7 @@ body.menu-open .menu__foot { opacity: 1; }
 }
 .pcard__badge--sale { background: var(--pink); color: var(--ink); }
 .pcard__badge--limited { background: var(--gold); color: var(--ink); }
+.pcard__badge--bundle { background: var(--lime); color: var(--ink); }
 .pcard__badge--bestseller { background: #fff; color: var(--ink); }
 .pcard__wish {
   position: absolute; top: 10px; right: 10px; z-index: 2;
@@ -1659,7 +1660,12 @@ body.hdr-hidden .filters { top: 0; }
 .cd__rows div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid rgba(64, 31, 40, 0.14); }
 .cd__rows dt { font-size: 9.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(64, 31, 40, 0.6); }
 .cd__rows dd { margin: 0; font-size: 13px; font-weight: 600; }
-.coll__desc { margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.cd__rows dd s { margin-left: 4px; font-weight: 500; color: var(--muted); }
+.coll__desc {
+  margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: var(--muted);
+  /* always four lines tall, so the panel never grows into the baskets */
+  height: 6em; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
 .cd__btn {
   display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; padding: 9px 9px 9px 16px; border: 0; border-radius: 999px;
   background: var(--wine); color: var(--pearl); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: background-color 0.3s;

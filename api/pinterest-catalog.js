@@ -14,6 +14,7 @@ const TYPES = {
   charms: 'Beauty > Nails > Press-On Nails > Charms',
   'nail-charms': 'Beauty > Nails > Nail Art > Nail Charms',
   polish: 'Beauty > Nails > Nail Polish',
+  baskets: 'Beauty > Nails > Nail Kits',
 };
 
 const cell = (v) => {
@@ -50,7 +51,7 @@ module.exports = async (req, res) => {
       id: `SHANAYA-${p.id}`,
       title: `${p.name} — Nails by Shanaya`,
       description: `${p.desc}${p.type === 'set' ? ' Handcrafted by Shanaya.' : ''} ${p.optionLabel === 'Size' ? 'Sizes' : `${p.optionLabel}s`}: ${p.sizes.join(', ')}.`,
-      link: `${base}/shop.html?cat=${encodeURIComponent(p.category)}`,
+      link: `${base}/shop.html?cat=${encodeURIComponent(p.group)}`,
       image_link: image,
       price: money(onSale ? p.oldPrice : p.price),
       sale_price: onSale ? money(p.price) : '',

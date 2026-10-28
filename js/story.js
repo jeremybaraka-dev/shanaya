@@ -117,33 +117,34 @@
   const coll = $('[data-scene="coll"]');
   if (coll) {
     const stage = $('[data-cd-stage]', coll);
-    const BASKETS = [['a', 'Pink'], ['b', 'Cocoa'], ['c', 'Emerald'], ['d', 'Slate'], ['e', 'Cherry'],
-      ['f', 'Noir'], ['g', 'Merlot'], ['h', 'Butter'], ['i', 'Olive'], ['j', 'Toffee']];
-    const count = (cat) => S.PRODUCTS.filter((p) => p.category === cat).length;
-    const totals = { sets: S.SETS.length, charms: count('nail-charms'), polish: count('polish') };
-    stage.innerHTML = BASKETS.map(([k, c]) => `
-      <a class="bk" href="shop.html" tabindex="-1" aria-label="Shop the ${c} basket">
-        <img src="images/basket/basket-${k}.webp" alt="" loading="lazy" decoding="async">
+    const BASKETS = S.BASKETS;
+    const inside = (b, type) => b.has.filter((id) => S.PRODUCTS.find((p) => p.id === id).type === type);
+    stage.innerHTML = BASKETS.map((b) => `
+      <a class="bk" href="shop.html?cat=baskets" tabindex="-1" aria-label="Shop ${esc(b.name)}">
+        <img src="${b.cutout}" alt="" loading="lazy" decoding="async">
       </a>`).join('');
     const items = $$('.bk', stage);
     const info = $('.coll__info', coll);
     const out = {
-      name: $('.coll__name', info), colour: $('.bk__colour', info), sets: $('.bk__sets', info),
-      charms: $('.bk__charms', info), polish: $('.bk__polish', info), desc: $('.coll__desc', info), now: $('.coll__now', coll),
+      name: $('.coll__name', info), sets: $('.bk__sets', info), charms: $('.bk__charms', info),
+      polish: $('.bk__polish', info), price: $('.bk__price', info), desc: $('.coll__desc', info),
+      btn: $('.cd__btn', info), now: $('.coll__now', coll),
     };
     $('.coll__total', coll).textContent = pad(BASKETS.length);
-    out.sets.textContent = `${totals.sets} sets`;
-    out.charms.textContent = `${totals.charms} boxes`;
-    out.polish.textContent = `${totals.polish} shades`;
+    const n = (k, one, many) => `${k} ${k === 1 ? one : many}`;
     let active = -1;
     const show = (i) => {
-      const c = BASKETS[i][1];
+      const b = BASKETS[i];
       info.classList.remove('is-swap');
       void info.offsetWidth; // restart the swap animation
       info.classList.add('is-swap');
-      out.name.textContent = `The ${c} basket`;
-      out.colour.textContent = c;
-      out.desc.textContent = `${/^[aeiou]/i.test(c) ? 'An' : 'A'} ${c.toLowerCase()} mood: press-on sets, charm boxes and polish picked to go together.`;
+      out.name.textContent = b.name;
+      out.sets.textContent = n(inside(b, 'set').length, 'set', 'sets');
+      out.charms.textContent = n(inside(b, 'charm').length, 'box', 'boxes');
+      out.polish.textContent = n(inside(b, 'polish').length, 'shade', 'shades');
+      out.price.innerHTML = `$${b.price} <s>$${b.oldPrice}</s>`;
+      out.desc.textContent = b.desc;
+      out.btn.dataset.quick = b.id;
       out.now.textContent = pad(i + 1);
     };
     const sc = pinned(coll);
@@ -323,11 +324,12 @@
   const mtRail = $('[data-mt-rail]');
   if (mtRail) {
     const KIND = { floral: 'Floral', charms: 'Charms & 3D', chrome: 'Chrome', animal: 'Animal print' };
+    const meta = (p) => (p.type === 'set' ? `${KIND[p.category]} · ${p.shape}` : p.type === 'basket' ? `${p.has.length} picks · bundle` : S.GROUP_LABELS[p.group]);
     const render = (cat) => {
-      const list = cat === 'all' ? S.SETS : S.PRODUCTS.filter((p) => p.category === cat);
+      const list = cat === 'all' ? S.MIXED.filter((p) => !p.soon) : S.PRODUCTS.filter((p) => p.group === cat);
       mtRail.innerHTML = list.map((p, i) => `<button type="button" class="mt__card" data-quick="${p.id}" aria-label="Quick look: ${esc(p.name)}" style="--i:${i}">
           <span class="mt__media"><img src="${p.img}" alt="" loading="lazy" decoding="async" />${p.badge ? `<span class="mt__badge">${esc(p.badge)}</span>` : ''}</span>
-          <span class="mt__name">${esc(p.name)}</span><span class="mt__meta">${esc(KIND[p.category] || p.category)} · ${esc(p.shape || '')}</span>
+          <span class="mt__name">${esc(p.name)}</span><span class="mt__meta">${esc(meta(p))}</span>
           <span class="mt__row"><b>${p.soon ? 'Soon' : `$${p.price}`}</b><span class="mt__plus" aria-hidden="true">+</span></span>
         </button>`).join('');
       mtRail.scrollLeft = 0;

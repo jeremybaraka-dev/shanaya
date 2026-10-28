@@ -722,7 +722,7 @@
   let qvList = [], qvIndex = 0, qvSize = 'M';
   function fillQuick(p) {
     $('#qv-media').innerHTML = `<img src="${p.thumb}" alt="" class="qv__blur"><img src="${p.img}" alt="${p.name}">`;
-    $('#qv-cat').textContent = S.CATEGORY_LABELS[p.category] || p.category;
+    $('#qv-cat').textContent = kindLabel(p);
     $('#qv-name').textContent = p.name;
     $('#qv-price').innerHTML = `$${p.price}${p.oldPrice ? `<s>$${p.oldPrice}</s>` : ''}`;
     $('#qv-desc').textContent = p.desc;
@@ -819,8 +819,11 @@
 
   /* ─────────────── PRODUCT CARDS ─────────────── */
   function stars(n) { return '★'.repeat(n) + '☆'.repeat(5 - n); }
+  // "Press-Ons · Florals" for sets; the section name for everything else
+  const kindLabel = (p) => (p.type === 'set' ? `Press-Ons · ${S.CATEGORY_LABELS[p.category]}`
+    : p.type === 'basket' ? `Basket · Save $${p.oldPrice - p.price}` : S.GROUP_LABELS[p.group] || p.category);
   function cardHTML(p, shop, i) {
-    const label = S.CATEGORY_LABELS[p.category] || p.category;
+    const label = kindLabel(p);
     const wished = wishlist.includes(p.id);
     const badge = p.badge ? `<span class="pcard__badge pcard__badge--${p.badge.toLowerCase()}">${p.badge}</span>` : '';
     const def = p.sizes.includes('M') ? 'M' : p.sizes[0];
@@ -878,16 +881,16 @@
     const sortSel = $('#sort');
     const params = new URLSearchParams(location.search);
     let filter = params.get('cat') || 'all';
+    if (S.SETS.some((p) => p.category === filter)) filter = 'press-ons'; // old style links (?cat=floral …)
     if (!$$('.chip', chips).some((c) => c.dataset.filter === filter)) filter = 'all';
+    const inGroup = (f) => (f === 'all' ? S.MIXED.slice() : S.PRODUCTS.filter((p) => p.group === f));
 
     $$('.chip', chips).forEach((c) => {
-      const f = c.dataset.filter;
-      const n = f === 'all' ? S.PRODUCTS.length : S.PRODUCTS.filter((p) => p.category === f).length;
-      c.insertAdjacentHTML('beforeend', `<sup>${n}</sup>`);
+      c.insertAdjacentHTML('beforeend', `<sup>${inGroup(c.dataset.filter).length}</sup>`);
     });
 
     function list() {
-      let l = filter === 'all' ? S.PRODUCTS.slice() : S.PRODUCTS.filter((p) => p.category === filter);
+      let l = inGroup(filter);
       const s = sortSel.value;
       if (s === 'price-asc') l.sort((a, b) => a.price - b.price);
       if (s === 'price-desc') l.sort((a, b) => b.price - a.price);
