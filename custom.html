@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Custom Orders — Nails by Shanaya</title>
+  <meta name="description" content="Want something custom? Send Shanaya a photo, a colour or a vibe and she'll hand-paint a press-on set made to fit you." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Nails by Shanaya" />
+  <meta property="og:title" content="Custom Orders — Nails by Shanaya" />
+  <meta property="og:description" content="Dream it, we'll paint it ♡ Custom press-on sets made to fit you." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="p:domain_verify" content="4e941d6b56bf41bbe27bac4cf07484e6" />
+  <meta name="theme-color" content="#D38492" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.paypal.com https://*.paypal.com https://*.paypalobjects.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.paypal.com https://*.paypalobjects.com; connect-src 'self' https://*.paypal.com https://*.paypalobjects.com; frame-src https://*.paypal.com https://*.paypalobjects.com; form-action 'self'; base-uri 'self'; object-src 'none'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="js/boot.js"></script>
+</head>
+<body class="page-custom">
+
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__half loader__half--top"><div class="loader__stage"></div></div>
+    <div class="loader__half loader__half--bottom"><div class="loader__stage"></div></div>
+    <span class="loader__line"></span>
+  </div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__label">View</span></div>
+
+  <!-- Announcement -->
+  <div class="announce" aria-label="Announcements">
+    <div class="marquee" data-marquee data-mspeed="0.8">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item"><i>✦</i> Beauty has no race, shade or limits</span>
+          <span class="marquee__item"><i>♡</i> Every girl is beautiful in her own way</span>
+          <span class="marquee__item"><i>✦</i> Custom press-on nails made for your vibe</span>
+          <span class="marquee__item"><i>♡</i> Bookings &amp; orders right here on the site</span>
+          <span class="marquee__item"><i>✦</i> New: nail charms, polish &amp; bundle baskets</span>
+          <span class="marquee__item"><i>✦</i> Free shipping on orders <span data-usd="50">$50</span>+</span>
+          <span class="marquee__item"><i>♡</i> New drops every Friday</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="hdr" id="hdr">
+    <div class="hdr__bar">
+      <nav class="hdr__nav hdr__nav--l" aria-label="Main">
+        <a href="index.html" class="hdr__link">Home</a>
+        <a href="shop.html" class="hdr__link">Shop All</a>
+        <a href="index.html#collection" class="hdr__link">Collection</a>
+      </nav>
+      <a href="index.html" class="hdr__logo" aria-label="Nails by Shanaya — home">
+        <img src="images/logo-small.webp" alt="" width="48" height="48" />
+        <span>Nails by <b>Shanaya</b></span>
+      </a>
+      <div class="hdr__actions">
+        <nav class="hdr__nav hdr__nav--r" aria-label="More">
+          <a href="index.html#about" class="hdr__link">About</a>
+          <a href="index.html#how" class="hdr__link">How it works</a>
+        </nav>
+        <button class="hdr__bag" data-cart-open aria-label="Open your bag">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="hdr__count" data-cart-count data-zero>0</span>
+        </button>
+        <button class="hdr__burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="menu" id="menu" aria-hidden="true" data-lenis-prevent>
+    <nav class="menu__nav" aria-label="Mobile">
+      <a href="shop.html" class="menu__link"><span class="menu__num">01</span>Shop All</a>
+      <a href="index.html" class="menu__link"><span class="menu__num">02</span>Home</a>
+      <a href="index.html#collection" class="menu__link"><span class="menu__num">03</span>Collection</a>
+      <a href="index.html#about" class="menu__link"><span class="menu__num">04</span>About</a>
+      <a href="index.html#how" class="menu__link"><span class="menu__num">05</span>How it works</a>
+    </nav>
+    <div class="menu__foot">
+      <p class="menu__script">Every girl is beautiful ♡</p>
+      <div class="menu__socials">
+        <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">TikTok</a>
+        <a href="https://www.pinterest.com/nailsbyshanaya_/" target="_blank" rel="noopener noreferrer">Pinterest</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ─── CUSTOM ORDERS: a small page of its own (the shop stays strictly shop) ─── -->
+    <section class="cx cx--page" aria-labelledby="cx-title">
+      <div class="container cx__grid">
+        <div class="cx__copy">
+          <p class="cx__label" data-reveal>Custom orders</p>
+          <h2 class="cx__title" id="cx-title" data-split>Want something <span class="cx__hl">custom?</span></h2>
+          <p class="cx__script" data-reveal style="--d:.15s">Dream it, we&rsquo;ll paint it ♡</p>
+          <ol class="cx__steps">
+            <li data-reveal style="--d:.1s"><span>01</span><h3>Send your idea</h3><p>DM a photo, a colour or just a vibe.</p></li>
+            <li data-reveal style="--d:.2s"><span>02</span><h3>We design it</h3><p>Shanaya sketches the set and checks it with you.</p></li>
+            <li data-reveal style="--d:.3s"><span>03</span><h3>Made to fit</h3><p>Handmade in your size, XS to XL, and shipped to you.</p></li>
+          </ol>
+          <div class="cx__actions" data-reveal style="--d:.35s">
+            <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic>
+              <span class="roll"><span>DM @nailsbyshanaya_</span><span>DM @nailsbyshanaya_</span></span>
+              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+            </a>
+            <a href="shop.html" class="btn btn--ghost"><span class="roll"><span>Shop ready-made</span><span>Shop ready-made</span></span></a>
+          </div>
+        </div>
+        <div class="cx__stack" data-reveal="fade" aria-hidden="true">
+          <img class="cx__pic cx__pic--1" src="images/press-ons/scarlet-lily.webp" alt="" loading="lazy" />
+          <img class="cx__pic cx__pic--2" src="images/press-ons/orchid-tortoise.webp" alt="" loading="lazy" />
+          <img class="cx__pic cx__pic--3" src="images/press-ons/downtown-charm.webp" alt="" loading="lazy" />
+          <span class="cx__badge">
+            <svg class="spin" viewBox="0 0 120 120"><defs><path id="ring-cx" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" /></defs><text font-family="Manrope, sans-serif" font-size="10.2" font-weight="800" letter-spacing="3.1" fill="#401F28"><textPath href="#ring-cx" textLength="288" lengthAdjust="spacing">MADE TO ORDER ✦ HANDMADE ✦ </textPath></text></svg>
+            <i>♡</i>
+          </span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="ftr" id="footer">
+    <div class="fx__cols">
+      <div class="fx__col">
+        <h3>Shop</h3>
+        <ul>
+          <li><a href="shop.html">Shop all</a></li>
+          <li><a href="shop.html?cat=press-ons">Press-ons</a></li>
+          <li><a href="shop.html?cat=nail-charms">Nail charms</a></li>
+          <li><a href="shop.html?cat=polish">Nail polish</a></li>
+          <li><a href="shop.html?cat=baskets">Baskets</a></li>
+        </ul>
+      </div>
+      <div class="fx__col">
+        <h3>About</h3>
+        <ul>
+          <li><a href="index.html#about">Our story</a></li>
+          <li><a href="index.html#how">How it works</a></li>
+          <li><a href="custom.html">Custom orders</a></li>
+        </ul>
+      </div>
+      <div class="fx__col">
+        <h3>Help</h3>
+        <ul>
+          <li><a href="policies.html#shipping">Shipping</a></li>
+          <li><a href="policies.html#returns">Returns &amp; refunds</a></li>
+          <li><a href="policies.html#sizing">Sizing help</a></li>
+          <li><a href="policies.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="fx__col">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+          <li><a href="https://www.pinterest.com/nailsbyshanaya_/" target="_blank" rel="noopener noreferrer">Pinterest</a></li>
+          <li><a href="#top">Back to top</a></li>
+        </ul>
+      </div>
+      <div class="fx__col fx__col--cta">
+        <h3>Get first dibs on every drop</h3>
+        <a class="fx__pill" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg><span><span class="fx__pre">Follow on </span>TikTok</span></a>
+        <a class="fx__pill" href="https://www.pinterest.com/nailsbyshanaya_/" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12z"/></svg><span><span class="fx__pre">Follow on </span>Pinterest</span></a>
+      </div>
+    </div>
+
+    <div class="fx__giant" aria-hidden="true"><span class="fx__word">SHANAYA</span></div>
+
+    <div class="fx__bar">
+      <span>&copy; 2026 Nails by Shanaya. All rights reserved.</span>
+      <span class="fx__status"><i></i>New drops every Friday</span>
+      <span class="fx__love">Every girl is beautiful in her own way ♡</span>
+      <label class="fx__cur" data-fx-picker hidden><span>Prices in</span><select data-fx-select aria-label="Show prices in"></select></label>
+      <nav class="fx__legal" aria-label="Policies">
+        <a href="policies.html#privacy">Privacy</a>
+        <a href="policies.html#returns">Returns</a>
+        <a href="policies.html#shipping">Shipping</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Mobile tab bar -->
+  <nav class="tabbar" aria-label="Quick navigation">
+    <a href="index.html" class="tabbar__item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1z"/></svg><span>Home</span></a>
+    <a href="index.html#collection" class="tabbar__item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>Sets</span></a>
+    <button class="tabbar__bag" data-cart-open aria-label="Open your bag"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="tabbar__count" data-cart-count data-zero>0</span></button>
+    <a href="shop.html" class="tabbar__item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Shop</span></a>
+    <a href="custom.html" class="tabbar__item is-active" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg><span>Custom</span></a>
+  </nav>
+
+  <script src="js/lenis.min.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/payments.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/receipt.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

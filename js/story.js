@@ -4,7 +4,6 @@
    window.SHANAYA_STORY = { layout(), update(y, vh, mx, my) },
    which main.js calls from its Lenis-driven frame loop.
      1. cover   — the nail-shaped window opens into the statement (desktop)
-     2. craft   — one set pinned centre stage, callouts change per step
      3. coll    — the baskets slide along a rising diagonal, details swap per basket
      4. about   — the product highlights rotate through the catalog
      5. how     — giant faded words with three steps in oversized type
@@ -60,26 +59,15 @@
 
   /* ─── 1. COVER (desktop): the nail-shaped window opens to fill the screen ───
      0 → .30   the window grows until its photos fill the screen; the wordmark,
-               cards and cover lines drift away
+               cover lines drift away
      .20 → .60 the photos darken and the statement writes itself in
      .67 → 1   the lime section slides up over it all (CSS: .ab margin-top) */
   const cover = $('[data-scene="cover"]');
   if (cover) {
-    $$('[data-hx-card]', cover).forEach((btn) => {
-      const p = byId(Number(btn.dataset.hxCard));
-      if (!p) return;
-      btn.dataset.quick = p.id;
-      btn.setAttribute('aria-label', `Quick look: ${p.name}`);
-      const kick = p.type === 'basket' ? `Bundle · save ${usd(p.oldPrice - p.price)}` : esc(p.badge || 'New in');
-      const price = p.oldPrice ? `${usd(p.price)} <s>${usd(p.oldPrice)}</s>` : `${usd(p.price)} · ${esc(p.shape || '')}`;
-      btn.innerHTML = `<span class="hx__pic"><img src="${p.thumb}" alt="" decoding="async"></span>
-        <span class="hx__txt"><span class="hx__kick">${kick}</span><span class="hx__nm">${esc(p.name)}</span><span class="hx__pr">${price}</span></span>`;
-    });
     const portal = $('.hx__portal', cover), trip = $('.hx__trip', cover), shade = $('.hx__shade', cover);
     const masts = $$('.hx__mast', cover), ui = $$('.hx__ui', cover);
     const sticky = $('.hx__sticky', cover), layout = $('.hx__layout', cover), mid = $('.hx__mid', cover);
     const ghost = $('.hx__mast--ghost', cover);
-    const flyA = $('.hx__float--a .hx__fly', cover), flyB = $('.hx__float--b .hx__fly', cover);
     const words = $$('.hx__w', cover), small = $('.hx__small', cover);
     const seg = (p, a, b) => clamp((p - a) / (b - a));
     const smooth = (t) => t * t * (3 - 2 * t);
@@ -111,9 +99,6 @@
         el.style.opacity = String(1 - m);
         el.style.transform = `translate3d(0,${(-m * 14).toFixed(2)}vh,0) scale(${(1 + m * 0.12).toFixed(4)})`;
       });
-      flyA.style.transform = `translate3d(${(-m * 30).toFixed(2)}vw,${(-m * 6).toFixed(2)}vh,0) rotate(${(-m * 10).toFixed(2)}deg)`;
-      flyB.style.transform = `translate3d(${(m * 30).toFixed(2)}vw,${(-m * 6).toFixed(2)}vh,0) rotate(${(m * 10).toFixed(2)}deg)`;
-      flyA.style.opacity = flyB.style.opacity = String(1 - seg(p, 0.08, 0.22));
       ui.forEach((el) => { el.style.opacity = String(1 - seg(p, 0, 0.1)); });
       shade.style.opacity = String(seg(p, 0.2, 0.36) * 0.9 + cv * 0.1);
       words.forEach((w, i) => {
@@ -126,67 +111,6 @@
       small.style.transform = `translate3d(0,${((1 - t) * 24).toFixed(1)}px,0)`;
     });
     sc.update = (y) => { if (!mqMobile.matches) render(sc.progress(y)); };
-    scenes.push(sc);
-  }
-
-  /* ─── 2. CRAFT (desktop): a deck of pieces in 3D ───
-     A tight stack of square cards, each turned steeply away, running from the
-     bottom-left corner (near) to the top-right corner (far); the farthest fade
-     into the background. Scrolling slides the whole stack toward you. The
-     piece passing the middle is named bottom right, and the four craft steps
-     change along the way. The last part of the scroll is the lime about
-     section sliding up over it (CSS). */
-  const craft = $('[data-scene="craft"]');
-  if (craft) {
-    const steps = $$('.craft__step', craft), count = $('.craft__count b', craft), track = $('.craft__track', craft);
-    const now = $('.craft__now', craft);
-    const nowNum = $('.craft__now-num b', now), nowName = $('.craft__now-name', now), nowPrice = $('.craft__now-price', now);
-    // two of every three pieces from the mixed shop list: press-ons, charms, polish and baskets taking turns
-    const PIECES = S.MIXED.filter((p) => !p.soon).filter((p, i) => i % 3 !== 2);
-    track.innerHTML = PIECES.map((p) => `
-      <button type="button" class="craft__card" data-quick="${p.id}" data-cursor="Quick look" tabindex="-1" aria-label="Quick look: ${esc(p.name)}">
-        <img src="${p.img}" alt="" loading="lazy" decoding="async">
-      </button>`).join('');
-    $('span', now).lastChild.textContent = ` / ${pad(PIECES.length)}`;
-    const cards = $$('.craft__card', track);
-    const N = cards.length, n = steps.length;
-    const END = 0.8;                     // after this the lime section covers the scene
-    const NEAR = -5, FAR = 17;           // the stack's ends (in cards from the middle)
-    let active = -1, shown = -1, cw = 360;
-    const sc = pinned(craft);
-    sc.measure = ((m) => () => { m(); cw = cards[0] ? cards[0].offsetWidth : 360; })(sc.measure);
-    const render = scrubber(0.55, (f) => {
-      cards.forEach((c, i) => {
-        const d = i - f;                 // 0 = the middle of the stack, negative = nearer
-        if (d < NEAR - 0.6 || d > FAR + 1) { c.style.visibility = 'hidden'; return; }
-        c.style.visibility = '';
-        c.style.transform = `translate3d(${(d * cw * 0.34).toFixed(1)}px,${(-d * cw * 0.2).toFixed(1)}px,${(-d * cw * 0.46).toFixed(1)}px) rotateY(-50deg)`;
-        c.style.opacity = String(Math.min(clamp((d - NEAR + 0.6) / 0.8), clamp((FAR + 1 - d) / 2)).toFixed(3));
-        c.style.setProperty('--fog', clamp((d - 2) / (FAR - 2)).toFixed(3)); // far cards sink into the background
-      });
-      const i = Math.max(0, Math.min(N - 1, Math.round(f)));
-      if (i !== shown) {
-        shown = i;
-        const p = PIECES[i];
-        now.dataset.quick = p.id;
-        nowNum.textContent = pad(i + 1);
-        nowName.textContent = p.name;
-        nowPrice.innerHTML = usd(p.price);
-        now.classList.remove('is-swap'); void now.offsetWidth; now.classList.add('is-swap');
-      }
-    });
-    sc.update = (y, vh, mx, my) => {
-      if (mqMobile.matches) return;
-      const p = clamp(sc.progress(y) / END);
-      render(-NEAR + p * (N - 1 + NEAR - 8)); // both ends of the stack stay full from start to end
-      const a = Math.min(n - 1, Math.floor(p * n));
-      if (a !== active) {
-        active = a;
-        steps.forEach((s, k) => s.classList.toggle('is-on', k === a));
-        count.textContent = pad(a + 1);
-      }
-      track.style.transform = `rotateY(${(mx * 4).toFixed(2)}deg) rotateX(${(-my * 3).toFixed(2)}deg)`;
-    };
     scenes.push(sc);
   }
 
