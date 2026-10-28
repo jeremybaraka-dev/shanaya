@@ -5,7 +5,7 @@
    which main.js calls from its Lenis-driven frame loop.
      1. hero    — a huge staggered wordmark; the two lines drift apart on scroll
      2. craft   — one set pinned centre stage, callouts change per step
-     3. coll    — all twelve sets roll past, details swap per set
+     3. coll    — the baskets slide along a rising diagonal, details swap per basket
      4. about   — the product highlights rotate through the catalog
      5. how     — giant faded words with three steps in oversized type
      8. next    — the sets roll past sideways, magazine style (home)
@@ -78,9 +78,11 @@
   const craft = $('[data-scene="craft"]');
   if (craft) {
     const steps = $$('.craft__step', craft);
-    const shots = [101, 104, 109, 107].map(byId);
-    $('.craft__nail', craft).innerHTML = shots.map((p, i) =>
-      `<img class="craft__shot" src="${p.img}" alt="${esc(p.name)} press-on set" loading="lazy" style="--k:${i}">`).join('');
+    // one hand-painted nail per step (cut-out photos in images/home/)
+    const NAILS = [['nail-1', 'Hand-painted pink flower nail with gold beads'], ['nail-2', 'Pink nail with a sculpted bow'],
+      ['nail-3', 'Pink and blue flower nail with crystals'], ['nail-4', 'Chocolate nail with an NY charm and gold beads']];
+    $('.craft__nail', craft).innerHTML = NAILS.map(([f, alt], i) =>
+      `<img class="craft__shot" src="images/home/${f}.webp" alt="${alt}" loading="lazy" style="--k:${i}">`).join('');
     const imgs = $$('.craft__shot', craft);
     const count = $('.craft__count b', craft);
     const word = $('.craft__word', craft), stage = $('.craft__stage', craft), bar = $('.craft__bar span', craft);
@@ -95,7 +97,7 @@
       if (a !== active) {
         active = a;
         steps.forEach((s, i) => s.classList.toggle('is-on', i === a));
-        imgs.forEach((img, i) => img.classList.toggle('is-on', i <= a));
+        imgs.forEach((img, i) => img.classList.toggle('is-on', i === a));
         count.textContent = pad(a + 1);
         craft.style.setProperty('--step', a);
         craft.dataset.step = String(a);
@@ -108,68 +110,70 @@
     scenes.push(sc);
   }
 
-  /* ─── 3. COLLECTION: the sets as spinning discs (after A24's film index) ───
-     The discs sit on a rising diagonal, growing to the right. Scrolling
-     slides them along it and spins each one; the disc in the middle is the
-     featured set, whose details fill the panel top left. */
+  /* ─── 3. COLLECTION: the baskets on a rising diagonal (after A24's film index) ───
+     Each basket (a cut-out photo) grows as it moves right along the line;
+     scrolling slides them along it with a slight lean. The basket in the
+     middle is featured, with what's inside listed in the panel top left. */
   const coll = $('[data-scene="coll"]');
   if (coll) {
     const stage = $('[data-cd-stage]', coll);
-    const list = S.SETS;
-    stage.innerHTML = list.map((p, i) => `
-      <button class="cd__disc" data-product="${p.id}" data-quick="${p.id}" data-cursor="Choose size" aria-label="${esc(p.name)}, $${p.price}. Choose a size" tabindex="-1">
-        <span class="cd__tilt"><span class="cd__spin"><img src="${p.img}" alt="" loading="lazy" decoding="async"><span class="cd__hole"></span></span></span>
-      </button>`).join('');
-    const discs = $$('.cd__disc', stage);
+    const BASKETS = [['a', 'Pink'], ['b', 'Cocoa'], ['c', 'Emerald'], ['d', 'Slate'], ['e', 'Cherry'],
+      ['f', 'Noir'], ['g', 'Merlot'], ['h', 'Butter'], ['i', 'Olive'], ['j', 'Toffee']];
+    const count = (cat) => S.PRODUCTS.filter((p) => p.category === cat).length;
+    const totals = { sets: S.SETS.length, charms: count('nail-charms'), polish: count('polish') };
+    stage.innerHTML = BASKETS.map(([k, c]) => `
+      <a class="bk" href="shop.html" tabindex="-1" aria-label="Shop the ${c} basket">
+        <img src="images/basket/basket-${k}.webp" alt="" loading="lazy" decoding="async">
+      </a>`).join('');
+    const items = $$('.bk', stage);
     const info = $('.coll__info', coll);
     const out = {
-      name: $('.coll__name', info), cat: $('.cd__cat', info), shape: $('.cd__shape', info), price: $('.coll__price', info),
-      desc: $('.coll__desc', info), btn: $('.coll__btn', info), now: $('.coll__now', coll),
+      name: $('.coll__name', info), colour: $('.bk__colour', info), sets: $('.bk__sets', info),
+      charms: $('.bk__charms', info), polish: $('.bk__polish', info), desc: $('.coll__desc', info), now: $('.coll__now', coll),
     };
-    $('.coll__total', coll).textContent = pad(list.length);
+    $('.coll__total', coll).textContent = pad(BASKETS.length);
+    out.sets.textContent = `${totals.sets} sets`;
+    out.charms.textContent = `${totals.charms} boxes`;
+    out.polish.textContent = `${totals.polish} shades`;
     let active = -1;
     const show = (i) => {
-      const p = list[i];
+      const c = BASKETS[i][1];
       info.classList.remove('is-swap');
       void info.offsetWidth; // restart the swap animation
       info.classList.add('is-swap');
-      out.name.textContent = p.name;
-      out.cat.textContent = S.CATEGORY_LABELS[p.category];
-      out.shape.textContent = p.shape;
-      out.price.textContent = `$${p.price}`;
-      out.desc.textContent = p.desc;
-      out.btn.dataset.quick = p.id;
-      out.btn.setAttribute('aria-label', `Choose a size for ${p.name}`);
+      out.name.textContent = `The ${c} basket`;
+      out.colour.textContent = c;
+      out.desc.textContent = `A ${c.toLowerCase()} mood: press-on sets, charm boxes and polish picked to go together.`;
       out.now.textContent = pad(i + 1);
     };
     const sc = pinned(coll);
     let W = 1, H = 1;
     sc.measure = ((m) => () => { m(); W = stage.clientWidth || 1; H = stage.clientHeight || 1; })(sc.measure);
     const render = scrubber(0.6, (f) => {
-      const D = Math.min(W * 0.3, H * 0.62);           // featured disc size
-      const cx = W * 0.5, cy = H * 0.56;
-      discs.forEach((c, i) => {
+      const D = Math.min(W * 0.27, H * 0.66);           // featured basket height
+      const w0 = D * 0.8;                              // the photos are ~4:5
+      const cx = W * 0.5, cy = H * 0.55;
+      items.forEach((c, i) => {
         const d = i - f;
         if (d < -3.6 || d > 2.2) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        const s = Math.pow(1.32, d);                    // grows to the right
-        const along = D * 1.04 * (s - 1) / 0.32;         // spacing scales with size
+        const s = Math.pow(1.32, d);
+        const along = w0 * 1.15 * (s - 1) / 0.32;
         const x = cx + along, y = cy - along * 0.27;
-        c.style.width = `${D.toFixed(1)}px`;
-        c.style.transform = `translate3d(${(x - D / 2).toFixed(1)}px,${(y - D / 2).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
+        c.style.width = `${w0.toFixed(1)}px`;
+        c.style.transform = `translate3d(${(x - w0 / 2).toFixed(1)}px,${(y - D / 2).toFixed(1)}px,0) scale(${s.toFixed(4)}) rotate(${(d * -3).toFixed(2)}deg)`;
         c.style.zIndex = String(50 + Math.round(d * 10));
         c.style.opacity = String(clamp(Math.min(d + 3.6, 2.2 - d)));
-        c.firstElementChild.firstElementChild.style.transform = `rotate(${(f * 140 + i * 37).toFixed(1)}deg)`;
         const on = Math.abs(d) < 0.5;
         c.classList.toggle('is-active', on);
         c.tabIndex = on ? 0 : -1;
       });
-      const a = Math.round(clamp(f, 0, list.length - 1));
+      const a = Math.round(clamp(f, 0, BASKETS.length - 1));
       if (a !== active) { active = a; show(a); }
     });
     sc.update = (y) => {
       if (mqMobile.matches) return;
-      render(sc.progress(y) * (list.length - 1));
+      render(sc.progress(y) * (BASKETS.length - 1));
     };
     scenes.push(sc);
   }

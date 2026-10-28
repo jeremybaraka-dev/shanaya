@@ -14,5 +14,9 @@ Thumbs.db
 .DS_Store
 
 # Original full-size product photos (web versions are generated from these)
-images/products/now (*).png
+images/press-ons/now (*).png
+images/nail-charms/box (*).png
+images/nail-polish/polish (*).png
+images/basket/?.png
+images/home/nail (*).png
 _backup-palette-v2/

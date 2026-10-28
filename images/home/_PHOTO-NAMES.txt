@@ -1,8 +1,0 @@
-HOME PAGE PHOTOS — drop them in this folder with this exact name (lowercase, .jpg).
-
-about-shanaya.jpg   "Meet Shanaya" — a photo of you (your logo shows until you add one)
-
-Every other picture on the home page comes from the product photos in
-images/products/, so new sets show up there automatically.
-
-Tips: portrait shot (about 4:5), 1000–1500px wide, under ~300 KB.

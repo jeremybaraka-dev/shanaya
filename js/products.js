@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════════════════
    NAILS BY SHANAYA — catalog + nail-art illustrations
-   Each product's photo lives in images/products/<slug>.webp
+   Photos live in images/press-ons/, images/nail-charms/ and
+   images/nail-polish/ as <slug>.webp
    (with a -sm.webp thumbnail and a .jpg copy for Pinterest).
 ═══════════════════════════════════════════════════════ */
 (function (root) {
@@ -10,24 +11,25 @@
   const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
   const set = (id, slug, name, category, price, extra) => Object.assign({
     id, slug, name, category, price, type: 'set', sizes: SIZES, optionLabel: 'Size', stars: 5,
-    img: `images/products/${slug}.webp`,
-    thumb: `images/products/${slug}-sm.webp`,
+    img: `images/press-ons/${slug}.webp`,
+    thumb: `images/press-ons/${slug}-sm.webp`,
   }, extra);
 
   // Nail charms and nail polish. `sizes` holds the buyable options (the
   // checkout server checks against it); `optionLabel` names them ("Pack",
   // "Shade"). An item with `soon: true` shows as Coming soon and can't be
   // bought until it has a real price, photo and options.
-  //   charm(201, 'gold-heart-charms', 'Gold Heart Charms', 12, { sizes: ['Pack of 10'], desc: '…' })
-  //   polish(301, 'merlot-polish', 'Merlot', 14, { sizes: ['15 ml'], desc: '…' })
-  const item = (type, category, optionLabel) => (id, slug, name, price, extra) => Object.assign({
-    id, slug, name, category, price, type, sizes: [], optionLabel, stars: 5,
-    img: `images/products/${slug}.webp`,
-    thumb: `images/products/${slug}-sm.webp`,
-  }, extra);
-  const charm = item('charm', 'nail-charms', 'Pack');
-  const polish = item('polish', 'polish', 'Shade');
-  const soon = (art) => ({ soon: true, badge: 'Soon', stars: 0, img: art, thumb: art });
+  // Prices for the charm boxes and polish bottles (in dollars). While a price
+  // is null those items show as "Coming soon" and can't be bought.
+  const CHARM_PRICE = null;
+  const POLISH_PRICE = null;
+  const item = (type, category, folder, optionLabel, option, price) => (id, slug, name, desc) => Object.assign({
+    id, slug, name, category, type, price, desc, sizes: [option], optionLabel, stars: 0,
+    img: `images/${folder}/${slug}.webp`,
+    thumb: `images/${folder}/${slug}-sm.webp`,
+  }, price == null ? { soon: true, badge: 'Soon' } : {});
+  const charm = item('charm', 'nail-charms', 'nail-charms', 'Box', 'Full box', CHARM_PRICE);
+  const polish = item('polish', 'polish', 'nail-polish', 'Bottle', 'One bottle', POLISH_PRICE);
 
   const PRODUCTS = [
     set(101, 'merlot-garden', 'Merlot Garden', 'floral', 38, { badge: 'Bestseller', art: 'rosegold', shape: 'Stiletto',
@@ -55,11 +57,39 @@
     set(112, 'orchid-tortoise', 'Orchid Tortoise', 'floral', 36, { art: 'floral', shape: 'Almond',
       desc: 'Sculpted orchids, magenta marble, tortoiseshell and leopard with gold charms. Set of 10.' }),
 
-    // ─── coming soon: replace with the real charms and polishes ───
-    charm(201, 'nail-charms', 'Nail Charms', null, Object.assign(soon('images/products/nail-charms-soon.svg'), {
-      desc: '3D charms to add to any set or your own nails — hearts, bows, cherries, stars and pearls. Coming soon.' })),
-    polish(301, 'nail-polish', 'Nail Polish', null, Object.assign(soon('images/products/nail-polish-soon.svg'), {
-      desc: 'Shanaya’s own polish shades, made to match the sets. Coming soon.' })),
+    // ─── nail charms (photos in images/nail-charms/) ───
+    charm(201, 'silver-bow-charms', 'Silver Bow Charms', 'Silver-tone bows and ribbons, sorted in a 24-slot box.'),
+    charm(202, 'bow-and-pearl-mix', 'Bow & Pearl Mix', '3D bows in cream, red, lilac, sky blue, pink and black, with pearls.'),
+    charm(203, 'flower-garden-mix', 'Flower Garden Mix', 'Resin flowers in every colour: pastels, brights, black and white.'),
+    charm(204, 'bunny-babes-mix', 'Bunny Babes Mix', 'Cute character charms in pink, lilac and black.'),
+    charm(205, 'sweet-treats-mix', 'Sweet Treats Mix', 'Bears, puppies, strawberries and blooms in one mixed box.'),
+    charm(206, 'cute-critters-mix', 'Cute Critters Mix', 'Bears, bunnies, berries and flowers in a compact mixed box.'),
+    charm(207, 'gold-gem-charms', 'Gold & Gem Charms', 'Gold-tone charms set with emerald, sapphire and ruby-coloured stones.'),
+    charm(208, 'kitty-flower-wheel', 'Kitty Flower Wheel', 'Character charms in pink, lilac and black, in a flower-shaped case.'),
+    charm(209, 'pink-and-black-bows', 'Pink & Black Bows', 'Bows and flowers in blush pink, black and gold.'),
+    charm(210, 'character-party-mix', 'Character Party Mix', 'A big mixed box of character charms in pastels and black.'),
+
+    // ─── nail polish (photos in images/nail-polish/) ───
+    polish(301, 'deep-merlot', 'Deep Merlot', 'A rich burgundy wine shade.'),
+    polish(302, 'ballet-pink', 'Ballet Pink', 'A sheer, soft pink.'),
+    polish(303, 'storm-blue', 'Storm Blue', 'A dusty blue-grey.'),
+    polish(304, 'gold-leaf', 'Gold Leaf', 'A metallic gold.'),
+    polish(305, 'emerald', 'Emerald', 'A deep jewel green.'),
+    polish(306, 'blush-nude', 'Blush Nude', 'A warm pink nude.'),
+    polish(307, 'slate', 'Slate', 'A cool denim grey.'),
+    polish(308, 'rose-shimmer', 'Rose Shimmer', 'Pink with a soft shimmer.'),
+    polish(309, 'candy-pink', 'Candy Pink', 'A bright bubblegum pink.'),
+    polish(310, 'milky-sheer', 'Milky Sheer', 'A sheer milky white.'),
+    polish(311, 'black-cherry', 'Black Cherry', 'A deep, dark cherry.'),
+    polish(312, 'pink-glitter', 'Pink Glitter', 'Pink and red glitter.'),
+    polish(313, 'mint', 'Mint', 'A fresh aqua mint.'),
+    polish(314, 'pure-white', 'Pure White', 'A clean, opaque white.'),
+    polish(315, 'hot-pink', 'Hot Pink', 'A loud, vivid pink.'),
+    polish(316, 'peach-nude', 'Peach Nude', 'A soft peachy nude.'),
+    polish(317, 'cherry-red', 'Cherry Red', 'A classic glossy red.'),
+    polish(318, 'bronze', 'Bronze', 'A warm bronze shimmer.'),
+    polish(319, 'jet-black', 'Jet Black', 'A glossy true black.'),
+    polish(320, 'butter-yellow', 'Butter Yellow', 'A pastel butter yellow.'),
   ];
   // The nail sets on their own (the home-page scenes and "12 sets" copy use these).
   const SETS = PRODUCTS.filter((p) => p.type === 'set' && !p.soon);

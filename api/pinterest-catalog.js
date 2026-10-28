@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
     return {
       id: `SHANAYA-${p.id}`,
       title: `${p.name} — Nails by Shanaya`,
-      description: `${p.desc} Handcrafted by Shanaya. ${p.optionLabel === 'Size' ? 'Sizes' : `${p.optionLabel}s`}: ${p.sizes.join(', ')}.`,
+      description: `${p.desc}${p.type === 'set' ? ' Handcrafted by Shanaya.' : ''} ${p.optionLabel === 'Size' ? 'Sizes' : `${p.optionLabel}s`}: ${p.sizes.join(', ')}.`,
       link: `${base}/shop.html?cat=${encodeURIComponent(p.category)}`,
       image_link: image,
       price: money(onSale ? p.oldPrice : p.price),
