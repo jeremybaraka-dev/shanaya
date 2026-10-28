@@ -114,19 +114,20 @@
     scenes.push(sc);
   }
 
-  /* ─── 3. COLLECTION: the baskets on a rising diagonal (after A24's film index) ───
-     Each basket (a cut-out photo) grows as it moves right along the line;
-     scrolling slides them along it with a slight lean. The basket in the
-     middle is featured, with what's inside listed in the panel top left. */
+  /* ─── 3. COLLECTION: the baskets as discs (after A24's film index) ───
+     Each basket is a CD with its photo on the label; the discs run on a
+     rising diagonal, grow toward the right and spin as you scroll. The disc
+     in the middle is featured, with what's inside listed in the panel. */
   const coll = $('[data-scene="coll"]');
   if (coll) {
     const stage = $('[data-cd-stage]', coll);
     const BASKETS = [401, 402, 403, 405, 408].map(byId); // five of the ten: Pink, Cocoa, Emerald, Cherry, Butter
     const inside = (b, type) => b.has.filter((id) => S.PRODUCTS.find((p) => p.id === id).type === type);
+    // each basket is a disc: its photo printed on a CD, with the hole, rim and sheen
     stage.innerHTML = BASKETS.map((b) => `
-      <a class="bk" href="shop.html?cat=baskets" tabindex="-1" aria-label="Shop ${esc(b.name)}">
-        <img src="${b.cutout}" alt="" loading="lazy" decoding="async">
-      </a>`).join('');
+      <button type="button" class="bk" data-quick="${b.id}" data-cursor="Quick look" tabindex="-1" aria-label="Quick look: ${esc(b.name)}">
+        <span class="bk__tilt"><span class="bk__disc"><img src="${b.img}" alt="" loading="lazy" decoding="async"><i class="bk__hole"></i></span></span>
+      </button>`).join('');
     const items = $$('.bk', stage);
     const info = $('.coll__info', coll);
     const out = {
@@ -152,50 +153,54 @@
       out.now.textContent = pad(i + 1);
     };
     const sc = pinned(coll);
-    // The baskets sit on a rising diagonal like A24's film index: small and
-    // low on the left, big and high on the right, each one overlapping the one
-    // behind it, tilted, and turning a little as they slide. The line is placed
-    // so no basket ever sits on the panel, the links or the quotes; any that
-    // would reach them fade out first.
+    // Laid out like A24's film index (measured from the reference): the
+    // featured disc sits centred just above the quotes; each step right is
+    // about 1.3x bigger and about one disc-width along, climbing more steeply
+    // as the discs grow, so the row runs off the left edge small and low and
+    // off the top-right corner big. Every disc is tilted into an ellipse and
+    // its label spins as the row slides. Any disc that would come to rest on
+    // the panel or the links fades out instead.
     const top = $('.cd__top', coll), quotes = $('.cd__quotes', coll);
-    const G = 1.32, K = 0.62, RISE = 0.5;    // size step between baskets; spacing (about 40% overlap); how steeply the line climbs
-    const along = (d) => K * (1 + G) / 2 * (Math.pow(G, d) - 1) / (G - 1); // centre offset of basket d, in featured widths
-    let L = { cx: 0, cy: 0, w0: 1, h0: 1, dmin: 0, dmax: 2 };
+    const G = 1.3, K = 0.93;                 // size step; spacing between centres (in disc widths)
+    const along = (d) => K * (1 + G) / 2 * (Math.pow(G, d) - 1) / (G - 1);
+    const rise = (d) => (d >= 0 ? 0.42 : 0.16) * (Math.pow(G, d) - 1) / (G - 1); // the climb, steeper on the right
+    let L = { cx: 0, cy: 0, D: 1, dmin: -3, dmax: 2 };
     sc.measure = ((m) => () => {
       m();
       const base = stage.getBoundingClientRect();
       const rel = (el, pad) => { const r = el.getBoundingClientRect(); return [r.left - base.left - pad, r.top - base.top - pad, r.right - base.left + pad, r.bottom - base.top + pad]; };
-      const W = stage.clientWidth;
-      const text = [rel(info, 24), rel(top, 16), rel(quotes, 16)];
-      const ceil = text[1][3], floor = text[2][1];
-      const h0 = Math.min(stage.clientHeight * 0.56, (floor - ceil) * 0.66);
-      const w0 = h0 * 0.78;                                  // the photos are about 4:5
-      // the next, bigger basket rises just clear of the top links, whatever the screen width
-      const cx = Math.max(W * 0.66, text[1][2] - (along(1) - G / 2) * w0 + 4), cy = (ceil + floor) / 2 + h0 * 0.08;
+      const W = stage.clientWidth, H = stage.clientHeight;
+      const text = [rel(info, 20), rel(top, 14)];
+      const q = rel(quotes, 0);
+      const D = Math.min(H * 0.6, W * 0.28);                // the featured disc's diameter (about 60% of the frame's height)
+      const cx = (q[0] + q[2]) / 2;                           // centred over the quotes, as in the reference
+      const cy = q[1] - 18 - D * 0.43;                       // its (tilted) bottom edge just above them
+      // a disc is round: test its (tilted) elliptical outline against each block of text
       const box = (d) => {
-        const s = Math.pow(G, d), x = cx + along(d) * w0, y = cy - along(d) * w0 * RISE;
-        return [x - (s * w0) / 2, y - (s * h0) / 2, x + (s * w0) / 2, y + (s * h0) / 2];
+        const s = Math.pow(G, d);
+        return { x: cx + along(d) * D, y: cy - rise(d) * D, a: (s * D) / 2, b: s * D * 0.45 };
       };
-      const hits = (b) => text.some((t) => b[0] < t[2] && t[0] < b[2] && b[1] < t[3] && t[1] < b[3]);
-      // check where baskets come to rest (whole steps); in between they fade in and out
-      let dmin = 0, dmax = 0;
+      const hits = (e) => text.some((t) => {
+        const px = clamp(e.x, t[0], t[2]), py = clamp(e.y, t[1], t[3]);
+        return ((px - e.x) / e.a) ** 2 + ((py - e.y) / e.b) ** 2 < 1;
+      });
+      let dmin = 0, dmax = 0;                                // check where discs come to rest (whole steps)
       while (dmin > -4 && !hits(box(dmin - 1))) dmin -= 1;
       while (dmax < 2 && !hits(box(dmax + 1))) dmax += 1;
-      L = { cx, cy, w0, h0, dmin: dmin - 0.6, dmax: dmax + 0.6 };
+      L = { cx, cy, D, dmin: dmin - 0.6, dmax: dmax + 0.6 };
     })(sc.measure);
-    const render = scrubber(0.9, (f) => {
-      const { cx, cy, w0, h0, dmin, dmax } = L;
+    const render = scrubber(0.8, (f) => {
+      const { cx, cy, D, dmin, dmax } = L;
       items.forEach((c, i) => {
         const d = i - f;
         if (d < dmin || d > dmax) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        const s = Math.pow(G, d), x = cx + along(d) * w0, y = cy - along(d) * w0 * RISE;
-        const tilt = -7 + Math.sin(f * 1.6 + i * 1.3) * 3;   // each one leans and turns a little as it slides
-        c.style.width = `${w0.toFixed(1)}px`;
-        c.style.height = `${h0.toFixed(1)}px`;
-        c.style.transform = `translate3d(${(x - w0 / 2).toFixed(1)}px,${(y - h0 / 2).toFixed(1)}px,0) scale(${s.toFixed(4)}) rotate(${tilt.toFixed(2)}deg)`;
+        const s = Math.pow(G, d), x = cx + along(d) * D, y = cy - rise(d) * D;
+        c.style.width = `${D.toFixed(1)}px`;
+        c.style.transform = `translate3d(${(x - D / 2).toFixed(1)}px,${(y - D / 2).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
         c.style.zIndex = String(50 + Math.round(d * 10));
         c.style.opacity = String(clamp(Math.min((d - dmin) / 0.6, (dmax - d) / 0.5)));
+        c.firstElementChild.firstElementChild.style.transform = `rotate(${(-10 - d * 55).toFixed(1)}deg)`; // the label spins as it moves; upright in the middle
         const on = Math.abs(d) < 0.5;
         c.classList.toggle('is-active', on);
         c.tabIndex = on ? 0 : -1;

@@ -1596,16 +1596,31 @@ body.hdr-hidden .filters { top: 0; }
 .cd__side--r { right: 16px; font-family: var(--f-display); font-style: italic; font-size: 14px; }
 .cd__stage { position: absolute; inset: 0; z-index: 1; }
 .bk {
-  position: absolute; left: 0; top: 0; display: block; transform-origin: 50% 50%; will-change: transform, opacity;
+  position: absolute; left: 0; top: 0; display: block; padding: 0; border: 0; background: none; cursor: pointer;
+  transform-origin: 50% 50%; will-change: transform, opacity;
 }
-.bk img {
-  display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%;
-  filter: drop-shadow(0 22px 20px rgba(64, 31, 40, 0.2));
-  transition: translate 0.6s var(--ease);
+/* tilted into an ellipse, like a disc seen at an angle */
+.bk__tilt { display: block; width: 100%; aspect-ratio: 1; transform: rotate(-24deg) scaleY(0.86); filter: drop-shadow(0 26px 30px rgba(64, 31, 40, 0.28)); transition: transform 0.6s var(--ease); }
+.bk:hover .bk__tilt { transform: rotate(-24deg) scaleY(0.86) scale(1.03); }
+.bk__disc {
+  position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #E9E4E6;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 3px rgba(64, 31, 40, 0.12);
 }
-.bk:hover img { translate: 0 -8px; }
+.bk__disc img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+/* the clear plastic rim and a soft sheen across the disc */
+.bk__disc::before { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 50%; box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.45), inset 0 0 22px rgba(255, 255, 255, 0.25); pointer-events: none; }
+.bk__disc::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 50%; pointer-events: none; mix-blend-mode: screen;
+  background: conic-gradient(from 20deg, transparent 0 30deg, rgba(255, 255, 255, 0.28) 55deg, transparent 90deg 200deg, rgba(255, 255, 255, 0.2) 225deg, transparent 260deg);
+}
+/* the centre hole: clear plastic ring around a hole showing the page */
+.bk__hole {
+  position: absolute; z-index: 2; left: 50%; top: 50%; width: 15%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%;
+  background: #F6EFEA; box-shadow: 0 0 0 9px rgba(232, 232, 236, 0.92), 0 0 0 11px rgba(64, 31, 40, 0.1), inset 0 2px 5px rgba(64, 31, 40, 0.25);
+}
 
 .coll__info { position: absolute; z-index: 60; top: 16px; left: 18px; width: min(300px, 26%); }
+@media (min-width: 901px) { .coll__info .coll__desc { display: none; } .coll__info .cd__btn { margin-top: 12px; } }
 .coll__info.is-swap > * { animation: swap-in 0.7s var(--ease) both; }
 .coll__info.is-swap > :nth-child(2) { animation-delay: 0.05s; }
 .coll__info.is-swap > :nth-child(3) { animation-delay: 0.1s; }
