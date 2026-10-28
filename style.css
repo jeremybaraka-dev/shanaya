@@ -1619,7 +1619,7 @@ body.hdr-hidden .filters { top: 0; }
 .craft__bar span { display: block; height: 100%; background: var(--pink); transform: scaleY(0); transform-origin: top; }
 
 /* ── 3. collection: baskets on a rising diagonal (A24-style) ── */
-.coll { position: relative; height: 760vh; background: var(--cream); }
+.coll { position: relative; height: 440vh; background: var(--cream); }
 .coll__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .cd__frame {
   position: absolute; inset: calc(var(--hdr-h) + 2vh) clamp(20px, 3vw, 48px) 3vh; overflow: hidden;
@@ -2369,6 +2369,7 @@ html.js .ar__item.is-in .ar__frame { clip-path: inset(0 0 0 0); }
   .mt__meta { margin: 4px 6px 0; font-size: 12px; font-weight: 600; opacity: 0.65; }
   .mt__row { display: flex; align-items: center; justify-content: space-between; margin: 10px 6px 0; }
   .mt__row b { font-size: 17px; }
+  .mt__row s { margin-left: 4px; font-size: 13px; font-weight: 500; color: var(--muted); }
   .mt__plus { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--lime); color: var(--ink); font-size: 20px; font-weight: 700; line-height: 1; }
 
   /* ── how it works: three solid tiles ── */

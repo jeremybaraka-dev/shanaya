@@ -117,7 +117,7 @@
   const coll = $('[data-scene="coll"]');
   if (coll) {
     const stage = $('[data-cd-stage]', coll);
-    const BASKETS = S.BASKETS;
+    const BASKETS = [401, 402, 403, 405, 408].map(byId); // five of the ten: Pink, Cocoa, Emerald, Cherry, Butter
     const inside = (b, type) => b.has.filter((id) => S.PRODUCTS.find((p) => p.id === id).type === type);
     stage.innerHTML = BASKETS.map((b) => `
       <a class="bk" href="shop.html?cat=baskets" tabindex="-1" aria-label="Shop ${esc(b.name)}">
@@ -330,7 +330,7 @@
       mtRail.innerHTML = list.map((p, i) => `<button type="button" class="mt__card" data-quick="${p.id}" aria-label="Quick look: ${esc(p.name)}" style="--i:${i}">
           <span class="mt__media"><img src="${p.img}" alt="" loading="lazy" decoding="async" />${p.badge ? `<span class="mt__badge">${esc(p.badge)}</span>` : ''}</span>
           <span class="mt__name">${esc(p.name)}</span><span class="mt__meta">${esc(meta(p))}</span>
-          <span class="mt__row"><b>${p.soon ? 'Soon' : `$${p.price}`}</b><span class="mt__plus" aria-hidden="true">+</span></span>
+          <span class="mt__row"><b>${p.soon ? 'Soon' : `$${p.price}`}${p.oldPrice ? ` <s>$${p.oldPrice}</s>` : ''}</b><span class="mt__plus" aria-hidden="true">+</span></span>
         </button>`).join('');
       mtRail.scrollLeft = 0;
     };
