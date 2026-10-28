@@ -24,6 +24,7 @@
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   const mqMobile = matchMedia('(max-width: 900px)');
   const pad = (n) => String(n).padStart(2, '0');
+  const usd = (n) => (window.SHANAYA_FX ? window.SHANAYA_FX.tag(n) : `$${n}`); // local currency (js/fx.js)
 
   const scenes = [];
   // Scrubbed motion: eases toward the scroll position over ~`seconds`,
@@ -142,7 +143,7 @@
       out.sets.textContent = n(inside(b, 'set').length, 'set', 'sets');
       out.charms.textContent = n(inside(b, 'charm').length, 'box', 'boxes');
       out.polish.textContent = n(inside(b, 'polish').length, 'shade', 'shades');
-      out.price.innerHTML = `$${b.price} <s>$${b.oldPrice}</s>`;
+      out.price.innerHTML = `${usd(b.price)} <s>${usd(b.oldPrice)}</s>`;
       out.desc.textContent = b.desc;
       out.btn.dataset.quick = b.id;
       out.now.textContent = pad(i + 1);
@@ -296,7 +297,7 @@
       return `<button type="button" class="nx__card" data-quick="${p.id}" data-cursor="Quick look" aria-label="Quick look: ${esc(p.name)}">
         <img src="${p.img}" alt="${esc(p.name)} press-on nails" loading="lazy" decoding="async" />
         <span class="nx__card-head"><span class="nx__name">${esc(first)}${rest.length ? ` <em>${esc(rest.join(' ').toLowerCase())}</em>` : ''}</span></span>
-        <span class="nx__card-foot"><span class="nx__meta">${esc(p.shape || '')} · ${esc(p.category)} · $${p.price}<br>${esc(blurb)}<br>Sizes XS – XL · set of 10</span><span class="nx__tag">${i + 1}</span></span>
+        <span class="nx__card-foot"><span class="nx__meta">${esc(p.shape || '')} · ${esc(p.category)} · ${usd(p.price)}<br>${esc(blurb)}<br>Sizes XS – XL · set of 10</span><span class="nx__tag">${i + 1}</span></span>
       </button>`;
     }).join(''));
 
@@ -330,7 +331,7 @@
       mtRail.innerHTML = list.map((p, i) => `<button type="button" class="mt__card" data-quick="${p.id}" aria-label="Quick look: ${esc(p.name)}" style="--i:${i}">
           <span class="mt__media"><img src="${p.img}" alt="" loading="lazy" decoding="async" />${p.badge ? `<span class="mt__badge">${esc(p.badge)}</span>` : ''}</span>
           <span class="mt__name">${esc(p.name)}</span><span class="mt__meta">${esc(meta(p))}</span>
-          <span class="mt__row"><b>${p.soon ? 'Soon' : `$${p.price}`}${p.oldPrice ? ` <s>$${p.oldPrice}</s>` : ''}</b><span class="mt__plus" aria-hidden="true">+</span></span>
+          <span class="mt__row"><b>${p.soon ? 'Soon' : usd(p.price)}${p.oldPrice ? ` <s>${usd(p.oldPrice)}</s>` : ''}</b><span class="mt__plus" aria-hidden="true">+</span></span>
         </button>`).join('');
       mtRail.scrollLeft = 0;
     };

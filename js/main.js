@@ -10,7 +10,10 @@
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const lerp = (a, b, t) => a + (b - a) * t;
-  const money = (n) => '$' + n.toFixed(2);
+  // Prices go out as <span data-usd> so js/fx.js can show them in the visitor's currency.
+  const FX = window.SHANAYA_FX;
+  const usd = (n) => (FX ? FX.tag(n) : `$${n}`);
+  const money = (n) => (FX ? FX.tag(n, true) : '$' + n.toFixed(2));
   // Look up "#section" links by id, never as a CSS selector (odd hashes would throw).
   const byHash = (hash) => {
     try { return document.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) { return null; }
@@ -126,7 +129,7 @@
   $$('[data-total-sets]').forEach((el) => { el.textContent = S.SETS.length; });
   $$('[data-total-products]').forEach((el) => { el.textContent = S.PRODUCTS.filter((p) => !p.soon).length; });
   $$('[data-total-styles]').forEach((el) => { el.textContent = new Set(S.SETS.map((p) => p.category)).size; });
-  $$('[data-from-price]').forEach((el) => { el.textContent = Math.min(...S.PRODUCTS.filter((p) => !p.soon).map((p) => p.price)); });
+  $$('[data-from-price]').forEach((el) => { el.innerHTML = usd(Math.min(...S.PRODUCTS.filter((p) => !p.soon).map((p) => p.price))); });
 
   /* ─────────────── REVEALS ─────────────── */
   const REVEAL_SEL = '[data-reveal], [data-split], [data-count], [data-letters]';
@@ -403,6 +406,7 @@
       <div class="drawer__foot">
         <div class="drawer__sub"><span>Subtotal</span><b id="drawer-sub">$0.00</b></div>
         <p class="drawer__shipline" id="drawer-shipline" hidden></p>
+        <p class="drawer__fx" id="drawer-fx" hidden></p>
         <div class="drawer__pay" id="paypal-buttons"></div>
         <button class="btn btn--pink" id="checkout" hidden><span class="roll"><span>Checkout</span><span>Checkout</span></span><span class="btn__icon">${ICON.arrow}</span></button>
         <p class="drawer__secure">${ICON.lock} Secure checkout with PayPal or any debit/credit card<span class="drawer__test" id="pay-test" hidden>Test mode</span></p>
@@ -426,7 +430,7 @@
         <p class="qv__label" id="qv-label">Choose your size</p>
         <div class="qv__sizes" id="qv-sizes"></div>
         <button class="btn btn--pink" id="qv-add"><span class="roll"><span>Add to bag</span><span>Add to bag</span></span><span class="btn__icon">${ICON.plus}</span></button>
-        <ul class="qv__perks"><li>Handcrafted by Shanaya</li><li>Free shipping on orders $50+</li><li>Lasts up to 2 weeks</li></ul>
+        <ul class="qv__perks"><li>Handcrafted by Shanaya</li><li>Free shipping on orders ${usd(FREE_SHIP)}+</li><li>Lasts up to 2 weeks</li></ul>
       </div>
     </div>`);
 
@@ -457,7 +461,7 @@
     const ship = shippingFor(total);
     const shipLine = $('#drawer-shipline');
     shipLine.hidden = !ship;
-    shipLine.textContent = ship ? `+ ${money(ship)} shipping` : '';
+    shipLine.innerHTML = ship ? `+ ${money(ship)} shipping` : '';
     const payBox = $('#paypal-buttons');
     if (payBox) payBox.hidden = !count;
     $$('[data-cart-count]').forEach((el) => {
@@ -465,9 +469,12 @@
       el.toggleAttribute('data-zero', count === 0);
     });
     $('#drawer-count').textContent = `${count} item${count === 1 ? '' : 's'}`;
-    $('#drawer-sub').textContent = money(total);
+    $('#drawer-sub').innerHTML = money(total);
+    const fxNote = $('#drawer-fx');
+    fxNote.hidden = !FX || FX.code === FX.base || !count;
+    if (!fxNote.hidden) fxNote.textContent = `Prices in ${FX.code} are estimates. PayPal charges ${FX.inBase(total + ship, true)} ${FX.base}; your bank or PayPal converts it.`;
     const left = FREE_SHIP - total;
-    $('#ship-text').textContent = left > 0 ? `You're ${money(left)} away from free shipping ✦` : 'Yay — you unlocked free shipping ♡';
+    $('#ship-text').innerHTML = left > 0 ? `You're ${money(left)} away from free shipping ✦` : 'Yay — you unlocked free shipping ♡';
     $('#ship-bar').style.width = `${clamp(total / FREE_SHIP) * 100}%`;
 
     const box = $('#drawer-items');
@@ -493,6 +500,8 @@
       </div>`;
     }).join('');
   }
+  // a new currency picked in the footer: redraw the bag (its note names the currency)
+  if (FX) FX.onChange(renderCart);
 
   function saveCart() { store.set('shanaya-cart', cart); renderCart(); }
 
@@ -723,9 +732,9 @@
   let qvList = [], qvIndex = 0, qvSize = 'M';
   function fillQuick(p) {
     $('#qv-media').innerHTML = `<img src="${p.thumb}" alt="" class="qv__blur"><img src="${p.img}" alt="${p.name}">`;
-    $('#qv-cat').textContent = kindLabel(p);
+    $('#qv-cat').innerHTML = kindLabel(p);
     $('#qv-name').textContent = p.name;
-    $('#qv-price').innerHTML = `$${p.price}${p.oldPrice ? `<s>$${p.oldPrice}</s>` : ''}`;
+    $('#qv-price').innerHTML = `${usd(p.price)}${p.oldPrice ? `<s>${usd(p.oldPrice)}</s>` : ''}`;
     $('#qv-desc').textContent = p.desc;
     qvSize = p.sizes.includes('M') ? 'M' : p.sizes[0];
     $('#qv-sizes').innerHTML = p.sizes.map((s) => `<button class="size${s === qvSize ? ' is-on' : ''}" data-size="${s}" aria-pressed="${s === qvSize}">${s}</button>`).join('');
@@ -822,7 +831,7 @@
   function stars(n) { return '★'.repeat(n) + '☆'.repeat(5 - n); }
   // "Press-Ons · Florals" for sets; the section name for everything else
   const kindLabel = (p) => (p.type === 'set' ? `Press-Ons · ${S.CATEGORY_LABELS[p.category]}`
-    : p.type === 'basket' ? `Basket · Save $${p.oldPrice - p.price}` : S.GROUP_LABELS[p.group] || p.category);
+    : p.type === 'basket' ? `Basket · Save ${usd(p.oldPrice - p.price)}` : S.GROUP_LABELS[p.group] || p.category);
   function cardHTML(p, shop, i) {
     const label = kindLabel(p);
     const wished = wishlist.includes(p.id);
@@ -837,7 +846,7 @@
         <div class="pcard__foot">
           ${foot}
         </div>` : '';
-    const price = p.soon ? 'Coming soon' : `$${p.price}${p.oldPrice ? `<s>$${p.oldPrice}</s>` : ''}`;
+    const price = p.soon ? 'Coming soon' : `${usd(p.price)}${p.oldPrice ? `<s>${usd(p.oldPrice)}</s>` : ''}`;
     return `<article class="pcard" data-product="${p.id}" style="--i:${i};--d:${(i * 0.08).toFixed(2)}s"${shop ? '' : ' data-reveal'}>
       <div class="pcard__media" data-quick="${p.id}" data-cursor="Quick look">
         <img src="${p.thumb}" srcset="${p.thumb} 480w, ${p.img} 900w" sizes="(max-width: 900px) 46vw, 25vw" alt="${p.name}" loading="lazy">
@@ -870,9 +879,9 @@
       const p = reel[at];
       imgs.forEach((im, k) => im.classList.toggle('is-on', k === at));
       $('b', cap).textContent = p.name;
-      $('span', cap).textContent = `${p.type === 'set' ? S.CATEGORY_LABELS[p.category] : S.GROUP_LABELS[p.group]} · $${p.price}`;
+      $('span', cap).innerHTML = `${p.type === 'set' ? S.CATEGORY_LABELS[p.category] : S.GROUP_LABELS[p.group]} · ${usd(p.price)}`;
       sxPhoto.dataset.quick = p.id;
-      sxPhoto.setAttribute('aria-label', `Quick look: ${p.name}, $${p.price}`);
+      sxPhoto.setAttribute('aria-label', `Quick look: ${p.name}, ${FX ? FX.fmt(p.price) : `$${p.price}`}`);
     };
     showSet(0);
     if (!reduce) setInterval(() => { if (!document.hidden) showSet(at + 1); }, 2600);

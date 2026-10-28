@@ -881,6 +881,14 @@ html.js .about__sig.is-in text { fill-opacity: 1; stroke-dashoffset: 0; }
   line-height: 0.8; letter-spacing: -0.04em; color: var(--pearl); white-space: nowrap; padding-bottom: 0.02em;
 }
 
+.fx__cur { display: inline-flex; align-items: center; gap: 8px; }
+.fx__cur select {
+  appearance: none; -webkit-appearance: none; padding: 6px 28px 6px 12px; border-radius: 999px; border: 1px solid rgba(242, 228, 215, 0.25);
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23F2E4D7' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 11px center;
+  color: inherit; font: inherit; font-weight: 700; cursor: pointer; max-width: 230px;
+}
+.fx__cur select:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+.fx__cur option { color: var(--ink); }
 .fx__bar {
   display: flex; align-items: center; justify-content: space-between; gap: 12px 28px; flex-wrap: wrap;
   padding: clamp(18px, 3vh, 30px) 0 calc(clamp(18px, 3vh, 30px) + env(safe-area-inset-bottom));
@@ -1661,6 +1669,7 @@ body.hdr-hidden .filters { top: 0; }
 .cd__rows dt { font-size: 9.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(64, 31, 40, 0.6); }
 .cd__rows dd { margin: 0; font-size: 13px; font-weight: 600; }
 .cd__rows dd s { margin-left: 4px; font-weight: 500; color: var(--muted); }
+.drawer__fx { margin: 6px 0 0; font-size: 12px; line-height: 1.45; color: var(--muted); }
 .coll__desc {
   margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: var(--muted);
   /* always four lines tall, so the panel never grows into the baskets */
