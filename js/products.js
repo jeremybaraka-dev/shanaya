@@ -93,11 +93,11 @@
   ];
 
   // ─── BASKETS: bundles of press-ons, charms and polish at a bundle price ───
-  // `has` lists the product ids inside. The price is worked out from them:
+  // `tint` is the background colour of its photo; `has` lists the product ids inside. The price is worked out from them:
   // BASKET_SAVING off the separate prices, rounded down to end in 4 or 9.
   // The press-on size the customer picks applies to every set in the basket.
   const BASKET_SAVING = 0.15;
-  const basket = (id, key, colour, has) => {
+  const basket = (id, key, colour, tint, has) => {
     const items = has.map((i) => PRODUCTS.find((p) => p.id === i));
     const worth = items.reduce((t, p) => t + p.price, 0);
     const price = Math.floor((worth * (1 - BASKET_SAVING) + 1) / 5) * 5 - 1;
@@ -105,7 +105,7 @@
     const list = (a) => (a.length > 1 ? `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}` : a[0]);
     const slug = `${colour.toLowerCase()}-basket`;
     return {
-      id, slug, name: `The ${colour} Basket`, category: 'baskets', type: 'basket', group: 'baskets', colour, has,
+      id, slug, name: `The ${colour} Basket`, category: 'baskets', type: 'basket', group: 'baskets', colour, tint, has,
       price, oldPrice: worth, badge: 'Bundle', sizes: SIZES, optionLabel: 'Size', stars: 0,
       desc: `${items.length} picks: ${list(names('set'))} press-ons, ${list(names('charm'))} ${names('charm').length > 1 ? 'charm boxes' : 'charm box'}, `
         + `and ${list(names('polish'))} polish. Pick your press-on size.`,
@@ -115,16 +115,16 @@
     };
   };
   PRODUCTS.push(
-    basket(401, 'a', 'Pink', [109, 103, 202, 209, 302, 309, 315]),
-    basket(402, 'b', 'Cocoa', [104, 102, 205, 306, 318]),
-    basket(403, 'c', 'Emerald', [112, 207, 203, 305, 304, 310]),
-    basket(404, 'd', 'Slate', [105, 201, 303, 307, 314]),
-    basket(405, 'e', 'Cherry', [108, 111, 208, 317, 311]),
-    basket(406, 'f', 'Noir', [104, 111, 209, 210, 319, 314]),
-    basket(407, 'g', 'Merlot', [101, 110, 202, 301, 311, 308]),
-    basket(408, 'h', 'Butter', [107, 205, 203, 320, 316, 302]),
-    basket(409, 'i', 'Olive', [106, 105, 206, 318, 304]),
-    basket(410, 'j', 'Toffee', [102, 112, 204, 207, 316, 306, 318]),
+    basket(401, 'a', 'Pink', '#F7DCE5', [109, 103, 202, 209, 302, 309, 315]),
+    basket(402, 'b', 'Cocoa', '#ECDDD1', [104, 102, 205, 306, 318]),
+    basket(403, 'c', 'Emerald', '#DCE8DF', [112, 207, 203, 305, 304, 310]),
+    basket(404, 'd', 'Slate', '#E0E4EA', [105, 201, 303, 307, 314]),
+    basket(405, 'e', 'Cherry', '#F3D9D8', [108, 111, 208, 317, 311]),
+    basket(406, 'f', 'Noir', '#E6E1E1', [104, 111, 209, 210, 319, 314]),
+    basket(407, 'g', 'Merlot', '#EDD8DD', [101, 110, 202, 301, 311, 308]),
+    basket(408, 'h', 'Butter', '#F6EED2', [107, 205, 203, 320, 316, 302]),
+    basket(409, 'i', 'Olive', '#E7E7D5', [106, 105, 206, 318, 304]),
+    basket(410, 'j', 'Toffee', '#F0E1D1', [102, 112, 204, 207, 316, 306, 318]),
   );
 
   // The nail sets on their own (the home-page scenes and "12 sets" copy use these).

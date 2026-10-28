@@ -1085,7 +1085,7 @@ body.show-float .float-cta { transform: translate(-50%, 0); }
 .shero__sticker .hero__badge-core { background: var(--ink); color: var(--pink); }
 .shero__note { position: absolute; right: 4%; top: -18%; }
 
-.trust { padding: 0 0 clamp(36px, 5vw, 60px); }
+.trust { padding: clamp(28px, 3.6vw, 56px) 0 clamp(36px, 5vw, 60px); }
 .trust__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .trust__item { display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 20px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
 .trust__icon { width: 46px; height: 46px; border-radius: 50%; background: var(--blush); color: var(--pink-deep); display: grid; place-items: center; flex-shrink: 0; }
@@ -1095,21 +1095,21 @@ body.show-float .float-cta { transform: translate(-50%, 0); }
 .filters { position: sticky; top: var(--hdr-h); z-index: 600; padding: 10px 0; transition: top 0.6s var(--ease); }
 body.hdr-hidden .filters { top: 0; }
 .filters__bar {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 16px;
   padding: 6px; border-radius: 999px;
   background: rgba(250, 243, 236, 0.86); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
   box-shadow: inset 0 0 0 1px var(--line), 0 16px 40px -24px rgba(64, 31, 40, 0.3);
 }
-.chips { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); padding-right: 30px; }
+.chips { flex: 1; min-width: 0; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); padding-right: 30px; }
 .chips::-webkit-scrollbar { display: none; }
 .chip {
-  flex-shrink: 0; min-height: 44px; padding: 0 18px; border-radius: 999px;
+  flex-shrink: 0; min-height: 44px; padding: 0 24px; border-radius: 999px;
   font-size: 14px; font-weight: 700;
   transition: background-color 0.3s, color 0.3s;
 }
 .chip:hover { background: rgba(64, 31, 40, 0.1); color: var(--pink-deep); }
 .chip.is-on { background: var(--ink); color: #fff; }
-.chip sup { font-size: 10px; margin-left: 3px; opacity: 0.6; }
+.chip sup { font-size: 10px; margin-left: 6px; opacity: 0.6; }
 .sort { position: relative; flex-shrink: 0; }
 .sort select {
   appearance: none; -webkit-appearance: none;
@@ -1411,7 +1411,7 @@ body.hdr-hidden .filters { top: 0; }
   }
   .hero__stats.shero__stats { display: flex; }
 
-  .trust { padding-bottom: 18px; }
+  .trust { padding-top: 22px; padding-bottom: 18px; }
   .trust__grid {
     display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity;
     width: 100%; margin-inline: 0; padding-inline: var(--gutter); scroll-padding-inline: var(--gutter);
@@ -1882,6 +1882,7 @@ html.js [data-letters].is-in .lt > span { transform: none; }
   opacity: 0; transform: scale(1.08); transition: opacity 0.9s var(--ease), transform 2.6s linear;
 }
 .sx__frames img.is-on { opacity: 1; transform: scale(1); }
+.sx__frames img.is-basket { object-fit: contain; object-position: 50% 100%; padding: 4% 0 2%; }
 .sx__caption {
   position: absolute; left: 0; bottom: 0; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
   padding: 14px 20px; background: var(--cream); color: var(--ink); text-align: left;
@@ -1897,10 +1898,10 @@ html.js [data-letters].is-in .lt > span { transform: none; }
 .sx__stats { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; font-weight: 700; color: rgba(250, 243, 236, 0.75); }
 .sx__stats b { color: var(--cream); }
 .sx__stats li::before { content: '✦ '; color: var(--lime); }
-.sx__ctas { position: static; translate: none; align-items: flex-start; }
-.sx__ctas .fh__cta--dark { margin-left: 0; background: var(--lime); color: var(--ink); }
+.sx__ctas { position: static; translate: none; align-items: stretch; gap: 12px; width: fit-content; }
+.sx__ctas .fh__cta { margin: 0; }
+.sx__ctas .fh__cta--dark { background: var(--lime); color: var(--ink); }
 .sx__ctas .fh__cta--dark:hover { background: #fff; }
-.sx__ctas .fh__cta--light { margin-left: 70px; margin-right: 0; }
 
 /* ── heroes on phones ── */
 @media (max-width: 900px) {
@@ -1920,7 +1921,7 @@ html.js [data-letters].is-in .lt > span { transform: none; }
   .sx__photo { aspect-ratio: 4 / 4.4; }
   .sx__panel { padding: 30px var(--gutter) 34px; gap: 20px; }
   .sx__big { font-size: clamp(40px, 12vw, 64px); }
-  .sx__ctas .fh__cta--light { margin-left: 40px; }
+  .sx__ctas { width: 100%; }
 }
 
 /* ═══════════════════ HOME HERO: brand wordmark ═══════════════════ */

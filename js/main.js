@@ -853,20 +853,23 @@
     </article>`;
   }
 
-  // Shop hero: one big photo that cycles through every set
+  // Shop hero: one big photo that cycles through the products — press-ons,
+  // charms, polish and baskets taking turns (the first 16 of the mixed list)
   const sxPhoto = $('.sx__photo');
   if (sxPhoto) {
+    const reel = S.MIXED.filter((p) => !p.soon).slice(0, 16);
     const frames = $('.sx__frames', sxPhoto);
-    frames.innerHTML = S.SETS.map((p, i) => `<img src="${p.img}" alt=""${i ? ' loading="lazy"' : ' fetchpriority="high"'}>`).join('');
+    // baskets are tall photos: show the whole cut-out on its tint instead of cropping it
+    frames.innerHTML = reel.map((p, i) => `<img src="${p.cutout || p.img}" alt=""${p.cutout ? ` class="is-basket" style="background-color:${p.tint}"` : ''}${i ? ' loading="lazy"' : ' fetchpriority="high"'}>`).join('');
     const imgs = $$('img', frames);
     const cap = $('.sx__caption', sxPhoto);
     let at = -1;
     const showSet = (i) => {
-      at = i % S.SETS.length;
-      const p = S.SETS[at];
+      at = i % reel.length;
+      const p = reel[at];
       imgs.forEach((im, k) => im.classList.toggle('is-on', k === at));
       $('b', cap).textContent = p.name;
-      $('span', cap).textContent = `${S.CATEGORY_LABELS[p.category]} · $${p.price}`;
+      $('span', cap).textContent = `${p.type === 'set' ? S.CATEGORY_LABELS[p.category] : S.GROUP_LABELS[p.group]} · $${p.price}`;
       sxPhoto.dataset.quick = p.id;
       sxPhoto.setAttribute('aria-label', `Quick look: ${p.name}, $${p.price}`);
     };
