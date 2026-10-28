@@ -1943,21 +1943,61 @@ html.js [data-letters].is-in .lt > span { transform: none; }
   .hx { display: block; position: relative; height: 400vh; margin-top: calc(-1 * var(--hdr-h)); }
   .hx__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--beige); }
 
-  /* the wordmark: "Nails by" in italic serif over a huge SHANAYA */
-  .hx__mast { position: absolute; z-index: 1; left: var(--gutter); right: var(--gutter); top: 50%; translate: 0 -40%; color: var(--wine); pointer-events: none; will-change: transform, opacity; }
-  .hx__by { display: block; margin: 0 0 -0.4vw 0.3vw; font-family: var(--f-display); font-style: italic; font-weight: 400; font-size: clamp(30px, 3.4vw, 66px); line-height: 1; color: var(--dolphin); }
-  .hx__name { display: block; width: max-content; font-family: var(--f-heavy); font-weight: 800; font-stretch: 100%; font-variation-settings: 'wdth' 100; line-height: 0.8; letter-spacing: -0.05em; text-transform: uppercase; white-space: nowrap; }
-  /* the same wordmark again inside the window, as a cream outline over the photos */
-  .hx__mast--ghost { z-index: 2; }
+  /* the cover's grid: cover lines / cards over the wordmark / tagline and hint.
+     No z-index on the grid itself, so the window can sit between the wordmark
+     (behind it) and the cards and lines (in front of it). */
+  .hx__layout { position: relative; height: 100%; display: flex; flex-direction: column; padding: calc(var(--hdr-h) + 3vh) var(--gutter) 4.5vh; pointer-events: none; }
+  .hx__layout a, .hx__layout button { pointer-events: auto; }
+  .hx__row { position: relative; z-index: 4; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .hx__mid { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 4vh 0 3.5vh; }
+
+  .hx__meta { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--wine); }
+  .hx__meta b { font-family: var(--f-display); font-style: italic; font-weight: 400; font-size: 24px; letter-spacing: 0; text-transform: none; color: var(--dolphin); }
+  .hx__meta i { font-style: normal; color: var(--pink); }
+  .hx__tag { margin: 0; font-size: clamp(16px, 1.15vw, 21px); font-weight: 500; color: var(--wine); }
+  .hx__tag em { font-family: var(--f-display); font-style: italic; color: var(--dolphin); }
+  .hx__hint { display: flex; align-items: center; gap: 14px; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--wine); }
+  .hx__hint i { position: relative; width: 44px; height: 1.5px; overflow: hidden; background: rgba(64, 31, 40, 0.2); }
+  .hx__hint i::after { content: ''; position: absolute; top: 0; left: 0; width: 40%; height: 100%; background: var(--wine); animation: hx-run 1.8s var(--ease) infinite; }
+  @keyframes hx-run { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+  /* the bottom row sits on a pinned screen, so it fades in on load rather than on scroll */
+  .hx__tag, .hx__hint { animation: hx-in 1s var(--ease) 1.1s backwards; }
+  @keyframes hx-in { from { opacity: 0; translate: 0 18px; } }
+
+  /* two compact product cards in the top corners of the middle band */
+  .hx__cards { position: relative; z-index: 4; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .hx__float { will-change: transform; }
+  .hx__fly { will-change: transform, opacity; }
+  .hx__card {
+    display: flex; align-items: center; gap: 16px; width: clamp(270px, 17vw, 330px); padding: 10px 20px 10px 10px;
+    border: 0; border-radius: 20px; background: var(--cream); color: var(--wine); font: inherit; text-align: left; cursor: pointer;
+    box-shadow: 0 24px 50px -28px rgba(64, 31, 40, 0.45); transition: translate 0.6s var(--ease), box-shadow 0.6s var(--ease);
+  }
+  .hx__card:hover { translate: 0 -6px; box-shadow: 0 34px 60px -28px rgba(64, 31, 40, 0.5); }
+  .hx__pic { flex: none; width: clamp(76px, 5.2vw, 100px); aspect-ratio: 1; border-radius: 13px; overflow: hidden; background: var(--blush); }
+  .hx__pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .hx__card:hover .hx__pic img { transform: scale(1.08); }
+  .hx__txt { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .hx__kick { font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dolphin); }
+  .hx__nm { font-family: var(--f-display); font-size: clamp(18px, 1.3vw, 23px); line-height: 1.1; }
+  .hx__pr { font-size: 13px; font-weight: 700; }
+  .hx__pr s { margin-left: 4px; font-weight: 500; color: var(--muted); }
+
+  /* the wordmark across the bottom of the middle band, behind the window */
+  .hx__mast { position: relative; z-index: 1; color: var(--wine); pointer-events: none; will-change: transform, opacity; }
+  .hx__by { display: block; margin: 0 0 0.25em 0.15em; font-family: var(--f-display); font-style: italic; font-weight: 400; font-size: clamp(28px, 2.9vw, 56px); line-height: 1; color: var(--dolphin); }
+  .hx__name { display: block; width: max-content; font-family: var(--f-heavy); font-weight: 800; font-stretch: 100%; font-variation-settings: 'wdth' 100; line-height: 0.78; letter-spacing: -0.05em; text-transform: uppercase; white-space: nowrap; }
+  /* the same wordmark again inside the window, as a cream outline over the photos (JS sets its bottom) */
+  .hx__mast--ghost { position: absolute; left: var(--gutter); right: var(--gutter); z-index: 2; }
   .hx__mast--ghost .hx__by { color: var(--cream); }
   .hx__mast--ghost .hx__name { color: transparent; -webkit-text-stroke: 2.5px var(--cream); filter: drop-shadow(0 2px 10px rgba(38, 16, 23, 0.35)); }
 
-  /* the window: the photos, masked by the nail shape (JS grows --mw / --mh) */
+  /* the window: the photos, masked by the nail shape (JS grows --mw / --mh and keeps it centred on the band) */
   .hx__portal {
-    --mw: 300px; --mh: 510px;
+    --mw: 300px; --mh: 510px; --my: 20vh;
     position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    -webkit-mask: url('images/nail-mask.svg') center / var(--mw) var(--mh) no-repeat;
-    mask: url('images/nail-mask.svg') center / var(--mw) var(--mh) no-repeat;
+    -webkit-mask: url('images/nail-mask.svg') 50% var(--my) / var(--mw) var(--mh) no-repeat;
+    mask: url('images/nail-mask.svg') 50% var(--my) / var(--mw) var(--mh) no-repeat;
   }
   .hx__portal.is-open { -webkit-mask: none; mask: none; }
   .hx__trip { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background: var(--wine); transform: scale(1.14); will-change: transform; }
@@ -1973,57 +2013,6 @@ html.js [data-letters].is-in .lt > span { transform: none; }
   .hx__w i { font-style: normal; font-weight: 200; }
   .hx__small { margin: 0; max-width: 30em; opacity: 0; font-family: var(--f-display); font-style: italic; font-size: clamp(20px, 1.8vw, 34px); line-height: 1.3; color: rgba(250, 243, 236, 0.9); }
   .hx__small em { color: var(--lime); }
-
-  /* two product cards floating either side (they follow the mouse) */
-  .hx__float { position: absolute; z-index: 4; will-change: transform; }
-  .hx__float--a { left: 7vw; bottom: 15vh; width: clamp(160px, 11.5vw, 225px); }
-  .hx__float--b { right: 6.5vw; top: calc(var(--hdr-h) + 12vh); width: clamp(160px, 11.5vw, 225px); }
-  .hx__fly { will-change: transform, opacity; }
-  .hx__card {
-    display: block; width: 100%; padding: 10px 10px 16px; border: 0; border-radius: 20px; background: var(--cream); color: var(--wine);
-    font: inherit; text-align: left; cursor: pointer; box-shadow: 0 34px 60px -30px rgba(64, 31, 40, 0.5);
-    transition: translate 0.6s var(--ease), box-shadow 0.6s var(--ease);
-  }
-  .hx__float--a .hx__card { rotate: -6deg; }
-  .hx__float--b .hx__card { rotate: 5deg; }
-  .hx__card:hover { translate: 0 -8px; box-shadow: 0 44px 70px -30px rgba(64, 31, 40, 0.55); }
-  .hx__pic { display: block; aspect-ratio: 4 / 5; margin-bottom: 12px; border-radius: 13px; overflow: hidden; background: var(--blush); }
-  .hx__pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
-  .hx__card:hover .hx__pic img { transform: scale(1.06); }
-  .hx__kick, .hx__nm, .hx__pr { display: block; padding: 0 4px; }
-  .hx__kick { font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dolphin); }
-  .hx__nm { margin-top: 5px; font-family: var(--f-display); font-size: clamp(18px, 1.3vw, 23px); line-height: 1.1; }
-  .hx__pr { margin-top: 6px; font-size: 13px; font-weight: 700; }
-  .hx__pr s { margin-left: 4px; font-weight: 500; color: var(--muted); }
-
-  /* the sticker on the window's shoulder */
-  .hx__sticker {
-    position: absolute; z-index: 5; left: calc(50% + var(--pw, 300px) / 2 - 60px); top: calc(50% - var(--ph, 500px) / 2 + 4%);
-    width: clamp(112px, 8.4vw, 152px); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
-    background: var(--lime); color: var(--wine); will-change: transform; animation: hx-pop 1s var(--ease) 1s backwards;
-  }
-  .hx__sticker svg { position: absolute; inset: 6%; width: 88%; height: 88%; }
-  .hx__sticker span { font-family: var(--f-heavy); font-weight: 800; font-size: 15px; line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; text-align: center; }
-  .hx__sticker:hover svg { animation-duration: 5s; }
-  @keyframes hx-pop { from { scale: 0; } }
-
-  /* cover lines in the corners */
-  .hx__ui { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
-  .hx__ui > * { pointer-events: auto; }
-  .hx__meta { position: absolute; top: calc(var(--hdr-h) + 3.5vh); margin: 0; display: flex; align-items: center; gap: 12px; font-size: 12.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--wine); }
-  .hx__meta--tl { left: var(--gutter); }
-  .hx__meta--tl b { font-family: var(--f-display); font-style: italic; font-weight: 400; font-size: 24px; letter-spacing: 0; text-transform: none; color: var(--dolphin); }
-  .hx__meta--tr { right: var(--gutter); gap: 10px; }
-  .hx__meta i { font-style: normal; color: var(--pink); }
-  /* these sit at the bottom of a pinned screen, so they fade in on load instead of on scroll */
-  .hx__tag, .hx__hint { animation: hx-in 1s var(--ease) 1.1s backwards; }
-  @keyframes hx-in { from { opacity: 0; translate: 0 24px; } }
-  .hx__tag { position: absolute; left: var(--gutter); bottom: 5.5vh; margin: 0; font-size: clamp(16px, 1.2vw, 22px); font-weight: 500; line-height: 1.45; color: var(--wine); }
-  .hx__tag em { font-family: var(--f-display); font-style: italic; color: var(--dolphin); }
-  .hx__hint { position: absolute; right: var(--gutter); bottom: 5.5vh; display: flex; align-items: center; gap: 14px; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--wine); }
-  .hx__hint i { position: relative; width: 1.5px; height: 56px; overflow: hidden; background: rgba(64, 31, 40, 0.2); }
-  .hx__hint i::after { content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 40%; background: var(--wine); animation: hx-drip 1.8s var(--ease) infinite; }
-  @keyframes hx-drip { from { transform: translateY(-100%); } to { transform: translateY(260%); } }
 }
 @media (min-width: 901px) and (prefers-reduced-motion: reduce) {
   .hx__hint i::after { animation: none; }

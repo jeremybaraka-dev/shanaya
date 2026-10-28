@@ -105,10 +105,7 @@
          writes itself in; then the lime section slides up over it. ─── -->
     <section class="hx" data-scene="cover" aria-labelledby="hero-title">
       <div class="hx__sticky">
-        <div class="hx__mast" aria-hidden="true">
-          <span class="hx__by" data-reveal style="--d:.45s">Nails by</span>
-          <span class="hx__name" data-fit><span data-letters style="--d:.1s">Shanaya</span></span>
-        </div>
+        <!-- the window: photos masked by the nail shape (above the wordmark, below the cards) -->
         <div class="hx__portal" data-reveal="clip" style="--d:.25s">
           <div class="hx__trip">
             <img src="images/home/cover-1.webp" alt="" decoding="async" />
@@ -125,20 +122,26 @@
             <p class="hx__small">Every set is handcrafted to flatter every skin tone, every hand and every <em>vibe.</em></p>
           </div>
         </div>
-        <div class="hx__float hx__float--a" data-speed="0" data-depth="-26"><div class="hx__fly"><button type="button" class="hx__card" data-hx-card="109" data-cursor="Quick look" data-reveal="scale" style="--d:.7s"></button></div></div>
-        <div class="hx__float hx__float--b" data-speed="0" data-depth="30"><div class="hx__fly"><button type="button" class="hx__card" data-hx-card="401" data-cursor="Quick look" data-reveal="scale" style="--d:.85s"></button></div></div>
-        <a href="shop.html" class="hx__sticker" aria-label="Shop the new drops">
-          <svg class="spin" viewBox="0 0 120 120" aria-hidden="true">
-            <defs><path id="ring-hx" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" /></defs>
-            <text font-family="Manrope, sans-serif" font-size="10.2" font-weight="800" letter-spacing="3.1" fill="#401F28"><textPath href="#ring-hx" textLength="288" lengthAdjust="spacing">NEW DROPS ✦ EVERY FRIDAY ✦ </textPath></text>
-          </svg>
-          <span>Shop<br />now</span>
-        </a>
-        <div class="hx__ui">
-          <p class="hx__meta hx__meta--tl" data-reveal style="--d:.7s"><b>Nº 26</b><span>The autumn drop</span></p>
-          <p class="hx__meta hx__meta--tr" data-reveal style="--d:.8s">Press-ons<i>✦</i>Charms<i>✦</i>Polish<i>✦</i>Baskets</p>
-          <p class="hx__tag">Custom press-on nails, charms &amp; polish &mdash;<br />made for <em>your vibe.</em></p>
-          <a href="#shade" class="hx__hint"><span>Scroll to open</span><i aria-hidden="true"></i></a>
+        <!-- the cover's grid: cover lines · cards over the wordmark · tagline and hint -->
+        <div class="hx__layout">
+          <div class="hx__row hx__ui">
+            <p class="hx__meta" data-reveal style="--d:.7s"><b>Nº 26</b><span>The autumn drop</span></p>
+            <p class="hx__meta" data-reveal style="--d:.8s">Press-ons<i>✦</i>Charms<i>✦</i>Polish<i>✦</i>Baskets</p>
+          </div>
+          <div class="hx__mid">
+            <div class="hx__cards">
+              <div class="hx__float hx__float--a" data-speed="0" data-depth="-16"><div class="hx__fly"><button type="button" class="hx__card" data-hx-card="109" data-cursor="Quick look" data-reveal style="--d:.75s"></button></div></div>
+              <div class="hx__float hx__float--b" data-speed="0" data-depth="16"><div class="hx__fly"><button type="button" class="hx__card" data-hx-card="401" data-cursor="Quick look" data-reveal style="--d:.9s"></button></div></div>
+            </div>
+            <div class="hx__mast" aria-hidden="true">
+              <span class="hx__by" data-reveal style="--d:.45s">Nails by</span>
+              <span class="hx__name" data-fit><span data-letters style="--d:.1s">Shanaya</span></span>
+            </div>
+          </div>
+          <div class="hx__row hx__ui">
+            <p class="hx__tag">Custom press-on nails, charms &amp; polish &mdash; made for <em>your vibe.</em></p>
+            <a href="#shade" class="hx__hint"><span>Scroll to open</span><i aria-hidden="true"></i></a>
+          </div>
         </div>
       </div>
     </section>

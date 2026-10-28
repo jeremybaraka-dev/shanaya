@@ -60,7 +60,7 @@
 
   /* ─── 1. COVER (desktop): the nail-shaped window opens to fill the screen ───
      0 → .30   the window grows until its photos fill the screen; the wordmark,
-               cards, sticker and cover lines drift away
+               cards and cover lines drift away
      .20 → .60 the photos darken and the statement writes itself in
      .67 → 1   the lime section slides up over it all (CSS: .ab margin-top) */
   const cover = $('[data-scene="cover"]');
@@ -73,28 +73,36 @@
       const kick = p.type === 'basket' ? `Bundle · save ${usd(p.oldPrice - p.price)}` : esc(p.badge || 'New in');
       const price = p.oldPrice ? `${usd(p.price)} <s>${usd(p.oldPrice)}</s>` : `${usd(p.price)} · ${esc(p.shape || '')}`;
       btn.innerHTML = `<span class="hx__pic"><img src="${p.thumb}" alt="" decoding="async"></span>
-        <span class="hx__kick">${kick}</span><span class="hx__nm">${esc(p.name)}</span><span class="hx__pr">${price}</span>`;
+        <span class="hx__txt"><span class="hx__kick">${kick}</span><span class="hx__nm">${esc(p.name)}</span><span class="hx__pr">${price}</span></span>`;
     });
     const portal = $('.hx__portal', cover), trip = $('.hx__trip', cover), shade = $('.hx__shade', cover);
-    const masts = $$('.hx__mast', cover), sticker = $('.hx__sticker', cover), ui = $('.hx__ui', cover);
+    const masts = $$('.hx__mast', cover), ui = $$('.hx__ui', cover);
+    const sticky = $('.hx__sticky', cover), layout = $('.hx__layout', cover), mid = $('.hx__mid', cover);
+    const ghost = $('.hx__mast--ghost', cover);
     const flyA = $('.hx__float--a .hx__fly', cover), flyB = $('.hx__float--b .hx__fly', cover);
     const words = $$('.hx__w', cover), small = $('.hx__small', cover);
     const seg = (p, a, b) => clamp((p - a) / (b - a));
     const smooth = (t) => t * t * (3 - 2 * t);
     const sc = pinned(cover);
-    let W = 1, H = 1, h0 = 1;
+    let W = 1, H = 1, h0 = 1, cy = 0;
     sc.measure = ((m) => () => {
       m();
       W = window.innerWidth; H = window.innerHeight;
-      h0 = Math.min(H * 0.72, W * 0.24 * 1.7);              // the window's height at rest (nail shape is 1 : 1.7)
-      cover.style.setProperty('--pw', `${(h0 / 1.7).toFixed(0)}px`);
-      cover.style.setProperty('--ph', `${h0.toFixed(0)}px`);
+      // The window sits centred in the middle band (between the cover lines and the tagline)
+      const top = layout.offsetTop + mid.offsetTop;
+      cy = top + mid.offsetHeight / 2;
+      h0 = Math.min(mid.offsetHeight * 1.08, W * 0.22 * 1.7); // its height at rest (the nail shape is 1 : 1.7)
+      // The outline wordmark inside the window lines up with the real one (both sit on the band's floor)
+      const floor = top + mid.offsetHeight - parseFloat(getComputedStyle(mid).paddingBottom);
+      ghost.style.bottom = `${(sticky.clientHeight - floor).toFixed(1)}px`;
     })(sc.measure);
     const render = scrubber(0.45, (p) => {
       const o = smooth(seg(p, 0, 0.3));
       // 2.8× the screen in each direction is enough for the nail shape to cover every corner
+      const mh = h0 + (H * 2.8 - h0) * o;
       portal.style.setProperty('--mw', `${(h0 / 1.7 + (W * 2.8 - h0 / 1.7) * o).toFixed(1)}px`);
-      portal.style.setProperty('--mh', `${(h0 + (H * 2.8 - h0) * o).toFixed(1)}px`);
+      portal.style.setProperty('--mh', `${mh.toFixed(1)}px`);
+      portal.style.setProperty('--my', `${(cy - mh / 2).toFixed(1)}px`);
       portal.classList.toggle('is-open', o > 0.999);
       const cv = smooth(seg(p, 0.67, 1));                    // being covered by the next section
       trip.style.transform = `scale(${(1.14 - 0.14 * o - 0.06 * cv).toFixed(4)})`;
@@ -103,11 +111,10 @@
         el.style.opacity = String(1 - m);
         el.style.transform = `translate3d(0,${(-m * 14).toFixed(2)}vh,0) scale(${(1 + m * 0.12).toFixed(4)})`;
       });
-      flyA.style.transform = `translate3d(${(-m * 30).toFixed(2)}vw,${(m * 18).toFixed(2)}vh,0) rotate(${(-m * 14).toFixed(2)}deg)`;
-      flyB.style.transform = `translate3d(${(m * 30).toFixed(2)}vw,${(-m * 10).toFixed(2)}vh,0) rotate(${(m * 14).toFixed(2)}deg)`;
+      flyA.style.transform = `translate3d(${(-m * 30).toFixed(2)}vw,${(-m * 6).toFixed(2)}vh,0) rotate(${(-m * 10).toFixed(2)}deg)`;
+      flyB.style.transform = `translate3d(${(m * 30).toFixed(2)}vw,${(-m * 6).toFixed(2)}vh,0) rotate(${(m * 10).toFixed(2)}deg)`;
       flyA.style.opacity = flyB.style.opacity = String(1 - seg(p, 0.08, 0.22));
-      sticker.style.transform = `scale(${(1 - m).toFixed(4)}) rotate(${(m * 120).toFixed(1)}deg)`;
-      ui.style.opacity = String(1 - seg(p, 0, 0.1));
+      ui.forEach((el) => { el.style.opacity = String(1 - seg(p, 0, 0.1)); });
       shade.style.opacity = String(seg(p, 0.2, 0.36) * 0.9 + cv * 0.1);
       words.forEach((w, i) => {
         const t = smooth(seg(p, 0.3 + i * 0.03, 0.38 + i * 0.03));
