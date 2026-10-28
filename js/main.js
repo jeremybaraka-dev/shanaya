@@ -128,6 +128,10 @@
   // Live catalog numbers used in copy
   $$('[data-total-sets]').forEach((el) => { el.textContent = S.SETS.length; });
   $$('[data-total-products]').forEach((el) => { el.textContent = S.PRODUCTS.filter((p) => !p.soon).length; });
+  $$('[data-total-of]').forEach((el) => {
+    const n = S.PRODUCTS.filter((p) => p.group === el.dataset.totalOf && !p.soon).length;
+    el.textContent = n; el.dataset.count = n;
+  });
   $$('[data-total-styles]').forEach((el) => { el.textContent = new Set(S.SETS.map((p) => p.category)).size; });
   $$('[data-from-price]').forEach((el) => { el.innerHTML = usd(Math.min(...S.PRODUCTS.filter((p) => !p.soon).map((p) => p.price))); });
 

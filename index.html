@@ -98,35 +98,53 @@
 
   <main>
 
-    <!-- ─── 1. HERO: brand wordmark ─── -->
-    <section class="sm" id="top" data-scene="hero" aria-labelledby="hero-title">
-      <div class="sm__blobs" aria-hidden="true">
-        <span class="sm__blob sm__blob--1" data-speed="0.12" data-depth="-18"></span>
-        <span class="sm__blob sm__blob--2" data-speed="0.06" data-depth="22"></span>
+    <h1 class="sr-only" id="hero-title">Nails by Shanaya — custom press-on nails, nail charms and polish for every girl, every shade</h1>
+
+    <!-- ─── 1. COVER (desktop): a magazine cover. Scrolling opens the
+         nail-shaped window until its photos fill the screen and the statement
+         writes itself in; then the lime section slides up over it. ─── -->
+    <section class="hx" data-scene="cover" aria-labelledby="hero-title">
+      <div class="hx__sticky">
+        <div class="hx__mast" aria-hidden="true">
+          <span class="hx__by" data-reveal style="--d:.45s">Nails by</span>
+          <span class="hx__name" data-fit><span data-letters style="--d:.1s">Shanaya</span></span>
+        </div>
+        <div class="hx__portal" data-reveal="clip" style="--d:.25s">
+          <div class="hx__trip">
+            <img src="images/home/cover-1.webp" alt="" decoding="async" />
+            <img src="images/home/cover-2.webp" alt="The Merlot Garden press-on set" fetchpriority="high" decoding="async" />
+            <img src="images/home/cover-3.webp" alt="" decoding="async" />
+          </div>
+          <div class="hx__mast hx__mast--ghost" aria-hidden="true">
+            <span class="hx__by">Nails by</span>
+            <span class="hx__name" data-fit><span data-letters style="--d:.1s">Shanaya</span></span>
+          </div>
+          <div class="hx__shade"></div>
+          <div class="hx__say" aria-hidden="true">
+            <p class="hx__big"><span class="hx__w hx__w--hl"><i>[</i>Beauty<i>]</i></span> <span class="hx__w">has</span> <span class="hx__w">no</span> <span class="hx__w">race,</span><br /><span class="hx__w">shade</span> <span class="hx__w">or</span> <span class="hx__w">limits.</span></p>
+            <p class="hx__small">Every set is handcrafted to flatter every skin tone, every hand and every <em>vibe.</em></p>
+          </div>
+        </div>
+        <div class="hx__float hx__float--a" data-speed="0" data-depth="-26"><div class="hx__fly"><button type="button" class="hx__card" data-hx-card="109" data-cursor="Quick look" data-reveal="scale" style="--d:.7s"></button></div></div>
+        <div class="hx__float hx__float--b" data-speed="0" data-depth="30"><div class="hx__fly"><button type="button" class="hx__card" data-hx-card="401" data-cursor="Quick look" data-reveal="scale" style="--d:.85s"></button></div></div>
+        <a href="shop.html" class="hx__sticker" aria-label="Shop the new drops">
+          <svg class="spin" viewBox="0 0 120 120" aria-hidden="true">
+            <defs><path id="ring-hx" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" /></defs>
+            <text font-family="Manrope, sans-serif" font-size="10.2" font-weight="800" letter-spacing="3.1" fill="#401F28"><textPath href="#ring-hx" textLength="288" lengthAdjust="spacing">NEW DROPS ✦ EVERY FRIDAY ✦ </textPath></text>
+          </svg>
+          <span>Shop<br />now</span>
+        </a>
+        <div class="hx__ui">
+          <p class="hx__meta hx__meta--tl" data-reveal style="--d:.7s"><b>Nº 26</b><span>The autumn drop</span></p>
+          <p class="hx__meta hx__meta--tr" data-reveal style="--d:.8s">Press-ons<i>✦</i>Charms<i>✦</i>Polish<i>✦</i>Baskets</p>
+          <p class="hx__tag">Custom press-on nails, charms &amp; polish &mdash;<br />made for <em>your vibe.</em></p>
+          <a href="#shade" class="hx__hint"><span>Scroll to open</span><i aria-hidden="true"></i></a>
+        </div>
       </div>
-      <h1 class="sm__word" id="hero-title">
-        <span class="sr-only">Nails by Shanaya — custom press-on nails for every girl, every shade</span>
-        <span class="sm__line sm__line--1" aria-hidden="true" data-letters>Nails by</span>
-        <span class="sm__line sm__line--2" aria-hidden="true" data-letters style="--d:.22s">Shanaya</span>
-      </h1>
-      <div class="sm__pic sm__pic--top" data-speed="-0.08">
-        <button class="sm__frame" data-quick="101" data-cursor="View set" data-reveal="clip" style="--d:.5s" aria-label="Quick look: Merlot Garden">
-          <img class="zoom" src="images/press-ons/merlot-garden-sm.webp" alt="" />
-        </button>
-      </div>
-      <div class="sm__pic sm__pic--low" data-speed="0.06">
-        <button class="sm__frame" data-quick="109" data-cursor="View set" data-reveal="clip" style="--d:.65s" aria-label="Quick look: Bow &amp; Cherry">
-          <img class="zoom" src="images/press-ons/bow-and-cherry.webp" alt="Hand holding the Bow &amp; Cherry press-on nail set" fetchpriority="high" />
-        </button>
-      </div>
-      <a href="#shade" class="sm__badge" aria-label="Scroll down">
-        <svg class="spin" viewBox="0 0 120 120" aria-hidden="true">
-          <defs><path id="ring-sm" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" /></defs>
-          <text font-family="Manrope, sans-serif" font-size="10.2" font-weight="800" letter-spacing="3.1" fill="#401F28"><textPath href="#ring-sm" textLength="288" lengthAdjust="spacing">EVERY GIRL ✦ IS BEAUTIFUL ✦ </textPath></text>
-        </svg>
-        <span class="sm__arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 14l6 6 6-6"/></svg></span>
-      </a>
-      <p class="sm__tag" data-reveal style="--d:.8s">Custom press-on nails<br />made for <em>your vibe.</em></p>
+    </section>
+
+    <!-- ─── 1. HERO on phones ─── -->
+    <section class="sm" id="top" aria-label="Welcome">
       <!-- mobile hero (phones get their own layout) -->
       <div class="mh m-only">
         <div class="mh__top"><p class="mh__hi">Hey gorgeous ♡</p><span class="mh__drop"><i></i>New drops every Friday</span></div>
@@ -154,6 +172,13 @@
         <svg class="ab__ast" viewBox="0 0 100 100" aria-hidden="true" data-reveal="scale"><g fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round"><path d="M50 9v82M14.5 29.5l71 41M14.5 70.5l71-41"/></g></svg>
         <p class="ab__label" data-reveal>About Shanaya</p>
         <h2 class="ab__title" id="shade-title" data-split><span class="ab__hl"><i>[</i>Beauty<i>]</i></span> has no race, shade or limits. Every set is <svg class="ab__arrow ab__arrow--r" viewBox="0 0 48 24" aria-hidden="true"><path d="M2 12h42M33 2l11 10-11 10"/></svg> <span class="ab__caps">handcrafted</span> to flatter <svg class="ab__arrow ab__arrow--l" viewBox="0 0 48 24" aria-hidden="true"><path d="M46 12H4M15 2L4 12l11 10"/></svg> every skin tone, every hand and every <span class="ab__hl"><i>[</i>vibe<i>]</i></span></h2>
+        <p class="ab__quote" data-reveal>Every girl is beautiful <em>in her own way.</em></p>
+        <ul class="ab__stats">
+          <li data-reveal style="--d:.05s"><b data-total-of="press-ons" data-count="12">12</b><span>Press-on sets</span></li>
+          <li data-reveal style="--d:.12s"><b data-total-of="nail-charms" data-count="10">10</b><span>Charm boxes</span></li>
+          <li data-reveal style="--d:.19s"><b data-total-of="polish" data-count="20">20</b><span>Polish shades</span></li>
+          <li data-reveal style="--d:.26s"><b data-total-of="baskets" data-count="10">10</b><span>Bundle baskets</span></li>
+        </ul>
         <div class="ab__aside">
           <p class="ab__lead" data-reveal style="--d:.15s">Every girl is beautiful in her own way ✨ Every set is made to flatter every skin tone, every hand and every vibe &mdash; and you can book or order yours right here.</p>
           <div data-reveal style="--d:.25s">
