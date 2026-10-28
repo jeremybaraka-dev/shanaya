@@ -147,40 +147,43 @@
       out.now.textContent = pad(i + 1);
     };
     const sc = pinned(coll);
-    // Free space for the baskets: right of the info panel, between the top
-    // links and the quotes, so nothing ever sits on the text.
+    // The baskets travel along a row that grows to the right (after A24's
+    // film index): smaller ones behind on the left, bigger ones coming in on
+    // the right. They all stand on one floor just above the quotes, and the
+    // row is placed so no basket ever sits on the panel, the links or the quotes.
     const top = $('.cd__top', coll), quotes = $('.cd__quotes', coll);
-    let box = { l: 0, r: 1, t: 0, b: 1 };
+    const G = 1.3, K = 0.92;                                  // size step between baskets; spacing (a touch of overlap)
+    const along = (d) => K * (1 + G) / 2 * (Math.pow(G, d) - 1) / (G - 1); // centre offset of basket d, in featured widths
+    let L = { cx: 0, floor: 1, w0: 1, h0: 1, dmin: 0 };
     sc.measure = ((m) => () => {
       m();
-      box = {
-        l: info.offsetLeft + info.offsetWidth + 36, r: stage.clientWidth - 28,
-        t: top.offsetTop + top.offsetHeight + 18, b: quotes.offsetTop - 14,
-      };
+      const W = stage.clientWidth, H = stage.clientHeight;
+      const floor = quotes.offsetTop - 16, ceil = top.offsetTop + top.offsetHeight + 16;
+      const h0 = Math.min(H * 0.62, (floor - ceil) / G);    // the next (bigger) basket still clears the links
+      const w0 = h0 * 0.78;                                  // the photos are about 4:5
+      const panel = { r: info.offsetLeft + info.offsetWidth + 24, b: info.offsetTop + info.offsetHeight + 16 };
+      const cx = Math.max(W * 0.5, panel.r + w0 * 0.55);    // the featured basket clears the panel
+      let dmin = 0;                                          // the smaller baskets fade out before they reach it
+      while (dmin > -3.6) {
+        const d = dmin - 0.05, s = Math.pow(G, d), left = cx + along(d) * w0 - s * w0 / 2;
+        if (left < 8 || (floor - s * h0 < panel.b && left < panel.r)) break;
+        dmin = d;
+      }
+      L = { cx, floor, w0, h0, dmin };
     })(sc.measure);
-    const R = 0.68, GAP = 0.1;                        // each next basket is 68% the size, 10% apart
-    const run = (d) => (1 - Math.pow(R, d)) / (1 - R); // distance to basket d, in featured widths
-    // each step holds still, then glides to the next basket
-    const settle = (f) => { const i = Math.floor(f), t = clamp((f - i - 0.2) / 0.6); return i + t * t * (3 - 2 * t); };
-    const render = scrubber(0.6, (raw) => {
-      const f = settle(raw);
-      const room = box.r - box.l;
-      const row = (1 + GAP) * run(3) + Math.pow(R, 3);           // the row's width, in featured widths
-      const w0 = Math.min((box.b - box.t) * 0.78, room / row);    // the photos are about 4:5
-      const h0 = w0 / 0.78;
-      const x0 = box.l + (room - w0 * row) / 2;
+    const render = scrubber(0.9, (f) => {
+      const { cx, floor, w0, h0, dmin } = L;
       items.forEach((c, i) => {
         const d = i - f;
-        if (d < -0.5 || d > 3.4) { c.style.visibility = 'hidden'; return; }
+        if (d < dmin || d > 2.6) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        const s = d >= 0 ? Math.pow(R, d) : 1;
-        const x = d >= 0 ? x0 + w0 * (1 + GAP) * run(d) : x0 + w0 * 0.6 * d;
-        const y = box.b - (1 - s) * h0 * 0.18;                     // further baskets sit a little higher
+        const s = Math.pow(G, d);
+        const x = cx + along(d) * w0 - w0 / 2;
         c.style.width = `${w0.toFixed(1)}px`;
         c.style.height = `${h0.toFixed(1)}px`;
-        c.style.transform = `translate3d(${x.toFixed(1)}px,${(y - h0).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
-        c.style.zIndex = String(50 - Math.round(d * 10));
-        c.style.opacity = String(d < 0 ? clamp(1 + d * 2.2) : d <= 2 ? 1 : (1 - 0.6 * clamp(d - 2)) * clamp((3.4 - d) / 0.4)); // the 4th one waits faintly
+        c.style.transform = `translate3d(${x.toFixed(1)}px,${(floor - h0).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
+        c.style.zIndex = String(50 + Math.round(d * 10));
+        c.style.opacity = String(clamp(Math.min((d - dmin) / 0.6, 2.6 - d)));
         const on = Math.abs(d) < 0.5;
         c.classList.toggle('is-active', on);
         c.tabIndex = on ? 0 : -1;
