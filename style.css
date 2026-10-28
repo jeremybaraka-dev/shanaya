@@ -1563,7 +1563,7 @@ body.hdr-hidden .filters { top: 0; }
 }
 
 /* ═══════════════════ HOME STORY (js/story.js) ═══════════════════ */
-.hand__shape, .craft__nail {
+.hand__shape {
   -webkit-mask: url('images/nail-mask.svg') center / 100% 100% no-repeat;
   mask: url('images/nail-mask.svg') center / 100% 100% no-repeat;
 }
@@ -1576,55 +1576,79 @@ body.hdr-hidden .filters { top: 0; }
   }
 }
 
-/* ── 2. craft: one set centre stage ── */
-.craft { position: relative; height: 420vh; background: var(--ink); color: var(--cream); }
+/* ── 2. craft: a deck of pieces in 3D that streams toward you (desktop) ── */
+.craft { position: relative; height: 560vh; background: #3A1A23; color: var(--cream); }
+@media (min-width: 901px) {
+  /* slides up over the cover with rounded corners (overflow: clip keeps the sticky stage working) */
+  main .craft {
+    margin-top: -100vh; z-index: 3; overflow: clip;
+    border-radius: clamp(36px, 4vw, 72px) clamp(36px, 4vw, 72px) 0 0; box-shadow: 0 -30px 80px -30px rgba(20, 8, 12, 0.55);
+  }
+}
 .craft__sticky {
   position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
-  background: radial-gradient(45% 55% at 50% 50%, rgba(211, 132, 146, 0.22), transparent 70%), #401F28;
-  transition: background-color 1s var(--ease);
+  background:
+    radial-gradient(55% 65% at 64% 42%, rgba(211, 132, 146, 0.24), transparent 70%),
+    radial-gradient(40% 50% at 12% 92%, rgba(207, 209, 109, 0.1), transparent 70%),
+    #3A1A23;
 }
-.craft[data-step="1"] .craft__sticky { background-color: #4A2430; }
-.craft[data-step="2"] .craft__sticky { background-color: #55303A; }
-.craft[data-step="3"] .craft__sticky { background-color: #33171F; }
 .craft__word {
-  position: absolute; top: 50%; left: 0; white-space: nowrap; pointer-events: none;
+  position: absolute; top: 56%; left: 0; white-space: nowrap; pointer-events: none;
   font-family: var(--f-display); font-style: italic; font-weight: 300; font-size: clamp(160px, 25vw, 440px);
-  line-height: 1; letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 1.5px rgba(211, 132, 146, 0.3);
+  line-height: 1; letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 1.5px rgba(211, 132, 146, 0.22);
   will-change: transform;
 }
-.craft__stage {
-  position: absolute; inset: 0; margin: auto; z-index: 2;
-  --h: min(70vh, 640px); height: var(--h); width: calc(var(--h) / 2.5);
-  filter: drop-shadow(0 50px 60px rgba(0, 0, 0, 0.45)); will-change: transform;
+/* the deck: cards in 3D (JS places each one along the diagonal every frame) */
+.craft__deck { position: absolute; inset: 0; z-index: 2; perspective: 1500px; perspective-origin: 52% 52%; pointer-events: none; }
+.craft__track { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+.craft__card {
+  --cw: clamp(220px, 15.5vw, 320px);
+  position: absolute; left: 57%; top: 57%; width: var(--cw); margin: calc(var(--cw) * -0.72) 0 0 calc(var(--cw) * -0.5);
+  padding: 0; border: 0; background: none; color: var(--cream); font: inherit; text-align: left; cursor: pointer; pointer-events: auto;
+  backface-visibility: hidden; will-change: transform, opacity;
 }
-/* each photo is cropped to its nail (2:5), so the art fills the nail shape */
-.craft__nail { position: relative; width: 100%; height: 100%; background: var(--ink-2); }
-.craft__shot {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  clip-path: inset(100% 0 0 0); transform: scale(1.3);
-  transition: clip-path 1.1s var(--ease-io), transform 1.6s var(--ease);
+.craft__img {
+  display: block; aspect-ratio: 4 / 5; border-radius: 16px; overflow: hidden; background: #55303A;
+  box-shadow: 0 34px 60px -24px rgba(10, 4, 6, 0.65); transition: box-shadow 0.6s var(--ease);
 }
-.craft__shot.is-on { clip-path: inset(0 0 0 0); transform: scale(1); }
-.craft__copy {
-  position: absolute; z-index: 3; top: 50%; transform: translateY(-50%);
-  left: max(var(--gutter), (100vw - var(--maxw)) / 2); width: min(380px, 28vw);
+.craft__img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8) brightness(0.72); transition: filter 0.7s var(--ease), transform 1s var(--ease); }
+.craft__card.is-focus .craft__img { box-shadow: 0 44px 80px -24px rgba(10, 4, 6, 0.7), 0 0 0 1.5px rgba(211, 132, 146, 0.7); }
+.craft__card.is-focus .craft__img img, .craft__card:hover .craft__img img { filter: none; }
+.craft__card:hover .craft__img img { transform: scale(1.05); }
+.craft__cap {
+  display: flex; align-items: baseline; gap: 10px; margin-top: 14px; opacity: 0; transition: opacity 0.5s var(--ease);
+  font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250, 243, 236, 0.8);
 }
+.craft__card.is-focus .craft__cap { opacity: 1; }
+.craft__cap b { font-family: var(--f-display); font-style: italic; font-weight: 400; font-size: 20px; letter-spacing: 0; color: var(--pink); }
+.craft__cap i { margin-left: auto; font-style: normal; color: var(--lime); }
+/* the words: title + the four steps, top left */
+.craft__copy { position: absolute; z-index: 3; top: calc(var(--hdr-h) + 6vh); left: max(var(--gutter), (100vw - var(--maxw)) / 2); width: min(440px, 30vw); }
 .craft__copy .eyebrow { color: var(--pink); }
-.craft__count { margin: 22px 0 12px; font-family: var(--f-display); font-size: 20px; color: rgba(250, 243, 236, 0.5); }
-.craft__count b { font-style: italic; font-weight: 300; font-size: 72px; line-height: 1; letter-spacing: -0.04em; color: var(--pink); }
-.craft__steps { position: relative; height: 230px; }
+.craft__title {
+  margin: 16px 0 0; font-family: var(--f-heavy); font-weight: 800; font-size: clamp(46px, 4.6vw, 88px); line-height: 0.88;
+  letter-spacing: -0.045em; text-transform: uppercase; color: var(--cream);
+}
+.craft__title em { display: block; font-family: var(--f-display); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -0.02em; color: var(--pink); }
+.craft__count { margin: 26px 0 10px; font-family: var(--f-display); font-size: 18px; color: rgba(250, 243, 236, 0.5); }
+.craft__count b { font-style: italic; font-weight: 300; font-size: 54px; line-height: 1; letter-spacing: -0.04em; color: var(--lime); }
+.craft__steps { position: relative; height: 170px; }
 .craft__step {
-  position: absolute; inset: 0; opacity: 0; transform: translateY(34px);
+  position: absolute; inset: 0; opacity: 0; transform: translateY(26px);
   transition: opacity 0.6s var(--ease), transform 0.9s var(--ease); pointer-events: none;
 }
 .craft__step.is-on { opacity: 1; transform: none; }
-.craft__step h3 { font-family: var(--f-display); font-weight: 400; font-size: clamp(34px, 3.2vw, 50px); line-height: 1; letter-spacing: -0.03em; margin-bottom: 14px; }
-.craft__step p { color: rgba(250, 243, 236, 0.72); font-size: 16px; max-width: 34ch; }
+.craft__step h3 { font-family: var(--f-display); font-weight: 400; font-size: clamp(26px, 2.2vw, 38px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 10px; }
+.craft__step p { color: rgba(250, 243, 236, 0.72); font-size: 15px; max-width: 34ch; }
+.craft__hint {
+  position: absolute; z-index: 3; left: max(var(--gutter), (100vw - var(--maxw)) / 2); bottom: 5vh; margin: 0;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(250, 243, 236, 0.5);
+}
 .craft__bar {
   position: absolute; z-index: 3; top: 30%; bottom: 30%; width: 2px; border-radius: 2px; overflow: hidden;
   right: max(var(--gutter), (100vw - var(--maxw)) / 2); background: rgba(250, 243, 236, 0.15);
 }
-.craft__bar span { display: block; height: 100%; background: var(--pink); transform: scaleY(0); transform-origin: top; }
+.craft__bar span { display: block; height: 100%; background: var(--lime); transform: scaleY(0); transform-origin: top; }
 
 /* ── 3. collection: baskets on a rising diagonal (A24-style) ── */
 .coll { position: relative; height: 440vh; background: var(--cream); }
@@ -1770,7 +1794,6 @@ body.hdr-hidden .filters { top: 0; }
 
   .craft { height: 380vh; }
   .craft__word { font-size: 46vw; }
-  .craft__stage { --h: 92vw; width: 36.8vw; height: 92vw; top: calc(var(--hdr-h) - 2vh); bottom: auto; margin-top: 0; }
   .craft__copy { top: auto; bottom: calc(96px + env(safe-area-inset-bottom)); transform: none; left: var(--gutter); right: var(--gutter); width: auto; }
   .craft__count { display: flex; align-items: baseline; gap: 6px; margin: 10px 0 6px; font-size: 15px; }
   .craft__count b { font-size: 40px; }

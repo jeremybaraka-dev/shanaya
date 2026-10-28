@@ -129,38 +129,58 @@
     scenes.push(sc);
   }
 
-  /* ─── 2. CRAFT: one set centre stage ─── */
+  /* ─── 2. CRAFT (desktop): a deck of pieces in 3D streaming toward you ───
+     The cards sit on a diagonal, near and big at the bottom left, far and
+     small at the top right. Scrolling moves the whole deck toward the camera;
+     the card in focus lights up and shows its name. The four craft steps
+     change along the way. The last part of the scroll is the lime about
+     section sliding up over it (CSS). */
   const craft = $('[data-scene="craft"]');
   if (craft) {
-    const steps = $$('.craft__step', craft);
-    // one hand-painted nail per step (cut-out photos in images/home/)
-    const NAILS = [['nail-1', 'Hand-painted pink flower nail with gold beads'], ['nail-2', 'Pink nail with a sculpted bow'],
-      ['nail-3', 'Pink and blue flower nail with crystals'], ['nail-4', 'Chocolate nail with an NY charm and gold beads']];
-    $('.craft__nail', craft).innerHTML = NAILS.map(([f, alt], i) =>
-      `<img class="craft__shot" src="images/home/${f}.webp" alt="${alt}" loading="lazy" style="--k:${i}">`).join('');
-    const imgs = $$('.craft__shot', craft);
-    const count = $('.craft__count b', craft);
-    const word = $('.craft__word', craft), stage = $('.craft__stage', craft), bar = $('.craft__bar span', craft);
-    const n = steps.length;
-    let active = -1;
+    const steps = $$('.craft__step', craft), count = $('.craft__count b', craft);
+    const word = $('.craft__word', craft), bar = $('.craft__bar span', craft), track = $('.craft__track', craft);
+    const PIECES = [101, 202, 109, 305, 104, 401, 112, 203, 107, 309, 111, 207, 103, 405, 110, 301].map(byId).filter(Boolean);
+    track.innerHTML = PIECES.map((p, i) => `
+      <button type="button" class="craft__card" data-quick="${p.id}" data-cursor="Quick look" tabindex="-1" aria-label="Quick look: ${esc(p.name)}">
+        <span class="craft__img"><img src="${p.img}" alt="" loading="lazy" decoding="async"></span>
+        <span class="craft__cap"><b>${pad(i + 1)}</b>${esc(p.name)}<i>${usd(p.price)}</i></span>
+      </button>`).join('');
+    const cards = $$('.craft__card', track);
+    const N = cards.length, n = steps.length;
+    const END = 0.78;                    // after this the lime section covers the scene
+    let active = -1, cw = 300, W = 1;
     const sc = pinned(craft);
-    sc.measure = ((m) => () => { m(); sc.wordW = word.scrollWidth; })(sc.measure);
+    sc.measure = ((m) => () => {
+      m();
+      sc.wordW = word.scrollWidth; W = window.innerWidth;
+      cw = cards[0] ? cards[0].offsetWidth : 300;
+    })(sc.measure);
+    const render = scrubber(0.5, (f) => {
+      cards.forEach((c, i) => {
+        const d = i - f;                 // 0 = in focus, negative = already past the camera
+        if (d < -1.7 || d > 10) { c.style.visibility = 'hidden'; return; }
+        c.style.visibility = '';
+        c.style.transform = `translate3d(${(d * cw * 0.86).toFixed(1)}px,${(-d * cw * 0.46).toFixed(1)}px,${(-d * cw * 1.6).toFixed(1)}px) rotateY(-36deg) rotateX(6deg)`;
+        c.style.opacity = String(Math.min(clamp((d + 1.7) / 0.9), clamp((10 - d) / 3.5)).toFixed(3));
+        c.style.zIndex = String(100 - Math.round(d * 6));
+        const on = Math.abs(d) < 0.5;
+        c.classList.toggle('is-focus', on);
+        c.tabIndex = on ? 0 : -1;
+      });
+    });
     sc.update = (y, vh, mx, my) => {
-      const p = sc.progress(y);
-      const f = p * n;
-      const a = Math.min(n - 1, Math.floor(f));
+      if (mqMobile.matches) return;
+      const raw = sc.progress(y), p = clamp(raw / END);
+      render(p * (N - 1));
+      const a = Math.min(n - 1, Math.floor(p * n));
       if (a !== active) {
         active = a;
         steps.forEach((s, i) => s.classList.toggle('is-on', i === a));
-        imgs.forEach((img, i) => img.classList.toggle('is-on', i <= a));
         count.textContent = pad(a + 1);
-        craft.style.setProperty('--step', a);
-        craft.dataset.step = String(a);
       }
-      const local = f - a; // 0 → 1 within the step
-      word.style.transform = `translate3d(${(-p * Math.max(0, sc.wordW - window.innerWidth)).toFixed(1)}px,-50%,0)`;
-      stage.style.transform = `rotate(${((local - 0.5) * 7 + mx * 3).toFixed(2)}deg) translate3d(${(mx * 12).toFixed(1)}px,${(my * 10).toFixed(1)}px,0)`;
+      word.style.transform = `translate3d(${(-p * Math.max(0, sc.wordW - W)).toFixed(1)}px,-50%,0)`;
       bar.style.transform = `scaleY(${p.toFixed(4)})`;
+      track.style.transform = `rotateY(${(mx * 5).toFixed(2)}deg) rotateX(${(-my * 3).toFixed(2)}deg)`;
     };
     scenes.push(sc);
   }
