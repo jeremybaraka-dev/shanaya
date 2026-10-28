@@ -129,58 +129,63 @@
     scenes.push(sc);
   }
 
-  /* ─── 2. CRAFT (desktop): a deck of pieces in 3D streaming toward you ───
-     The cards sit on a diagonal, near and big at the bottom left, far and
-     small at the top right. Scrolling moves the whole deck toward the camera;
-     the card in focus lights up and shows its name. The four craft steps
+  /* ─── 2. CRAFT (desktop): a deck of pieces in 3D ───
+     A tight stack of square cards, each turned steeply away, running from the
+     bottom-left corner (near) to the top-right corner (far); the farthest fade
+     into the background. Scrolling slides the whole stack toward you. The
+     piece passing the middle is named bottom right, and the four craft steps
      change along the way. The last part of the scroll is the lime about
      section sliding up over it (CSS). */
   const craft = $('[data-scene="craft"]');
   if (craft) {
-    const steps = $$('.craft__step', craft), count = $('.craft__count b', craft);
-    const word = $('.craft__word', craft), bar = $('.craft__bar span', craft), track = $('.craft__track', craft);
-    const PIECES = [101, 202, 109, 305, 104, 401, 112, 203, 107, 309, 111, 207, 103, 405, 110, 301].map(byId).filter(Boolean);
-    track.innerHTML = PIECES.map((p, i) => `
+    const steps = $$('.craft__step', craft), count = $('.craft__count b', craft), track = $('.craft__track', craft);
+    const now = $('.craft__now', craft);
+    const nowNum = $('.craft__now-num b', now), nowName = $('.craft__now-name', now), nowPrice = $('.craft__now-price', now);
+    // two of every three pieces from the mixed shop list: press-ons, charms, polish and baskets taking turns
+    const PIECES = S.MIXED.filter((p) => !p.soon).filter((p, i) => i % 3 !== 2);
+    track.innerHTML = PIECES.map((p) => `
       <button type="button" class="craft__card" data-quick="${p.id}" data-cursor="Quick look" tabindex="-1" aria-label="Quick look: ${esc(p.name)}">
-        <span class="craft__img"><img src="${p.img}" alt="" loading="lazy" decoding="async"></span>
-        <span class="craft__cap"><b>${pad(i + 1)}</b>${esc(p.name)}<i>${usd(p.price)}</i></span>
+        <img src="${p.img}" alt="" loading="lazy" decoding="async">
       </button>`).join('');
+    $('span', now).lastChild.textContent = ` / ${pad(PIECES.length)}`;
     const cards = $$('.craft__card', track);
     const N = cards.length, n = steps.length;
-    const END = 0.78;                    // after this the lime section covers the scene
-    let active = -1, cw = 300, W = 1;
+    const END = 0.8;                     // after this the lime section covers the scene
+    const NEAR = -5, FAR = 17;           // the stack's ends (in cards from the middle)
+    let active = -1, shown = -1, cw = 360;
     const sc = pinned(craft);
-    sc.measure = ((m) => () => {
-      m();
-      sc.wordW = word.scrollWidth; W = window.innerWidth;
-      cw = cards[0] ? cards[0].offsetWidth : 300;
-    })(sc.measure);
-    const render = scrubber(0.5, (f) => {
+    sc.measure = ((m) => () => { m(); cw = cards[0] ? cards[0].offsetWidth : 360; })(sc.measure);
+    const render = scrubber(0.55, (f) => {
       cards.forEach((c, i) => {
-        const d = i - f;                 // 0 = in focus, negative = already past the camera
-        if (d < -1.7 || d > 10) { c.style.visibility = 'hidden'; return; }
+        const d = i - f;                 // 0 = the middle of the stack, negative = nearer
+        if (d < NEAR - 0.6 || d > FAR + 1) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        c.style.transform = `translate3d(${(d * cw * 0.86).toFixed(1)}px,${(-d * cw * 0.46).toFixed(1)}px,${(-d * cw * 1.6).toFixed(1)}px) rotateY(-36deg) rotateX(6deg)`;
-        c.style.opacity = String(Math.min(clamp((d + 1.7) / 0.9), clamp((10 - d) / 3.5)).toFixed(3));
-        c.style.zIndex = String(100 - Math.round(d * 6));
-        const on = Math.abs(d) < 0.5;
-        c.classList.toggle('is-focus', on);
-        c.tabIndex = on ? 0 : -1;
+        c.style.transform = `translate3d(${(d * cw * 0.34).toFixed(1)}px,${(-d * cw * 0.2).toFixed(1)}px,${(-d * cw * 0.46).toFixed(1)}px) rotateY(-50deg)`;
+        c.style.opacity = String(Math.min(clamp((d - NEAR + 0.6) / 0.8), clamp((FAR + 1 - d) / 2)).toFixed(3));
+        c.style.setProperty('--fog', clamp((d - 2) / (FAR - 2)).toFixed(3)); // far cards sink into the background
       });
+      const i = Math.max(0, Math.min(N - 1, Math.round(f)));
+      if (i !== shown) {
+        shown = i;
+        const p = PIECES[i];
+        now.dataset.quick = p.id;
+        nowNum.textContent = pad(i + 1);
+        nowName.textContent = p.name;
+        nowPrice.innerHTML = usd(p.price);
+        now.classList.remove('is-swap'); void now.offsetWidth; now.classList.add('is-swap');
+      }
     });
     sc.update = (y, vh, mx, my) => {
       if (mqMobile.matches) return;
-      const raw = sc.progress(y), p = clamp(raw / END);
-      render(p * (N - 1));
+      const p = clamp(sc.progress(y) / END);
+      render(-NEAR + p * (N - 1 + NEAR - 8)); // both ends of the stack stay full from start to end
       const a = Math.min(n - 1, Math.floor(p * n));
       if (a !== active) {
         active = a;
-        steps.forEach((s, i) => s.classList.toggle('is-on', i === a));
+        steps.forEach((s, k) => s.classList.toggle('is-on', k === a));
         count.textContent = pad(a + 1);
       }
-      word.style.transform = `translate3d(${(-p * Math.max(0, sc.wordW - W)).toFixed(1)}px,-50%,0)`;
-      bar.style.transform = `scaleY(${p.toFixed(4)})`;
-      track.style.transform = `rotateY(${(mx * 5).toFixed(2)}deg) rotateX(${(-my * 3).toFixed(2)}deg)`;
+      track.style.transform = `rotateY(${(mx * 4).toFixed(2)}deg) rotateX(${(-my * 3).toFixed(2)}deg)`;
     };
     scenes.push(sc);
   }
