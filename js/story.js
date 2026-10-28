@@ -97,7 +97,7 @@
       if (a !== active) {
         active = a;
         steps.forEach((s, i) => s.classList.toggle('is-on', i === a));
-        imgs.forEach((img, i) => img.classList.toggle('is-on', i === a));
+        imgs.forEach((img, i) => img.classList.toggle('is-on', i <= a));
         count.textContent = pad(a + 1);
         craft.style.setProperty('--step', a);
         craft.dataset.step = String(a);
@@ -143,27 +143,44 @@
       info.classList.add('is-swap');
       out.name.textContent = `The ${c} basket`;
       out.colour.textContent = c;
-      out.desc.textContent = `A ${c.toLowerCase()} mood: press-on sets, charm boxes and polish picked to go together.`;
+      out.desc.textContent = `${/^[aeiou]/i.test(c) ? 'An' : 'A'} ${c.toLowerCase()} mood: press-on sets, charm boxes and polish picked to go together.`;
       out.now.textContent = pad(i + 1);
     };
     const sc = pinned(coll);
-    let W = 1, H = 1;
-    sc.measure = ((m) => () => { m(); W = stage.clientWidth || 1; H = stage.clientHeight || 1; })(sc.measure);
-    const render = scrubber(0.6, (f) => {
-      const D = Math.min(W * 0.27, H * 0.66);           // featured basket height
-      const w0 = D * 0.8;                              // the photos are ~4:5
-      const cx = W * 0.5, cy = H * 0.55;
+    // Free space for the baskets: right of the info panel, between the top
+    // links and the quotes, so nothing ever sits on the text.
+    const top = $('.cd__top', coll), quotes = $('.cd__quotes', coll);
+    let box = { l: 0, r: 1, t: 0, b: 1 };
+    sc.measure = ((m) => () => {
+      m();
+      box = {
+        l: info.offsetLeft + info.offsetWidth + 36, r: stage.clientWidth - 28,
+        t: top.offsetTop + top.offsetHeight + 18, b: quotes.offsetTop - 14,
+      };
+    })(sc.measure);
+    const R = 0.68, GAP = 0.1;                        // each next basket is 68% the size, 10% apart
+    const run = (d) => (1 - Math.pow(R, d)) / (1 - R); // distance to basket d, in featured widths
+    // each step holds still, then glides to the next basket
+    const settle = (f) => { const i = Math.floor(f), t = clamp((f - i - 0.2) / 0.6); return i + t * t * (3 - 2 * t); };
+    const render = scrubber(0.6, (raw) => {
+      const f = settle(raw);
+      const room = box.r - box.l;
+      const row = (1 + GAP) * run(3) + Math.pow(R, 3);           // the row's width, in featured widths
+      const w0 = Math.min((box.b - box.t) * 0.78, room / row);    // the photos are about 4:5
+      const h0 = w0 / 0.78;
+      const x0 = box.l + (room - w0 * row) / 2;
       items.forEach((c, i) => {
         const d = i - f;
-        if (d < -3.6 || d > 2.2) { c.style.visibility = 'hidden'; return; }
+        if (d < -0.5 || d > 3.4) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        const s = Math.pow(1.32, d);
-        const along = w0 * 1.15 * (s - 1) / 0.32;
-        const x = cx + along, y = cy - along * 0.27;
+        const s = d >= 0 ? Math.pow(R, d) : 1;
+        const x = d >= 0 ? x0 + w0 * (1 + GAP) * run(d) : x0 + w0 * 0.6 * d;
+        const y = box.b - (1 - s) * h0 * 0.18;                     // further baskets sit a little higher
         c.style.width = `${w0.toFixed(1)}px`;
-        c.style.transform = `translate3d(${(x - w0 / 2).toFixed(1)}px,${(y - D / 2).toFixed(1)}px,0) scale(${s.toFixed(4)}) rotate(${(d * -3).toFixed(2)}deg)`;
-        c.style.zIndex = String(50 + Math.round(d * 10));
-        c.style.opacity = String(clamp(Math.min(d + 3.6, 2.2 - d)));
+        c.style.height = `${h0.toFixed(1)}px`;
+        c.style.transform = `translate3d(${x.toFixed(1)}px,${(y - h0).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
+        c.style.zIndex = String(50 - Math.round(d * 10));
+        c.style.opacity = String(d < 0 ? clamp(1 + d * 2.2) : d <= 2 ? 1 : (1 - 0.6 * clamp(d - 2)) * clamp((3.4 - d) / 0.4)); // the 4th one waits faintly
         const on = Math.abs(d) < 0.5;
         c.classList.toggle('is-active', on);
         c.tabIndex = on ? 0 : -1;
