@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
   const local = !process.env.VERCEL && /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host);
   const base = local ? `http://${host}` : SITE_URL;
 
-  const items = await Promise.all(catalog.PRODUCTS.filter((p) => !p.soon).map(async (p) => {
+  const items = await Promise.all(catalog.PRODUCTS.filter((p) => !p.soon && !p.hidden).map(async (p) => {
     const image = `${base}/${p.img.replace(/\.webp$/, '.jpg')}`; // Pinterest gets the JPEG copy
     if (!(await photoExists(image))) return null;
     const onSale = p.oldPrice && p.oldPrice > p.price;

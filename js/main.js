@@ -12,7 +12,7 @@
   const lerp = (a, b, t) => a + (b - a) * t;
   // Prices go out as <span data-usd> so js/fx.js can show them in the visitor's currency.
   const FX = window.SHANAYA_FX;
-  const usd = (n) => (FX ? FX.tag(n) : `$${n}`);
+  const usd = (n) => (FX ? FX.tag(n, n % 1 !== 0) : `$${n}`);
   const money = (n) => (FX ? FX.tag(n, true) : '$' + n.toFixed(2));
   // Look up "#section" links by id, never as a CSS selector (odd hashes would throw).
   const byHash = (hash) => {
@@ -127,13 +127,13 @@
 
   // Live catalog numbers used in copy
   $$('[data-total-sets]').forEach((el) => { el.textContent = S.SETS.length; });
-  $$('[data-total-products]').forEach((el) => { el.textContent = S.PRODUCTS.filter((p) => !p.soon).length; });
+  $$('[data-total-products]').forEach((el) => { el.textContent = S.PRODUCTS.filter((p) => !p.soon && !p.hidden).length; });
   $$('[data-total-of]').forEach((el) => {
     const n = S.PRODUCTS.filter((p) => p.group === el.dataset.totalOf && !p.soon).length;
     el.textContent = n; el.dataset.count = n;
   });
   $$('[data-total-styles]').forEach((el) => { el.textContent = new Set(S.SETS.map((p) => p.category)).size; });
-  $$('[data-from-price]').forEach((el) => { el.innerHTML = usd(Math.min(...S.PRODUCTS.filter((p) => !p.soon).map((p) => p.price))); });
+  $$('[data-from-price]').forEach((el) => { el.innerHTML = usd(Math.min(...S.PRODUCTS.filter((p) => !p.soon && !p.hidden).map((p) => p.price))); });
 
   /* ─────────────── REVEALS ─────────────── */
   const REVEAL_SEL = '[data-reveal], [data-split], [data-count], [data-letters]';
@@ -455,7 +455,8 @@
 
   const cartCount = () => cart.reduce((s, it) => s + it.qty, 0);
   const cartTotal = () => cart.reduce((s, it) => s + byId(it.id).price * it.qty, 0);
-  const shippingFor = (total) => (total > 0 && total < FREE_SHIP ? PAY.shippingFee : 0);
+  // free over the threshold, or when everything in the bag ships free (the hidden test item)
+  const shippingFor = (total) => (total > 0 && total < FREE_SHIP && !cart.every((it) => byId(it.id).freeShip) ? PAY.shippingFee : 0);
 
   function renderCart() {
     const count = cartCount(), total = cartTotal();
@@ -749,7 +750,7 @@
     $('.qv__perks', qv).hidden = p.type !== 'set';
   }
   function openQuick(id, list) {
-    qvList = list && list.length ? list : S.PRODUCTS.map((p) => p.id);
+    qvList = list && list.length ? list : S.PRODUCTS.filter((p) => !p.hidden || p.id === Number(id)).map((p) => p.id);
     qvIndex = Math.max(0, qvList.indexOf(Number(id)));
     fillQuick(byId(qvList[qvIndex]));
     lastFocus = document.activeElement;
@@ -895,6 +896,7 @@
     const sortSel = $('#sort');
     const params = new URLSearchParams(location.search);
     let filter = params.get('cat') || 'all';
+    if (params.get('test') === '1' && byId(999)) setTimeout(() => openQuick(999, [999]), 600); // the hidden payment test item
     if (S.SETS.some((p) => p.category === filter)) filter = 'press-ons'; // old style links (?cat=floral …)
     if (!$$('.chip', chips).some((c) => c.dataset.filter === filter)) filter = 'all';
     const inGroup = (f) => (f === 'all' ? S.MIXED.slice() : S.PRODUCTS.filter((p) => p.group === f));

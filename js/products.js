@@ -94,6 +94,15 @@
     polish(320, 'butter-yellow', 'Butter Yellow', 'A pastel butter yellow.'),
   ];
 
+  // ─── TEST ITEM ─── a hidden $0.50 item for trying a real payment end to end.
+  // It never shows in the shop: open it with shop.html?test=1. It ships free.
+  // Delete this line once checkout is confirmed working.
+  PRODUCTS.push({
+    id: 999, slug: 'payment-test', name: 'Payment test', category: 'test', type: 'test', group: 'test', hidden: true, freeShip: true,
+    price: 0.5, desc: 'A 50 cent item for testing checkout. Nothing is shipped.', sizes: ['Test'], optionLabel: 'Option', stars: 0,
+    img: 'images/nail-polish/ballet-pink.webp', thumb: 'images/nail-polish/ballet-pink-sm.webp',
+  });
+
   // ─── POLISH BRANDS ─── the bottle in each photo, and its price: a little under
   // the brand's usual US price (Chanel Le Vernis $34, Essie Gel Couture $12.99,
   // OPI and Olive & June about $12, Essie about $11, Sally Hansen $7-8).

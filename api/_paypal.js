@@ -92,7 +92,8 @@ function priceCart(lines) {
       category: 'PHYSICAL_GOODS',
     };
   });
-  const shipCents = itemCents < cents(settings.freeShippingOver) ? cents(settings.shippingFee) : 0;
+  const allFree = [...merged.values()].every(({ p }) => p.freeShip);
+  const shipCents = allFree || itemCents >= cents(settings.freeShippingOver) ? 0 : cents(settings.shippingFee);
 
   return {
     intent: 'CAPTURE',
@@ -141,7 +142,7 @@ function verifyOrder(order) {
   if (!pu || !pu.amount || pu.amount.currency_code !== settings.currency) throw new CheckoutError('Order does not match our prices.', 409);
   const items = pu.items || [];
   if (!items.length) throw new CheckoutError('Order does not match our prices.', 409);
-  let itemCents = 0;
+  let itemCents = 0, allFree = true;
   for (const it of items) {
     const [idPart, ...sizeParts] = String(it.sku || '').split('-');
     const p = catalog.PRODUCTS.find((x) => x.id === Number(idPart));
@@ -152,8 +153,9 @@ function verifyOrder(order) {
       throw new CheckoutError('Order does not match our prices.', 409);
     }
     itemCents += cents(p.price) * qty;
+    if (!p.freeShip) allFree = false;
   }
-  const shipCents = itemCents < cents(settings.freeShippingOver) ? cents(settings.shippingFee) : 0;
+  const shipCents = allFree || itemCents >= cents(settings.freeShippingOver) ? 0 : cents(settings.shippingFee);
   if (cents(Number(pu.amount.value)) !== itemCents + shipCents) throw new CheckoutError('Order does not match our prices.', 409);
 }
 
