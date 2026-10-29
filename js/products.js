@@ -94,12 +94,12 @@
     polish(320, 'butter-yellow', 'Butter Yellow', 'A pastel butter yellow.'),
   ];
 
-  // ─── TEST ITEM ─── a hidden $0.50 item for trying a real payment end to end.
+  // ─── TEST ITEM ─── a hidden $0.01 item (PayPal's smallest amount) for trying a real payment end to end.
   // It never shows in the shop: open it with shop.html?test=1. It ships free.
   // Delete this line once checkout is confirmed working.
   PRODUCTS.push({
     id: 999, slug: 'payment-test', name: 'Payment test', category: 'test', type: 'test', group: 'test', hidden: true, freeShip: true,
-    price: 0.5, desc: 'A 50 cent item for testing checkout. Nothing is shipped.', sizes: ['Test'], optionLabel: 'Option', stars: 0,
+    price: 0.01, desc: 'A 1 cent item for testing checkout. Nothing is shipped.', sizes: ['Test'], optionLabel: 'Option', stars: 0,
     img: 'images/nail-polish/ballet-pink.webp', thumb: 'images/nail-polish/ballet-pink-sm.webp',
   });
 
