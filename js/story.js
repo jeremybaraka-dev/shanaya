@@ -117,9 +117,10 @@
   /* ─── 3. COLLECTION: the baskets laid out like A24's film index ───
      The baskets sit where the discs sit in the reference: the featured one
      centred over the quotes, the next one bigger and off the top-right
-     corner, the earlier ones smaller and running off the left edge. They
-     lean along the row and slide along it as you scroll; the panel and the
-     quotes change with the featured basket. */
+     corner, the earlier ones smaller and running off the left edge. Each
+     basket stands upright on the bottom edge of the disc it replaces and
+     slides along the row as you scroll; the panel and the quotes change
+     with the featured basket. */
   const coll = $('[data-scene="coll"]');
   if (coll) {
     const stage = $('[data-cd-stage]', coll);
@@ -151,8 +152,10 @@
       out.q2.textContent = `“${WORDS[b.has.length] || b.has.length} picks, one price”`;
     };
     const sc = pinned(coll);
-    // Measured from the reference, frame by frame: where each disc sits
-    // relative to the featured one (in featured-disc widths) and its size.
+    // Measured from the reference, frame by frame: where each disc's centre
+    // sits relative to the featured one (KX in featured-disc widths, KY in
+    // featured-disc heights, the featured disc being 29.6% of the frame's
+    // width and 58.1% of its height) and its size.
     // Index 0 is four steps left of the featured disc, index 4 is the featured one.
     const KX = [-2.75, -2.15, -1.585, -0.909, 0, 1.265, 3.0, 5.0];
     const KY = [0.42, 0.37, 0.311, 0.228, 0, -0.461, -1.25, -2.2];
@@ -162,28 +165,28 @@
       const p0 = k[Math.max(i - 1, 0)], p1 = k[i], p2 = k[i + 1], p3 = k[Math.min(i + 2, k.length - 1)];
       return 0.5 * (2 * p1 + (p2 - p0) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u * u + (3 * p1 - p0 - 3 * p2 + p3) * u * u * u);
     };
-    const BW = 1.2, BH = BW / 1.55;            // a basket is as wide as a disc and a bit, and wider than tall
-    let L = { cx: 0, cy: 0, D: 1, U: 1 };
+    const BW = 1.1, BH = BW / 1.55;          // a basket is as wide as its disc (and a touch), and wider than tall
+    let L = { W: 1, H: 1, cx: 0, cy: 0, D: 1 };
     sc.measure = ((m) => () => {
       m();
       const W = stage.clientWidth, H = stage.clientHeight;
-      const D = Math.min(H * 0.58, W * 0.296);   // the featured disc: 58% of the frame's height
-      // steps along the row also stretch with a frame wider than the reference's
-      L = { cx: W * 0.516, cy: Math.min(H * 0.54, quotes.offsetTop - 14 - (D * BH) / 2), D, U: (D + W * 0.296) / 2 };
+      const D = Math.min(H * 0.581, W * 0.296);  // the featured disc's diameter
+      // the featured disc's centre: where it is in the reference, kept clear of the quotes
+      L = { W, H, cx: W * 0.516, cy: Math.min(H * 0.507, quotes.offsetTop - 12 - D / 2), D };
     })(sc.measure);
     const render = scrubber(0.8, (f) => {
-      const { cx, cy, D, U } = L;
+      const { W, H, cx, cy, D } = L;
       const w = D * BW, h = D * BH;
       items.forEach((c, i) => {
         const d = i - f;
         if (d < -4 || d > 3) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        const s = at(KS, d), x = cx + at(KX, d) * U, y = cy + at(KY, d) * D;
-        // lean along the row: flat on the left, climbing more steeply to the right
-        const lean = (Math.atan2(at(KY, d + 0.05) - at(KY, d - 0.05), at(KX, d + 0.05) - at(KX, d - 0.05)) * 180) / Math.PI * 0.45;
+        // the disc this basket replaces: its centre and size
+        const s = at(KS, d), x = cx + at(KX, d) * W * 0.296, y = cy + at(KY, d) * H * 0.581;
+        const bottom = y + (s * D) / 2;          // the basket stands on the disc's bottom edge
         c.style.width = `${w.toFixed(1)}px`;
         c.style.height = `${h.toFixed(1)}px`;
-        c.style.transform = `translate3d(${(x - w / 2).toFixed(1)}px,${(y - h / 2).toFixed(1)}px,0) scale(${s.toFixed(4)}) rotate(${lean.toFixed(2)}deg)`;
+        c.style.transform = `translate3d(${(x - w / 2).toFixed(1)}px,${(bottom - h).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
         c.style.zIndex = String(50 + Math.round(d * 10));
         const on = Math.abs(d) < 0.5;
         c.classList.toggle('is-active', on);

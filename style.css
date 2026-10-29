@@ -59,7 +59,7 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ─── Reset ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: clip; }
 body {
   font-family: var(--f-body);
   font-size: 16px;
@@ -1106,6 +1106,9 @@ body.show-float .float-cta { transform: translate(-50%, 0); }
 
 .filters { position: sticky; top: var(--hdr-h); z-index: 600; padding: 10px 0; transition: top 0.6s var(--ease); }
 body.hdr-hidden .filters { top: 0; }
+@media (max-width: 900px) {
+  .filters::before { content: ''; position: absolute; z-index: -1; inset: 0; background: var(--petal); }
+}
 .filters__bar {
   display: flex; align-items: center; gap: 16px;
   padding: 6px; border-radius: 999px;
@@ -1215,7 +1218,7 @@ body.hdr-hidden .filters { top: 0; }
   .drawer::before { content: ''; position: absolute; top: 8px; left: 50%; translate: -50% 0; width: 44px; height: 5px; border-radius: 5px; background: var(--line); }
   .qv {
     left: 0; right: 0; top: auto; bottom: 0; width: 100%; max-height: 92svh;
-    grid-template-columns: 1fr; border-radius: 28px 28px 0 0;
+    display: block; border-radius: 28px 28px 0 0;
     transform: translateY(105%); opacity: 1; overflow-y: auto; overscroll-behavior: contain;
   }
   .qv.is-open { transform: none; }
@@ -1393,8 +1396,12 @@ body.hdr-hidden .filters { top: 0; }
     font-size: clamp(16px, 4.6vw, 21px); line-height: 0.95;
     min-height: 1.9em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .pcard .pcard__row { margin-top: 6px; }
-  .pcard .pcard__price { font-size: 17px; }
+  /* the price may be long in some currencies (KES 11,555 KES 13,762): it shrinks
+     and the old price drops under it, so the + always stays inside the card */
+  .pcard .pcard__body { min-width: 0; }
+  .pcard .pcard__row { margin-top: 6px; align-items: flex-end; min-width: 0; }
+  .pcard .pcard__price { min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; font-size: clamp(14px, 4.3vw, 17px); line-height: 1.15; }
+  .pcard .pcard__price s { margin-left: 0; font-size: 12px; }
   .pcard .pcard__stars, .pcard .pcard__desc, .pcard .pcard__foot { display: none; }
   .pcard .pcard__plus {
     display: grid; place-items: center; flex-shrink: 0;
@@ -1424,19 +1431,23 @@ body.hdr-hidden .filters { top: 0; }
   .hero__stats.shero__stats { display: flex; }
 
   .trust { padding-top: 22px; padding-bottom: 18px; }
+  /* the four info pills sit still in a 2 x 2 grid: nothing to swipe or drag */
   .trust__grid {
-    display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity;
-    width: 100%; margin-inline: 0; padding-inline: var(--gutter); scroll-padding-inline: var(--gutter);
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; overflow: visible;
+    width: 100%; margin-inline: 0; padding-inline: var(--gutter); touch-action: pan-y;
   }
-  .trust__grid::-webkit-scrollbar { display: none; }
   .trust .trust__item {
-    flex: 0 0 auto; flex-direction: row; align-items: center; gap: 10px;
-    padding: 8px 18px 8px 8px; border-radius: 999px; scroll-snap-align: start;
+    min-width: 0; flex-direction: row; align-items: center; gap: 9px;
+    padding: 8px 10px 8px 8px; border-radius: 20px;
   }
+  .trust .trust__item > div { min-width: 0; }
   .trust .trust__icon { width: 34px; height: 34px; }
   .trust .trust__icon svg { width: 16px; height: 16px; }
   .trust__item b { font-size: 13px; line-height: 1.2; }
-  .trust__item span { font-size: 11.5px; line-height: 1.2; white-space: nowrap; }
+  .trust__item span { display: block; font-size: 11px; line-height: 1.25; overflow-wrap: break-word; }
+  .trust__item span span { display: inline; }
+  /* the narrowest phones: the words get the room the icons took */
+  @media (max-width: 359px) { .trust .trust__icon { display: none; } .trust .trust__item { padding: 10px 12px; } }
 
   /* other cards */
   .look__frame, .hs__card { border-radius: 26px; }
@@ -1600,7 +1611,7 @@ body.hdr-hidden .filters { top: 0; }
 /* a basket where a disc would be: the cut-out, sat on a soft floor shadow */
 .bk {
   position: absolute; left: 0; top: 0; display: block; padding: 0; border: 0; background: none; cursor: pointer;
-  transform-origin: 50% 50%; will-change: transform;
+  transform-origin: 50% 100%; will-change: transform;
 }
 .bk::after {
   content: ''; position: absolute; left: 10%; right: 10%; bottom: -3%; height: 9%; border-radius: 50%; z-index: -1;
@@ -2617,7 +2628,7 @@ html.js .ab__title:not(.is-in) .ab__hl, html.js .cx__title:not(.is-in) .cx__hl {
   .cz-card__img { aspect-ratio: 1 / 1.05; border-radius: 0; }
   .cz-card__img i { display: none; }
   .cz-card b { margin: 12px 44px 0 12px; font-size: 15px; font-weight: 800; }
-  .cz-card__sub { display: block; margin: 2px 12px 0; font-size: 11.5px; opacity: 0.75; }
+  .cz-card__sub { display: block; margin: 2px 42px 0 12px; font-size: 11.5px; line-height: 1.3; opacity: 0.75; }
   .cz-card__price { display: none; }
   .cz-card__go { display: grid; place-items: center; position: absolute; right: 10px; bottom: 18px; width: 26px; height: 26px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--lime); color: var(--lime); }
   .cz-card__go svg { width: 13px; height: 13px; }
