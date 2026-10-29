@@ -88,7 +88,7 @@
     // header band
     rect(0, PH - 130, PW, 130, '#D38492');
     text(L, PH - 62, 'NAILS BY SHANAYA', { size: 22, bold: true });
-    text(L, PH - 84, 'Handcrafted press-on nails & stick-ons', { size: 10 });
+    text(L, PH - 84, 'Press-on nails, nail charms & nail polish', { size: 10 });
     text(R, PH - 62, 'RECEIPT', { size: 22, bold: true, align: 'right' });
     text(R, PH - 84, 'nailsbyshanaya.vercel.app', { size: 10, align: 'right' });
 
@@ -125,7 +125,8 @@
     y -= 30;
     r.items.forEach((it) => {
       text(L + 10, y, clip(it.name, 44), { size: 11, bold: true });
-      if (it.size) text(L + 10, y - 13, `Size ${it.size}`, { size: 9, color: '#755961' });
+      // press-on sets have a size (XS-XL); charms and polish show their option ("Full box", "One bottle")
+      if (it.size) text(L + 10, y - 13, /^(XS|S|M|L|XL)$/.test(it.size) ? `Size ${it.size}` : it.size, { size: 9, color: '#755961' });
       text(340, y, String(it.qty));
       text(430, y, money(it.unit), { align: 'right' });
       text(R - 10, y, money(it.unit * it.qty), { align: 'right' });
@@ -145,7 +146,8 @@
     // footer
     text(L, 92, 'Thank you for your order!', { size: 12, bold: true });
     text(L, 76, 'Questions? DM @nailsbyshanaya_ on TikTok or reply to your PayPal receipt email.', { size: 9, color: '#755961' });
-    text(L, 62, 'Shipping & returns: nailsbyshanaya.vercel.app/policies.html', { size: 9, color: '#755961' });
+    text(L, 62, 'We ship worldwide. Please allow up to 5 weeks for delivery.', { size: 9, color: '#755961' });
+    text(L, 48, 'Shipping & returns: nailsbyshanaya.vercel.app/policies.html', { size: 9, color: '#755961' });
 
     // assemble the file
     const stream = ops.join('\n');

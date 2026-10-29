@@ -190,7 +190,7 @@
       ? '<span class="lc lc--sp"> </span>'
       : `<span class="lc${cls || ''}"><span>${ch}</span></span>`)).join('');
     const html = `
-      <span class="loader__tag loader__tag--tl">Press-ons &amp; stick-ons</span>
+      <span class="loader__tag loader__tag--tl">Press-ons, charms &amp; polish</span>
       <span class="loader__tag loader__tag--r">Every girl is beautiful ♡</span>
       <span class="loader__tag loader__tag--bl">@nailsbyshanaya_</span>
       <span class="loader__count"><b>0</b>%</span>
@@ -657,7 +657,7 @@
     $('#drawer-items').innerHTML = `<div class="drawer__empty drawer__done">
       <img src="${S.SETS[0].thumb}" alt="">
       <p></p>
-      <span>Your order is confirmed. PayPal is emailing you a receipt too, and your set ships to the address on your PayPal.</span>
+      <span>Your order is confirmed. PayPal is emailing you a receipt too, and your order ships to the address on your PayPal. Please allow up to 5 weeks for delivery.</span>
       <small class="drawer__order"></small>
       <button class="btn btn--pink btn--sm" id="receipt-dl" hidden><span class="roll"><span>Download receipt (PDF)</span><span>Download receipt (PDF)</span></span></button>
       <a href="shop.html" class="btn btn--ghost btn--sm">Keep shopping</a>
