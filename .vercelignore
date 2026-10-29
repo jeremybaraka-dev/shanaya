@@ -9,3 +9,6 @@ images/nail-polish/polish (*).png
 images/basket/?.png
 images/home/nail (*).png
 _backup-palette-v2
+
+# Setup notes stay in the repo, not on the live site
+README.md

@@ -11,8 +11,8 @@
 (function (root) {
   var SETTINGS = {
     currency: 'USD',          // what customers are charged in
-    freeShippingOver: 50,     // orders of this amount or more ship free
-    shippingFee: 10,          // flat shipping charged on orders under the free-shipping amount
+    freeShippingOver: 35,     // orders of this amount or more ship free
+    shippingFee: 6,           // flat shipping charged on orders under the free-shipping amount
   };
   if (typeof module === 'object' && module.exports) module.exports = SETTINGS;
   else root.SHANAYA_PAY = SETTINGS;

@@ -28,7 +28,24 @@ function paypalEnv() {
   };
 }
 
+// The PayPal token lasts hours: reuse it while this server instance stays warm
+// (and share one request when many checkouts start at once) instead of asking
+// PayPal for a new one on every call, which it rate-limits under heavy traffic.
+let tokenCache = null; // { key, value, until, pending }
 async function accessToken(env) {
+  const key = `${env.base}|${env.id}`;
+  if (tokenCache && tokenCache.key === key) {
+    if (tokenCache.value && Date.now() < tokenCache.until) return tokenCache.value;
+    if (tokenCache.pending) return tokenCache.pending;
+  }
+  const pending = fetchToken(env).then((t) => {
+    tokenCache = { key, value: t.access_token, until: Date.now() + Math.max(60, (t.expires_in || 3600) - 300) * 1000 };
+    return t.access_token;
+  }, (err) => { tokenCache = null; throw err; });
+  tokenCache = { key, pending };
+  return pending;
+}
+async function fetchToken(env) {
   const res = await fetch(`${env.base}/v1/oauth2/token`, {
     method: 'POST',
     headers: {
@@ -38,7 +55,7 @@ async function accessToken(env) {
     body: 'grant_type=client_credentials',
   });
   if (!res.ok) throw new Error(`PayPal auth failed (${res.status})`);
-  return (await res.json()).access_token;
+  return res.json();
 }
 
 const cents = (n) => Math.round(n * 100);
@@ -145,10 +162,33 @@ function send(res, status, data) {
   res.status(status).json(data);
 }
 
-// Wraps a handler: POST only, keys configured, friendly errors, details logged server-side.
+// A light brake per visitor (per server instance): stops one browser or script
+// from flooding checkout with orders. Real shoppers never come close.
+const HITS = new Map();
+const LIMIT = 30, WINDOW_MS = 60 * 1000;
+function tooMany(req) {
+  const ip = String(req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+  const now = Date.now();
+  const h = HITS.get(ip);
+  if (!h || now - h.start > WINDOW_MS) { HITS.set(ip, { start: now, n: 1 }); }
+  else if (++h.n > LIMIT) return true;
+  if (HITS.size > 5000) for (const [k, v] of HITS) if (now - v.start > WINDOW_MS) HITS.delete(k);
+  return false;
+}
+// Checkout calls come from our own pages: a browser on another site gets turned away.
+function foreignOrigin(req) {
+  const origin = req.headers.origin;
+  if (!origin) return false;
+  try { return new URL(origin).host !== req.headers.host; } catch (e) { return true; }
+}
+
+// Wraps a handler: POST only, our own pages only, rate-braked, keys configured,
+// friendly errors, details logged server-side.
 function endpoint(fn) {
   return async (req, res) => {
     if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return send(res, 405, { error: 'Method not allowed.' }); }
+    if (foreignOrigin(req)) return send(res, 403, { error: 'Forbidden.' });
+    if (tooMany(req)) { res.setHeader('Retry-After', '60'); return send(res, 429, { error: 'Too many tries. Please wait a minute and try again.' }); }
     const env = paypalEnv();
     if (!env.ready) return send(res, 503, { error: 'Checkout is not set up yet.' });
     try {

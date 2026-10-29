@@ -114,6 +114,25 @@
     scenes.push(sc);
   }
 
+  /* ─── 2b. ABOUT → COLLECTION (desktop): the lime panel holds still while the
+     basket section slides up over it, the panel easing back and dimming ─── */
+  const abPanel = $('.ab-pin > .ab'), collSec = $('[data-scene="coll"]');
+  if (abPanel && collSec) {
+    let last = -1;
+    scenes.push({
+      measure() { abPanel.style.setProperty('--ab-h', `${abPanel.offsetHeight}px`); },
+      update() {
+        if (mqMobile.matches) { if (last !== 0) { abPanel.style.transform = ''; abPanel.style.setProperty('--dim', 0); last = 0; } return; }
+        const t = clamp(1 - collSec.getBoundingClientRect().top / window.innerHeight);
+        if (Math.abs(t - last) < 0.002) return;
+        last = t;
+        const e = t * t * (3 - 2 * t);
+        abPanel.style.transform = t > 0 ? `scale(${(1 - 0.06 * e).toFixed(4)})` : '';
+        abPanel.style.setProperty('--dim', (0.45 * e).toFixed(3));
+      },
+    });
+  }
+
   /* ─── 3. COLLECTION: the baskets laid out like A24's film index ───
      The baskets sit where the discs sit in the reference: the featured one
      centred over the quotes, the next one bigger and off the top-right

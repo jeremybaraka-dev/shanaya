@@ -6,7 +6,8 @@ const settings = require('../js/payments.js');
 
 const RATES_URL = 'https://open.er-api.com/v6/latest/' + settings.currency; // free, daily, no key
 const FRESH_MS = 6 * 60 * 60 * 1000;
-let cache = null; // { at, rates } — reused while this server instance stays warm
+let cache = null;   // { at, rates } — reused while this server instance stays warm
+let inflight = null; // one shared fetch when many visitors arrive at once
 
 // Country (ISO 3166) → currency (ISO 4217). Countries not listed see US dollars.
 const EURO = 'AT BE CY EE FI FR DE GR IE IT LV LT LU MT NL PT SK SI ES HR AD MC SM VA ME XK';
@@ -22,6 +23,10 @@ const CURRENCY = Object.fromEntries(EURO.split(' ').map((c) => [c, 'EUR'])
 
 async function rates() {
   if (cache && Date.now() - cache.at < FRESH_MS) return cache.rates;
+  if (!inflight) inflight = fetchRates().finally(() => { inflight = null; });
+  return inflight;
+}
+async function fetchRates() {
   try {
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), 4000);

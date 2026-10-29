@@ -21,8 +21,8 @@
   // bought until it has a real price, photo and options.
   // Prices for the charm boxes and polish bottles (in dollars). Set one to
   // null and those items show as "Coming soon" and can't be bought.
-  const CHARM_PRICE = 14;
-  const POLISH_PRICE = 10;
+  const CHARM_PRICE = 8;
+  const POLISH_PRICE = 6;
   const item = (type, category, folder, optionLabel, option, price) => (id, slug, name, desc) => Object.assign({
     id, slug, name, category, type, group: category, price, desc, sizes: [option], optionLabel, stars: 0,
     img: `images/${folder}/${slug}.webp`,
@@ -32,29 +32,29 @@
   const polish = item('polish', 'polish', 'nail-polish', 'Bottle', 'One bottle', POLISH_PRICE);
 
   const PRODUCTS = [
-    set(101, 'merlot-garden', 'Merlot Garden', 'floral', 38, { badge: 'Bestseller', art: 'rosegold', shape: 'Stiletto',
+    set(101, 'merlot-garden', 'Merlot Garden', 'floral', 24, { badge: 'Bestseller', art: 'rosegold', shape: 'Stiletto',
       desc: 'Burgundy marble, sculpted pink blossoms, a touch of leopard and gold charms. Set of 10 stiletto nails.' }),
-    set(102, 'downtown-charm', 'Downtown Charm', 'charms', 36, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
+    set(102, 'downtown-charm', 'Downtown Charm', 'charms', 21, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
       desc: 'Nude French tips with cocoa stars, cherries, an NY charm and leopard and zebra accents. Set of 10.' }),
-    set(103, 'polka-blossom', 'Polka Blossom', 'floral', 34, { art: 'floral', shape: 'Stiletto',
+    set(103, 'polka-blossom', 'Polka Blossom', 'floral', 19, { art: 'floral', shape: 'Stiletto',
       desc: 'Pink and burgundy polka dots with hand-sculpted 3D blossoms and soft French tips. Set of 10.' }),
-    set(104, 'mocha-chrome', 'Mocha Chrome', 'chrome', 34, { badge: 'New', isNew: true, art: 'midnight', shape: 'Almond',
+    set(104, 'mocha-chrome', 'Mocha Chrome', 'chrome', 19, { badge: 'New', isNew: true, art: 'midnight', shape: 'Almond',
       desc: 'Rich chocolate with liquid silver chrome swirls and a tortoiseshell accent. Set of 10.' }),
-    set(105, 'safari-butterfly', 'Safari Butterfly', 'animal', 36, { art: 'y2k', shape: 'Almond',
+    set(105, 'safari-butterfly', 'Safari Butterfly', 'animal', 21, { art: 'y2k', shape: 'Almond',
       desc: 'Leopard and zebra on a nude base, finished with gold chains and a butterfly charm. Set of 10.' }),
-    set(106, 'tropic-wild', 'Tropic Wild', 'animal', 34, { badge: 'New', isNew: true, art: 'ombre', shape: 'Almond',
+    set(106, 'tropic-wild', 'Tropic Wild', 'animal', 19, { badge: 'New', isNew: true, art: 'ombre', shape: 'Almond',
       desc: 'Leopard, zebra and painted hibiscus with bold orange and black tips. Set of 10.' }),
-    set(107, 'rose-gold-swirl', 'Rose Gold Swirl', 'chrome', 36, { badge: 'Limited', art: 'rosegold', shape: 'Almond',
+    set(107, 'rose-gold-swirl', 'Rose Gold Swirl', 'chrome', 21, { badge: 'Limited', art: 'rosegold', shape: 'Almond',
       desc: 'Blush pink with sculpted gold swirls, chrome lines and soft ombre. Set of 10.' }),
-    set(108, 'scarlet-lily', 'Scarlet Lily', 'floral', 34, { art: 'gel', shape: 'Coffin',
+    set(108, 'scarlet-lily', 'Scarlet Lily', 'floral', 19, { art: 'gel', shape: 'Coffin',
       desc: 'Hand-painted red lilies, leopard and gold star charms on a pink coffin shape. Set of 10.' }),
-    set(109, 'bow-and-cherry', 'Bow & Cherry', 'charms', 38, { badge: 'Bestseller', art: 'stickers', shape: 'Stiletto',
+    set(109, 'bow-and-cherry', 'Bow & Cherry', 'charms', 24, { badge: 'Bestseller', art: 'stickers', shape: 'Stiletto',
       desc: 'Sculpted 3D bows, cherries, a spider charm and cow print in pink and burgundy. Set of 10.' }),
-    set(110, 'berry-leopard', 'Berry Leopard', 'animal', 34, { art: 'gel', shape: 'Stiletto',
+    set(110, 'berry-leopard', 'Berry Leopard', 'animal', 19, { art: 'gel', shape: 'Stiletto',
       desc: 'Berry marble, pink leopard and zebra with a white chrome flower. Set of 10.' }),
-    set(111, 'big-apple-eight', 'Big Apple Eight', 'charms', 38, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
+    set(111, 'big-apple-eight', 'Big Apple Eight', 'charms', 24, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
       desc: 'Leopard, cherries, an NY charm, 8-ball art and gold chains. Set of 10.' }),
-    set(112, 'orchid-tortoise', 'Orchid Tortoise', 'floral', 36, { art: 'floral', shape: 'Almond',
+    set(112, 'orchid-tortoise', 'Orchid Tortoise', 'floral', 21, { art: 'floral', shape: 'Almond',
       desc: 'Sculpted orchids, magenta marble, tortoiseshell and leopard with gold charms. Set of 10.' }),
 
     // ─── nail charms (photos in images/nail-charms/) ───
@@ -96,7 +96,7 @@
   // `tint` is the background colour of its photo; `has` lists the product ids inside. The price is worked out from them:
   // BASKET_SAVING off the separate prices, rounded down to end in 4 or 9.
   // The press-on size the customer picks applies to every set in the basket.
-  const BASKET_SAVING = 0.15;
+  const BASKET_SAVING = 0.2;
   const basket = (id, key, colour, tint, has) => {
     const items = has.map((i) => PRODUCTS.find((p) => p.id === i));
     const worth = items.reduce((t, p) => t + p.price, 0);

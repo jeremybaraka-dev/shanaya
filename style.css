@@ -207,26 +207,12 @@ html:not(.js) .loader { display: none; }
 }
 .loader__half--top { top: 0; height: calc(50% + 1px); }   /* overlaps by 1px so no hairline of the page shows at the seam */
 /* a solid backdrop behind the halves until they split, for the same reason */
-.loader::before { content: ''; position: absolute; inset: 0; background: #5A2636; }
+.loader::before { content: ''; position: absolute; inset: 0; background: var(--wine); }
 .loader.is-open::before { display: none; }
 .loader__half--bottom { bottom: 0; }
 .loader.is-open .loader__half--top { transform: translateY(-101%); }
 .loader.is-open .loader__half--bottom { transform: translateY(101%); }
 .loader__stage { position: absolute; left: 0; right: 0; top: 0; height: 200%; color: var(--beige); }
-/* the backdrop: wine warmed with pink, scattered with little flowers. It lives
-   on the full-screen stage both halves share, so it lines up across the split. */
-.loader__stage::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cg transform='translate(52 58) rotate(10) scale(1.0)'%3E%3Cg fill='%23F6B9C8' fill-opacity='0.24'%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(0)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(72)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(144)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(216)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='5.5' fill='%23CFD16D' fill-opacity='0.22'/%3E%3C/g%3E%3Cg transform='translate(186 150) rotate(34) scale(0.72)'%3E%3Cg fill='%23F6B9C8' fill-opacity='0.2'%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(0)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(72)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(144)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(216)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='5.5' fill='%23CFD16D' fill-opacity='0.19'/%3E%3C/g%3E%3Cg transform='translate(110 222) rotate(60) scale(0.48)'%3E%3Cg fill='%23F6B9C8' fill-opacity='0.26'%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(0)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(72)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(144)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(216)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='5.5' fill='%23CFD16D' fill-opacity='0.24'/%3E%3C/g%3E%3Cg transform='translate(232 30) rotate(20) scale(0.38)'%3E%3Cg fill='%23F6B9C8' fill-opacity='0.22'%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(0)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(72)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(144)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(216)'/%3E%3Cellipse rx='8' ry='15' cy='-13' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='5.5' fill='%23CFD16D' fill-opacity='0.21'/%3E%3C/g%3E%3Cg fill='%23F6B9C8' fill-opacity='.22'%3E%3Ccircle cx='150' cy='60' r='2.4'/%3E%3Ccircle cx='30' cy='170' r='2'/%3E%3Ccircle cx='220' cy='232' r='1.8'/%3E%3Ccircle cx='96' cy='128' r='1.6'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 260px 260px,
-    radial-gradient(55% 45% at 18% 22%, rgba(211, 132, 146, 0.42), transparent 70%),
-    radial-gradient(50% 45% at 86% 82%, rgba(211, 132, 146, 0.36), transparent 70%),
-    radial-gradient(40% 35% at 70% 18%, rgba(243, 217, 218, 0.14), transparent 70%),
-    linear-gradient(160deg, #46202D 0%, #5E2839 55%, #6E3045 100%);
-  animation: loader-drift 30s linear infinite;
-}
-@keyframes loader-drift { to { background-position: 260px 260px, 0 0, 0 0, 0 0, 0 0; } }
-.loader__stage > * { z-index: 1; }
 .loader__grp--s, .loader__mono b, .loader__count { color: var(--lime); }
 .loader__half--bottom .loader__stage { top: -100%; }
 .loader__half--top .loader__stage { height: calc(200% - 2px); }   /* the full screen height, so both halves' copies line up */
@@ -2013,8 +1999,16 @@ html.js .ab__title.is-in .ab__arrow { opacity: 1; transform: none; }
 .ab__label--hl { margin-bottom: 18px; }
 .abx { display: none; }
 @media (min-width: 901px) {
-  /* slides up over the pinned cover for its last screen of scrolling */
-  main .ab { margin-top: -100vh; z-index: 3; border-radius: clamp(36px, 4vw, 72px) clamp(36px, 4vw, 72px) 0 0; box-shadow: 0 -30px 80px -30px rgba(20, 8, 12, 0.5); padding-top: clamp(40px, 4vw, 64px); }
+  /* slides up over the pinned cover for its last screen of scrolling; then it
+     holds still (its bottom on the screen's bottom) while the baskets slide up
+     over it the same way, the panel easing back and dimming underneath */
+  .ab-pin { position: relative; z-index: 3; margin-top: -100vh; padding-bottom: 100vh; }
+  main .ab {
+    position: sticky; top: min(0px, 100vh - var(--ab-h, 100vh)); transform-origin: 50% 100%;
+    border-radius: clamp(36px, 4vw, 72px) clamp(36px, 4vw, 72px) 0 0; box-shadow: 0 -30px 80px -30px rgba(20, 8, 12, 0.5); padding-top: clamp(40px, 4vw, 64px);
+  }
+  main .ab::after { content: ''; position: absolute; inset: 0; z-index: 9; pointer-events: none; background: #2A1219; opacity: var(--dim, 0); }
+  main .coll { z-index: 4; margin-top: -100vh; overflow: clip; border-radius: clamp(36px, 4vw, 72px) clamp(36px, 4vw, 72px) 0 0; box-shadow: 0 -30px 80px -30px rgba(20, 8, 12, 0.5); }
   /* the panel replaces the big statement, quote and aside; the statement stays for screen readers */
   .ab > .container > .ab__ast, .ab > .container > .ab__label:not(.ab__label--hl), .ab__aside { display: none; }
   .ab__title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
