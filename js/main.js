@@ -273,16 +273,13 @@
     if (reduce) { loader.classList.add('is-done'); return; }
     buildStage();
     lock('loader');
-    let first = false;
-    try {
-      first = document.body.classList.contains('page-home') && !sessionStorage.getItem('shanaya-intro');
-      sessionStorage.setItem('shanaya-intro', '1');
-    } catch (e) { /* storage blocked */ }
+    // js/boot.js already chose (before the first paint) between the intro and the quick open
+    const first = !document.documentElement.classList.contains('ld-quick');
+    try { sessionStorage.setItem('shanaya-intro', '1'); } catch (e) { /* storage blocked */ }
 
     if (!first) {
       loader.classList.add('is-quick');
       await twoFrames();
-      await wait(120);
       await openLoader(260);
       return;
     }

@@ -1,6 +1,6 @@
 /* Custom orders page: card names and prices from the catalog, the hero
    photos taking turns, the giant word drifting as you scroll, and the
-   style tabs on phones. */
+   category tiles that filter the sets on phones. */
 (() => {
   const S = window.SHANAYA, FX = window.SHANAYA_FX;
   const $ = (s, r = document) => r.querySelector(s);
@@ -45,22 +45,29 @@
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(move); } }, { passive: true });
   }
 
-  // phones: the style tabs swap the post below them
-  const POSTS = [
-    { id: 108, text: 'Hand-painted lilies on a soft nude base. Want them in your colours?' },
-    { id: 104, text: 'Liquid chrome swirls in mocha and silver. Any colour you like.' },
-    { id: 109, text: 'Bows, cherries and pearls in 3D. Pick your charms, we place them.' },
-    { id: 110, text: 'Leopard and zebra in berry tones. Your print, your palette.' },
-  ];
-  const tabs = $$('.cz-tabs [data-tab]'), post = $('.cz-post');
-  tabs.forEach((tab) => tab.addEventListener('click', () => {
-    const d = POSTS[Number(tab.dataset.tab)], p = byId(d.id);
-    if (!p || tab.classList.contains('is-on')) return;
-    tabs.forEach((t) => { const on = t === tab; t.classList.toggle('is-on', on); t.setAttribute('aria-selected', String(on)); });
-    $('.cz-post__text', post).textContent = d.text;
-    const img = $('.cz-post__img', post);
-    img.src = p.img; img.alt = `${p.name} press-on nails`;
-    $('.cz-post__look', post).dataset.quick = p.id;
-    post.classList.remove('is-swap'); void post.offsetWidth; post.classList.add('is-swap');
-  }));
+  // phones: the category tiles filter the starting-point sets below them
+  const grid = $('[data-czm-grid]');
+  if (grid) {
+    const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+    const SETS = S.SETS.filter((p) => !p.soon);
+    const MIX = [112, 111, 110, 107].map(byId).filter(Boolean);
+    const LABEL = { floral: 'Florals', chrome: 'Chrome', charms: '3D charms', animal: 'Animal print' };
+    const BAG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>';
+    const render = (cat) => {
+      const list = cat === 'all' ? MIX : SETS.filter((p) => p.category === cat).slice(0, 4);
+      grid.innerHTML = list.map((p, i) => `
+        <button type="button" class="czm-prod" data-quick="${p.id}" style="--i:${i}" aria-label="Quick look: ${esc(p.name)}">
+          <span class="czm-prod__img"><img src="${p.thumb}" alt="" loading="lazy" decoding="async"><i>${p.isNew ? 'New' : 'Hand<br>painted'}</i></span>
+          <b>${esc(p.name)}</b><small>${esc(LABEL[p.category] || 'Press-ons')} · By Shanaya</small>
+          <span class="czm-prod__row"><span class="czm-prod__price">${FX ? FX.tag(p.price) : `$${p.price}`}</span><span class="czm-prod__bag" aria-hidden="true">${BAG}</span></span>
+        </button>`).join('');
+    };
+    render('all');
+    const cats = $$('.czm-cats [data-cat]');
+    cats.forEach((b) => b.addEventListener('click', () => {
+      if (b.classList.contains('is-on')) return;
+      cats.forEach((x) => { const on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', String(on)); });
+      render(b.dataset.cat);
+    }));
+  }
 })();

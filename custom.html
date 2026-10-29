@@ -25,8 +25,8 @@
 <body class="page-custom">
 
   <div class="loader" id="loader" aria-hidden="true">
-    <div class="loader__half loader__half--top"><div class="loader__stage"></div></div>
-    <div class="loader__half loader__half--bottom"><div class="loader__stage"></div></div>
+    <div class="loader__half loader__half--top"><div class="loader__stage"><div class="loader__mono"><small>Nails by</small><b>S</b></div></div></div>
+    <div class="loader__half loader__half--bottom"><div class="loader__stage"><div class="loader__mono"><small>Nails by</small><b>S</b></div></div></div>
     <span class="loader__line"></span>
   </div>
   <div class="cursor" aria-hidden="true"><span class="cursor__label">View</span></div>
@@ -98,6 +98,84 @@
          a row of three photos, a bracketed statement, card rows).
          Phones: app-style (huge condensed caps, lime blobs, a dark featured
          card, a swipe rail and tabs). -->
+    <!-- ─── PHONES: the custom page as an app (after the CRE8 and farm-market
+         references): huge caps with a lime asterisk, a soft photo card with
+         stats, bold colour tiles, category tiles that filter the sets, a dark
+         "your idea matters" screen and a banner. ─── -->
+    <section class="czm m-only" aria-labelledby="czm-title">
+      <div class="czm-hero">
+        <h1 class="czm-hero__title" id="czm-title"><span>Dream it.</span><span>We paint</span><span>it <i aria-hidden="true">&rarr;</i></span></h1>
+        <svg class="czm-ast" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round"><path d="M50 9v82M14.5 29.5l71 41M14.5 70.5l71-41"/></g></svg>
+        <p class="czm-hero__sub">Send it. We sketch it.<br>You wear it.</p>
+      </div>
+
+      <div class="czm-card">
+        <div class="czm-card__pic">
+          <img src="images/press-ons/merlot-garden.webp" alt="Merlot Garden press-on nails, hand-painted" />
+          <span class="czm-seal" aria-hidden="true">
+            <svg viewBox="0 0 120 120"><defs><path id="czm-ring" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" /></defs><text font-family="Manrope, sans-serif" font-size="11" font-weight="800" letter-spacing="2.6" fill="#401F28"><textPath href="#czm-ring" textLength="270" lengthAdjust="spacing">MADE FOR YOU ✦ HANDMADE ✦ </textPath></text></svg>
+            <i>♡</i>
+          </span>
+        </div>
+        <div class="czm-card__body">
+          <p class="czm-card__kick">Straight from Shanaya <em>made for you</em></p>
+          <p class="czm-card__big">Your idea. <span>Hand-painted.</span></p>
+          <dl class="czm-stats">
+            <div><dt>Days to make</dt><dd>7&ndash;14</dd></div>
+            <div><dt>Sizes</dt><dd>XS&ndash;XL</dd></div>
+            <div><dt>By hand</dt><dd>100%</dd></div>
+          </dl>
+          <a class="czm-go" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">Start your set <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+        </div>
+      </div>
+
+      <div class="czm-tiles">
+        <button type="button" class="czm-tile czm-tile--lime" data-quick="108" aria-label="Quick look: Scarlet Lily"><b>Petals<br>painted<br>by hand</b><img src="images/press-ons/scarlet-lily-sm.webp" alt="" loading="lazy" /><span>Florals<small>Custom</small></span></button>
+        <button type="button" class="czm-tile czm-tile--wine" data-quick="104" aria-label="Quick look: Mocha Chrome"><b>Chrome<br>that<br>glows.</b><img src="images/press-ons/mocha-chrome-sm.webp" alt="" loading="lazy" /><span>Chrome<small>Custom</small></span></button>
+        <button type="button" class="czm-tile czm-tile--dark" data-quick="109" aria-label="Quick look: Bow &amp; Cherry"><b>Charms<br>are a<br>language</b><img src="images/press-ons/bow-and-cherry-sm.webp" alt="" loading="lazy" /><span>3D charms<small>Custom</small></span></button>
+        <button type="button" class="czm-tile czm-tile--pink" data-quick="110" aria-label="Quick look: Berry Leopard"><b>Less<br>basic.<br>More you.</b><img src="images/press-ons/berry-leopard-sm.webp" alt="" loading="lazy" /><span>Animal print<small>Custom</small></span></button>
+      </div>
+
+      <div class="czm-shop" id="czm-shop">
+        <p class="czm-pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg>Starting points</p>
+        <div class="czm-cats" role="group" aria-label="Show sets by style">
+          <button type="button" class="is-on" data-cat="all" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg>All</button>
+          <button type="button" data-cat="floral" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="2.6"/><path d="M12 9.4C10 5 14 3.5 14.4 7.2M14.6 12c4.4-2 5.9 2 2.2 2.4M12 14.6c2 4.4-2 5.9-2.4 2.2M9.4 12C5 14 3.5 10 7.2 9.6"/></svg>Florals</button>
+          <button type="button" data-cat="chrome" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 12c0-2 2.6-2 2.6 0s-2.4 4.2-5.2 3.2S6 10 9 7.6s8.6-1 9.4 3.6-3 8.4-7.4 8.2"/></svg>Chrome</button>
+          <button type="button" data-cat="charms" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="16.5" r="3.5"/><circle cx="16.5" cy="17" r="3.2"/><path d="M8 13c1-5 4-8 9-9.5M16.5 13.8c-.5-3.5-1-6.5.5-10.3"/></svg>Charms</button>
+          <button type="button" data-cat="animal" aria-pressed="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="7" cy="8" rx="2.2" ry="2.8"/><ellipse cx="17" cy="8" rx="2.2" ry="2.8"/><ellipse cx="4.6" cy="13.5" rx="2" ry="2.5"/><ellipse cx="19.4" cy="13.5" rx="2" ry="2.5"/><path d="M12 11.5c3 0 5.5 4 5.5 6s-2 2.6-5.5 2.6-5.5-.6-5.5-2.6 2.5-6 5.5-6z"/></svg>Animal</button>
+        </div>
+        <div class="czm-grid" data-czm-grid aria-live="polite"></div>
+      </div>
+
+      <div class="czm-dark">
+        <div class="czm-dark__hi"><img src="images/press-ons/merlot-garden-sm.webp" alt="" loading="lazy" /><p>Hey gorgeous,<b>Dreamer</b></p><span class="czm-dark__dot" aria-hidden="true"></span></div>
+        <h2 class="czm-dark__title">Your<br>idea<br><span>matters</span> <i aria-hidden="true">&rarr;</i></h2>
+        <svg class="czm-ast czm-ast--dark" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round"><path d="M50 9v82M14.5 29.5l71 41M14.5 70.5l71-41"/></g></svg>
+        <p class="czm-dark__sub">Dream more.<br>Wear the extraordinary.</p>
+        <a class="czm-nums" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">
+          <span><b>1</b>DM</span><span><b>1</b>Sketch</span><span><b>10</b>Nails painted</span>
+          <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
+        </a>
+        <div class="czm-dark__head"><h3>Recent sets</h3><a href="shop.html">View all &rarr;</a></div>
+        <div class="czm-recent">
+          <button type="button" data-quick="112" aria-label="Quick look: Orchid Tortoise"><img src="images/press-ons/orchid-tortoise-sm.webp" alt="" loading="lazy" /><b>Orchids<br>in<br>bloom</b><span>Florals</span></button>
+          <button type="button" data-quick="107" aria-label="Quick look: Rose Gold Swirl"><img src="images/press-ons/rose-gold-swirl-sm.webp" alt="" loading="lazy" /><b>Gold<br>that<br>swirls</b><span>Chrome</span></button>
+          <button type="button" data-quick="111" aria-label="Quick look: Big Apple Eight"><img src="images/press-ons/big-apple-eight-sm.webp" alt="" loading="lazy" /><b>City<br>girl<br>charms</b><span>Charms</span></button>
+        </div>
+        <a class="czm-premium" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">
+          <small>Made to order</small><b>Unlock your<br>custom set</b><span>DM Shanaya on TikTok with your idea and size.</span>
+          <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
+        </a>
+      </div>
+
+      <a class="czm-banner" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">
+        <span class="czm-banner__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg></span>
+        <span><b>Real nails. Real hands.</b>Hand-painted, straight to you.</span>
+        <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
+      </a>
+    </section>
+
     <section class="cz-hero" aria-labelledby="cz-title">
       <div class="cz-hero__in">
         <div class="cz-hero__bar" data-reveal>
@@ -117,9 +195,6 @@
           <img class="zoom" src="images/press-ons/scarlet-lily.webp" alt="" loading="lazy" />
           <img class="zoom" src="images/press-ons/mocha-chrome.webp" alt="" loading="lazy" />
           <img class="zoom" src="images/press-ons/bow-and-cherry.webp" alt="" loading="lazy" />
-          <svg class="cz-blob cz-blob--1" viewBox="0 0 200 200" aria-hidden="true"><path fill="currentColor" d="M43 18c26-17 66-24 93-6 25 17 33 48 49 72 13 19 18 47 2 64-17 19-46 12-69 22-25 11-41 34-68 28-27-7-40-37-46-63-6-24-1-50 11-71 7-13 15-37 28-46z"/></svg>
-          <svg class="cz-blob cz-blob--2" viewBox="0 0 200 200" aria-hidden="true"><path fill="currentColor" d="M61 7c30-8 58 14 74 37 13 18 13 42 27 59 14 18 41 29 38 53-4 26-35 42-61 41-22-1-37-21-58-27-25-7-58 2-73-21-14-22 2-50 6-75 5-28 18-59 47-67z"/></svg>
-          <figcaption class="cz-hero__tag">Made<br>for you</figcaption>
           <a class="cz-pill cz-pill--light" href="#cz-ideas">Explore <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i></a>
           <span class="cz-dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i></span>
         </figure>
@@ -143,19 +218,6 @@
       </button>
     </section>
 
-    <!-- phones: the dark featured card -->
-    <section class="cz-feat m-only" aria-label="Featured custom set">
-      <div class="cz-feat__card">
-        <img src="images/press-ons/merlot-garden.webp" alt="" loading="lazy" decoding="async" />
-        <svg class="cz-blob cz-blob--3" viewBox="0 0 200 200" aria-hidden="true"><path fill="currentColor" d="M61 7c30-8 58 14 74 37 13 18 13 42 27 59 14 18 41 29 38 53-4 26-35 42-61 41-22-1-37-21-58-27-25-7-58 2-73-21-14-22 2-50 6-75 5-28 18-59 47-67z"/></svg>
-        <div class="cz-feat__copy">
-          <p class="cz-feat__label">Featured</p>
-          <h2 class="cz-feat__name">Merlot Garden</h2>
-          <p class="cz-feat__sub">The art of hand-painted florals</p>
-          <button type="button" class="cz-lime" data-quick="101">View set <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        </div>
-      </div>
-    </section>
 
     <!-- starting points: cards with a NEW badge, name and price (a rail on phones) -->
     <section class="cz-ideas" id="cz-ideas" aria-labelledby="cz-ideas-title">
@@ -189,31 +251,6 @@
       </div>
     </section>
 
-    <!-- phones: hand painted, with tabs -->
-    <section class="cz-club m-only" aria-labelledby="cz-club-title">
-      <svg class="cz-blob cz-blob--4" viewBox="0 0 200 200" aria-hidden="true"><path fill="currentColor" d="M43 18c26-17 66-24 93-6 25 17 33 48 49 72 13 19 18 47 2 64-17 19-46 12-69 22-25 11-41 34-68 28-27-7-40-37-46-63-6-24-1-50 11-71 7-13 15-37 28-46z"/></svg>
-      <h2 class="cz-club__title" id="cz-club-title">Hand<br>painted</h2>
-      <p class="cz-club__lead">Every set is sketched, checked with you and painted nail by nail. Tell Shanaya what you love.</p>
-      <div class="cz-club__row">
-        <span class="cz-faces" aria-hidden="true"><img src="images/press-ons/merlot-garden-sm.webp" alt="" loading="lazy" /><img src="images/press-ons/scarlet-lily-sm.webp" alt="" loading="lazy" /><img src="images/press-ons/mocha-chrome-sm.webp" alt="" loading="lazy" /><img src="images/press-ons/bow-and-cherry-sm.webp" alt="" loading="lazy" /><img src="images/press-ons/berry-leopard-sm.webp" alt="" loading="lazy" /></span>
-        <a class="cz-lime" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">DM now</a>
-      </div>
-      <div class="cz-tabs" role="tablist" aria-label="Custom styles">
-        <button type="button" role="tab" aria-selected="true" class="is-on" data-tab="0">Florals</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="1">Chrome</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="2">Charms</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="3">Animal</button>
-      </div>
-      <article class="cz-post" role="tabpanel" aria-live="polite">
-        <header><img src="images/logo-small.webp" alt="" /><b>nailsbyshanaya_</b><span>custom set</span></header>
-        <p class="cz-post__text">Hand-painted lilies on a soft nude base. Want them in your colours?</p>
-        <img class="cz-post__img" src="images/press-ons/scarlet-lily.webp" alt="Scarlet Lily press-on nails" loading="lazy" decoding="async" />
-        <footer>
-          <button type="button" class="cz-post__look" data-quick="108">Quick look</button>
-          <a class="cz-post__plus" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" aria-label="Ask for this on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
-        </footer>
-      </article>
-    </section>
 
     <!-- how it works: four highlight cards -->
     <section class="cz-steps" aria-labelledby="cz-steps-title">

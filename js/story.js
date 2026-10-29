@@ -130,10 +130,22 @@
       405: 'Cherry red, made to be seen', 408: 'Butter yellow and sweet charms',
     };
     const WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
-    stage.innerHTML = BASKETS.map((b) => `
+    // Each photo is the basket with the hands holding it. Only the basket shows
+    // (the rest fades away above its handle) until it reaches the middle, when
+    // the hands rise into view. Per photo (images/basket/arm-*.webp): ta = the
+    // basket's width / height, tr = its share of the photo's height, fw = the
+    // photo's width / the basket's, fx = the basket's centre from the photo's left (in basket widths).
+    const ARM = {
+      a: [1.5388, 0.4631, 1.183, 0.6008], b: [1.4489, 0.491, 1.0907, 0.5504], c: [1.5542, 0.4672, 1.1525, 0.5775],
+      e: [1.5432, 0.4947, 1.0093, 0.5], h: [1.4789, 0.5, 1.031, 0.5262],
+    };
+    stage.innerHTML = BASKETS.map((b) => {
+      const key = b.cutout.slice(-6, -5), [ta, tr, fw, fx] = ARM[key];
+      return `
       <button type="button" class="bk" data-quick="${b.id}" data-cursor="Quick look" tabindex="-1" aria-label="Quick look: ${esc(b.name)}">
-        <img class="bk__img" src="${b.cutout.replace('basket-', 'tray-')}" alt="" loading="lazy" decoding="async">
-      </button>`).join('');
+        <img class="bk__img" src="images/basket/arm-${key}.webp" alt="" loading="lazy" decoding="async" style="--ta:${ta};--tr:${tr};--fw:${fw};--fx:${fx}">
+      </button>`;
+    }).join('');
     const items = $$('.bk', stage);
     const info = $('.coll__info', coll), quotes = $('.cd__quotes', coll);
     const out = {
@@ -346,6 +358,32 @@
       render(b.dataset.cat);
     });
   }
+  // phones: the hero card takes turns showing four sets, every three seconds
+  const feature = $('.mh__feature');
+  if (feature && !reduceMotion) {
+    const LIST = [109, 101, 104, 111].map(byId).filter(Boolean);
+    const card = $('.mh__card', feature);
+    let at = 0;
+    setInterval(() => {
+      if (document.hidden || !mqMobile.matches || feature.getBoundingClientRect().bottom < 0) return;
+      at = (at + 1) % LIST.length;
+      const p = LIST[at];
+      const old = $('img', feature), img = new Image();
+      img.alt = ''; img.className = 'is-new'; img.src = p.img;
+      img.decode().catch(() => {}).then(() => {
+        old.after(img);
+        requestAnimationFrame(() => img.classList.remove('is-new'));
+        setTimeout(() => old.remove(), 900);
+        feature.dataset.quick = p.id;
+        feature.setAttribute('aria-label', `Quick look: ${p.name}`);
+        $('.mh__kicker', card).textContent = p.badge || 'Handmade';
+        $('.mh__name', card).textContent = p.name;
+        $('.mh__price', card).innerHTML = `${usd(p.price)}${p.shape ? ` · ${esc(p.shape)}` : ''}`;
+        card.classList.remove('is-swap'); void card.offsetWidth; card.classList.add('is-swap');
+      });
+    }, 3000);
+  }
+
   const mcRail = $('[data-mc-rail]');
   if (mcRail) {
     const dots = $$('.mc__dots i');
