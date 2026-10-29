@@ -93,133 +93,180 @@
   </div>
 
   <main>
-    <!-- ─── CUSTOM ORDERS: a small page of its own (the shop stays strictly shop) ─── -->
-    <section class="cx cx--page" aria-labelledby="cx-title">
-      <span class="cu-spark cu-spark--1" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg></span>
-      <span class="cu-spark cu-spark--2" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg></span>
-      <div class="container cx__grid">
-        <div class="cx__copy">
-          <p class="cx__label" data-reveal>Custom orders</p>
-          <h1 class="cx__title" id="cx-title" data-split>Want something <span class="cx__hl">custom?</span></h1>
-          <p class="cx__script" data-reveal style="--d:.15s">Dream it, we&rsquo;ll paint it ♡</p>
-          <p class="cu-lead" data-reveal style="--d:.2s">Your colours, your charms, your vibe. Shanaya hand-paints a one-of-a-kind press-on set made to fit you, from the first sketch to the last nail.</p>
-          <ul class="cu-tags" data-reveal style="--d:.25s"><li>Made to order</li><li>7–14 days to make</li><li>Sizes XS–XL</li></ul>
-          <div class="cx__actions" data-reveal style="--d:.3s">
-            <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic>
-              <span class="roll"><span>DM @nailsbyshanaya_</span><span>DM @nailsbyshanaya_</span></span>
-              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
-            </a>
-            <a href="shop.html" class="btn btn--ghost"><span class="roll"><span>Shop ready-made</span><span>Shop ready-made</span></span></a>
+    <!-- ─── CUSTOM ORDERS ───
+         Desktop: an editorial page (a hero photo with a giant overlapping word,
+         a row of three photos, a bracketed statement, card rows).
+         Phones: app-style (huge condensed caps, lime blobs, a dark featured
+         card, a swipe rail and tabs). -->
+    <section class="cz-hero" aria-labelledby="cz-title">
+      <div class="cz-hero__in">
+        <div class="cz-hero__bar" data-reveal>
+          <p class="cz-brand"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg><b>Custom orders</b><span>Made by hand, made for you</span></p>
+          <a class="cz-pill" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">DM to order <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i></a>
+        </div>
+        <div class="cz-hero__copy">
+          <h1 class="cz-hero__title" id="cz-title" data-split>Your nails. <br>Your story.</h1>
+          <p class="cz-hero__lead" data-reveal style="--d:.15s">Send an idea, a colour or just a vibe. Shanaya hand-paints a one-of-a-kind press-on set, made to fit you.</p>
+          <div class="cz-hero__go" data-reveal style="--d:.25s">
+            <a class="cz-go" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">Start your set</a>
+            <a class="cz-go cz-go--soft" href="shop.html">Shop ready-made</a>
           </div>
         </div>
-        <div class="cx__stack" data-reveal="fade" aria-hidden="true">
-          <img class="cx__pic cx__pic--1" src="images/press-ons/scarlet-lily.webp" alt="" loading="lazy" />
-          <img class="cx__pic cx__pic--2" src="images/press-ons/orchid-tortoise.webp" alt="" loading="lazy" />
-          <img class="cx__pic cx__pic--3" src="images/press-ons/downtown-charm.webp" alt="" loading="lazy" />
-          <span class="cx__badge">
-            <svg class="spin" viewBox="0 0 120 120"><defs><path id="ring-cx" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" /></defs><text font-family="Manrope, sans-serif" font-size="10.2" font-weight="800" letter-spacing="3.1" fill="#401F28"><textPath href="#ring-cx" textLength="288" lengthAdjust="spacing">MADE TO ORDER ✦ HANDMADE ✦ </textPath></text></svg>
-            <i>♡</i>
-          </span>
+        <figure class="cz-hero__pic" data-reveal="clip">
+          <img class="zoom is-on" src="images/press-ons/merlot-garden.webp" alt="Merlot Garden press-on nails, hand-painted" />
+          <img class="zoom" src="images/press-ons/scarlet-lily.webp" alt="" loading="lazy" />
+          <img class="zoom" src="images/press-ons/mocha-chrome.webp" alt="" loading="lazy" />
+          <img class="zoom" src="images/press-ons/bow-and-cherry.webp" alt="" loading="lazy" />
+          <svg class="cz-blob cz-blob--1" viewBox="0 0 200 200" aria-hidden="true"><path fill="currentColor" d="M43 18c26-17 66-24 93-6 25 17 33 48 49 72 13 19 18 47 2 64-17 19-46 12-69 22-25 11-41 34-68 28-27-7-40-37-46-63-6-24-1-50 11-71 7-13 15-37 28-46z"/></svg>
+          <svg class="cz-blob cz-blob--2" viewBox="0 0 200 200" aria-hidden="true"><path fill="currentColor" d="M61 7c30-8 58 14 74 37 13 18 13 42 27 59 14 18 41 29 38 53-4 26-35 42-61 41-22-1-37-21-58-27-25-7-58 2-73-21-14-22 2-50 6-75 5-28 18-59 47-67z"/></svg>
+          <figcaption class="cz-hero__tag">Made<br>for you</figcaption>
+          <a class="cz-pill cz-pill--light" href="#cz-ideas">Explore <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i></a>
+          <span class="cz-dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i></span>
+        </figure>
+        <p class="cz-word" aria-hidden="true" data-letters data-fit>CUSTOM</p>
+      </div>
+    </section>
+
+    <!-- three photos, edge to edge (desktop) -->
+    <section class="cz-trio" aria-label="Custom styles">
+      <button type="button" class="cz-trio__item" data-quick="108" data-cursor="Quick look" data-reveal="clip" aria-label="Quick look: Scarlet Lily">
+        <img class="zoom" src="images/press-ons/scarlet-lily.webp" alt="" loading="lazy" decoding="async" />
+        <span class="cz-trio__cap"><small>Florals</small>Hand-painted lilies</span>
+      </button>
+      <button type="button" class="cz-trio__item" data-quick="104" data-cursor="Quick look" data-reveal="clip" style="--d:.12s" aria-label="Quick look: Mocha Chrome">
+        <img class="zoom" src="images/press-ons/mocha-chrome.webp" alt="" loading="lazy" decoding="async" />
+        <span class="cz-trio__cap"><small>Chrome</small>Liquid swirls</span>
+      </button>
+      <button type="button" class="cz-trio__item" data-quick="109" data-cursor="Quick look" data-reveal="clip" style="--d:.24s" aria-label="Quick look: Bow &amp; Cherry">
+        <img class="zoom" src="images/press-ons/bow-and-cherry.webp" alt="" loading="lazy" decoding="async" />
+        <span class="cz-trio__cap"><small>3D charms</small>Bows &amp; cherries</span>
+      </button>
+    </section>
+
+    <!-- phones: the dark featured card -->
+    <section class="cz-feat m-only" aria-label="Featured custom set">
+      <div class="cz-feat__card">
+        <img src="images/press-ons/merlot-garden.webp" alt="" loading="lazy" decoding="async" />
+        <svg class="cz-blob cz-blob--3" viewBox="0 0 200 200" aria-hidden="true"><path fill="currentColor" d="M61 7c30-8 58 14 74 37 13 18 13 42 27 59 14 18 41 29 38 53-4 26-35 42-61 41-22-1-37-21-58-27-25-7-58 2-73-21-14-22 2-50 6-75 5-28 18-59 47-67z"/></svg>
+        <div class="cz-feat__copy">
+          <p class="cz-feat__label">Featured</p>
+          <h2 class="cz-feat__name">Merlot Garden</h2>
+          <p class="cz-feat__sub">The art of hand-painted florals</p>
+          <button type="button" class="cz-lime" data-quick="101">View set <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         </div>
       </div>
     </section>
 
-    <!-- how it works: three steps -->
-    <section class="cu-steps" aria-labelledby="cu-steps-title">
-      <div class="container">
-        <p class="cx__label" data-reveal>The process</p>
-        <h2 class="cu-h" id="cu-steps-title" data-split>How custom <em>works</em></h2>
-        <ol class="cu-steps__list">
-          <li class="cu-step cu-step--1" data-reveal style="--d:.05s"><span class="cu-step__num">01</span><img src="images/press-ons/merlot-garden-sm.webp" alt="" loading="lazy" /><h3>Send your idea</h3><p>DM a photo, a colour, a mood board or just a vibe — plus your size.</p></li>
-          <li class="cu-step cu-step--2" data-reveal style="--d:.15s"><span class="cu-step__num">02</span><img src="images/press-ons/orchid-tortoise-sm.webp" alt="" loading="lazy" /><h3>We design it</h3><p>Shanaya sketches the set and checks every detail with you first.</p></li>
-          <li class="cu-step cu-step--3" data-reveal style="--d:.25s"><span class="cu-step__num">03</span><img src="images/press-ons/big-apple-eight-sm.webp" alt="" loading="lazy" /><h3>Made to fit</h3><p>Hand-painted in your size, XS to XL, packed with love and shipped to you.</p></li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- inspiration -->
-    <section class="cu-ideas" aria-labelledby="cu-ideas-title">
-      <div class="container">
-        <div class="cu-ideas__head">
-          <div>
-            <p class="cx__label" data-reveal>Inspiration</p>
-            <h2 class="cu-h" id="cu-ideas-title" data-split>Need a <em>starting point?</em></h2>
-          </div>
-          <p class="cu-ideas__note" data-reveal>Mix and match anything you see here — tell us what you love.</p>
+    <!-- starting points: cards with a NEW badge, name and price (a rail on phones) -->
+    <section class="cz-ideas" id="cz-ideas" aria-labelledby="cz-ideas-title">
+      <div class="cz-wrap">
+        <div class="cz-ideas__head">
+          <h2 class="cz-ideas__title" id="cz-ideas-title" data-reveal>Starting points <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5l10 7-10 7z"/></svg></h2>
+          <a class="cz-pill" href="shop.html" data-reveal>View all <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i></a>
         </div>
-        <ul class="cu-ideas__grid">
-            <li data-reveal style="--d:0.00s"><button type="button" class="cu-idea" data-quick="108" data-cursor="Quick look" aria-label="See florals inspiration">
-              <span class="cu-idea__img"><img src="images/press-ons/scarlet-lily-sm.webp" alt="" loading="lazy" decoding="async" /></span>
-              <b>Florals</b><span>Hand-painted lilies</span>
-            </button></li>
-            <li data-reveal style="--d:0.07s"><button type="button" class="cu-idea" data-quick="104" data-cursor="Quick look" aria-label="See chrome inspiration">
-              <span class="cu-idea__img"><img src="images/press-ons/mocha-chrome-sm.webp" alt="" loading="lazy" decoding="async" /></span>
-              <b>Chrome</b><span>Liquid silver swirls</span>
-            </button></li>
-            <li data-reveal style="--d:0.14s"><button type="button" class="cu-idea" data-quick="109" data-cursor="Quick look" aria-label="See 3d charms inspiration">
-              <span class="cu-idea__img"><img src="images/press-ons/bow-and-cherry-sm.webp" alt="" loading="lazy" decoding="async" /></span>
-              <b>3D charms</b><span>Bows, cherries & more</span>
-            </button></li>
-            <li data-reveal style="--d:0.21s"><button type="button" class="cu-idea" data-quick="110" data-cursor="Quick look" aria-label="See animal print inspiration">
-              <span class="cu-idea__img"><img src="images/press-ons/berry-leopard-sm.webp" alt="" loading="lazy" decoding="async" /></span>
-              <b>Animal print</b><span>Leopard, zebra, cow</span>
-            </button></li>
-            <li data-reveal style="--d:0.28s"><button type="button" class="cu-idea" data-quick="103" data-cursor="Quick look" aria-label="See french tips inspiration">
-              <span class="cu-idea__img"><img src="images/press-ons/polka-blossom-sm.webp" alt="" loading="lazy" decoding="async" /></span>
-              <b>French tips</b><span>Soft tips, sweet details</span>
-            </button></li>
-            <li data-reveal style="--d:0.35s"><button type="button" class="cu-idea" data-quick="107" data-cursor="Quick look" aria-label="See gold details inspiration">
-              <span class="cu-idea__img"><img src="images/press-ons/rose-gold-swirl-sm.webp" alt="" loading="lazy" decoding="async" /></span>
-              <b>Gold details</b><span>Sculpted gold & chrome</span>
-            </button></li>
+        <ul class="cz-ideas__list">
+          <li data-reveal style="--d:0s"><button type="button" class="cz-card" data-quick="112" data-cursor="Quick look"><span class="cz-card__img"><i data-badge></i><img src="images/press-ons/orchid-tortoise.webp" alt="" loading="lazy" decoding="async" /></span><b data-name></b><span class="cz-card__sub">Florals &amp; tortoise</span><span class="cz-card__price" data-price></span><span class="cz-card__go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></li>
+          <li data-reveal style="--d:.08s"><button type="button" class="cz-card" data-quick="111" data-cursor="Quick look"><span class="cz-card__img"><i data-badge></i><img src="images/press-ons/big-apple-eight.webp" alt="" loading="lazy" decoding="async" /></span><b data-name></b><span class="cz-card__sub">3D charms &amp; gold</span><span class="cz-card__price" data-price></span><span class="cz-card__go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></li>
+          <li data-reveal style="--d:.16s"><button type="button" class="cz-card" data-quick="110" data-cursor="Quick look"><span class="cz-card__img"><i data-badge></i><img src="images/press-ons/berry-leopard.webp" alt="" loading="lazy" decoding="async" /></span><b data-name></b><span class="cz-card__sub">Animal print</span><span class="cz-card__price" data-price></span><span class="cz-card__go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></li>
+          <li data-reveal style="--d:.24s"><button type="button" class="cz-card" data-quick="107" data-cursor="Quick look"><span class="cz-card__img"><i data-badge></i><img src="images/press-ons/rose-gold-swirl.webp" alt="" loading="lazy" decoding="async" /></span><b data-name></b><span class="cz-card__sub">Gold &amp; chrome</span><span class="cz-card__price" data-price></span><span class="cz-card__go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></li>
+          <li data-reveal style="--d:.32s" class="m-only"><button type="button" class="cz-card" data-quick="103" data-cursor="Quick look"><span class="cz-card__img"><i data-badge></i><img src="images/press-ons/polka-blossom.webp" alt="" loading="lazy" decoding="async" /></span><b data-name></b><span class="cz-card__sub">Soft french tips</span><span class="cz-card__price" data-price></span><span class="cz-card__go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></li>
         </ul>
       </div>
     </section>
 
+    <!-- the statement, in brackets and arrows (desktop) -->
+    <section class="cz-about" aria-labelledby="cz-about-title">
+      <div class="cz-wrap">
+        <p class="cz-small" id="cz-about-title" data-reveal>About custom</p>
+        <p class="cz-state" data-reveal>
+          <span class="cz-nw"><span class="cz-br">[</span><em>Shanaya</em><span class="cz-br">]</span></span> Nails is a small studio that <span class="cz-nw">hand-paints</span>
+          <span class="cz-arr cz-arr--r" aria-hidden="true">&rarr;</span> PRESS-ONS
+          and nail art <span class="cz-arr cz-arr--l" aria-hidden="true">&larr;</span> with
+          <span class="cz-nw"><span class="cz-br">[</span><em>one-of-a-kind</em><span class="cz-br">]</span></span>
+          detail, made to fit only you.
+        </p>
+        <p class="cz-state__note" data-reveal style="--d:.2s">Every custom set starts with a DM. Shanaya sketches it, checks every detail with you, then paints it by hand in your size, XS to XL. Sets take 7&ndash;14 business days to make.</p>
+      </div>
+    </section>
+
+    <!-- phones: hand painted, with tabs -->
+    <section class="cz-club m-only" aria-labelledby="cz-club-title">
+      <svg class="cz-blob cz-blob--4" viewBox="0 0 200 200" aria-hidden="true"><path fill="currentColor" d="M43 18c26-17 66-24 93-6 25 17 33 48 49 72 13 19 18 47 2 64-17 19-46 12-69 22-25 11-41 34-68 28-27-7-40-37-46-63-6-24-1-50 11-71 7-13 15-37 28-46z"/></svg>
+      <h2 class="cz-club__title" id="cz-club-title">Hand<br>painted</h2>
+      <p class="cz-club__lead">Every set is sketched, checked with you and painted nail by nail. Tell Shanaya what you love.</p>
+      <div class="cz-club__row">
+        <span class="cz-faces" aria-hidden="true"><img src="images/press-ons/merlot-garden-sm.webp" alt="" loading="lazy" /><img src="images/press-ons/scarlet-lily-sm.webp" alt="" loading="lazy" /><img src="images/press-ons/mocha-chrome-sm.webp" alt="" loading="lazy" /><img src="images/press-ons/bow-and-cherry-sm.webp" alt="" loading="lazy" /><img src="images/press-ons/berry-leopard-sm.webp" alt="" loading="lazy" /></span>
+        <a class="cz-lime" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">DM now</a>
+      </div>
+      <div class="cz-tabs" role="tablist" aria-label="Custom styles">
+        <button type="button" role="tab" aria-selected="true" class="is-on" data-tab="0">Florals</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="1">Chrome</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="2">Charms</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="3">Animal</button>
+      </div>
+      <article class="cz-post" role="tabpanel" aria-live="polite">
+        <header><img src="images/logo-small.webp" alt="" /><b>nailsbyshanaya_</b><span>custom set</span></header>
+        <p class="cz-post__text">Hand-painted lilies on a soft nude base. Want them in your colours?</p>
+        <img class="cz-post__img" src="images/press-ons/scarlet-lily.webp" alt="Scarlet Lily press-on nails" loading="lazy" decoding="async" />
+        <footer>
+          <button type="button" class="cz-post__look" data-quick="108">Quick look</button>
+          <a class="cz-post__plus" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" aria-label="Ask for this on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
+        </footer>
+      </article>
+    </section>
+
+    <!-- how it works: four highlight cards -->
+    <section class="cz-steps" aria-labelledby="cz-steps-title">
+      <div class="cz-wrap">
+        <p class="cz-small" id="cz-steps-title" data-reveal>How custom works</p>
+        <ol class="cz-steps__list">
+          <li data-reveal style="--d:0s"><span class="cz-steps__img"><img src="images/press-ons/polka-blossom-sm.webp" alt="" loading="lazy" decoding="async" /><i>01</i></span><h3>Send your idea</h3><p>DM a photo, a colour, a mood board or just a vibe, plus your size.</p></li>
+          <li data-reveal style="--d:.08s"><span class="cz-steps__img"><img src="images/press-ons/orchid-tortoise-sm.webp" alt="" loading="lazy" decoding="async" /><i>02</i></span><h3>We sketch it</h3><p>Shanaya draws your set and checks every detail with you first.</p></li>
+          <li data-reveal style="--d:.16s"><span class="cz-steps__img"><img src="images/press-ons/tropic-wild-sm.webp" alt="" loading="lazy" decoding="async" /><i>03</i></span><h3>Painted by hand</h3><p>Every nail is painted by hand in your size, XS to XL.</p></li>
+          <li data-reveal style="--d:.24s"><span class="cz-steps__img"><img src="images/press-ons/downtown-charm-sm.webp" alt="" loading="lazy" decoding="async" /><i>04</i></span><h3>Shipped to you</h3><p>Packed with love and shipped in 7&ndash;14 business days.</p></li>
+        </ol>
+      </div>
+    </section>
+
     <!-- good to know -->
-    <section class="cu-faq" aria-labelledby="cu-faq-title">
-      <div class="container cu-faq__grid">
+    <section class="cz-faq" aria-labelledby="cz-faq-title">
+      <div class="cz-wrap cz-faq__grid">
         <div>
-          <p class="cx__label" data-reveal>Before you order</p>
-          <h2 class="cu-h" id="cu-faq-title" data-split>Good to <em>know</em> ♡</h2>
+          <p class="cz-small" data-reveal>Before you order</p>
+          <h2 class="cz-faq__title" id="cz-faq-title" data-split>Good to know</h2>
         </div>
-        <div class="cu-faq__list">
-          <details class="cu-q" data-reveal style="--d:0.00s" open>
+        <div class="cz-faq__list">
+          <details class="cz-q" data-reveal style="--d:0s" open>
             <summary>How long does a custom set take?<i aria-hidden="true"></i></summary>
-            <p>Custom sets take <b>7–14 business days</b> to make. Then they ship to the US and Canada, usually arriving in 5–12 business days. We'll confirm the timing with you by DM.</p>
+            <p>Custom sets take <b>7&ndash;14 business days</b> to make. Then they ship to the US and Canada, usually arriving in 5&ndash;12 business days. We'll confirm the timing with you by DM.</p>
           </details>
-          <details class="cu-q" data-reveal style="--d:0.06s">
+          <details class="cz-q" data-reveal style="--d:.06s">
             <summary>What should I send?<i aria-hidden="true"></i></summary>
-            <p>A photo, a colour, a mood board or just a vibe — plus your size, XS to XL. Not sure of your size? Send a photo of your bare nails and we'll help.</p>
+            <p>A photo, a colour, a mood board or just a vibe, plus your size, XS to XL. Not sure of your size? Send a photo of your bare nails and we'll help.</p>
           </details>
-          <details class="cu-q" data-reveal style="--d:0.12s">
+          <details class="cz-q" data-reveal style="--d:.12s">
             <summary>How much does it cost?<i aria-hidden="true"></i></summary>
             <p>It depends on the design: charms, 3D art and chrome take more time. Shanaya gives you a price by DM before she starts, so there are no surprises.</p>
           </details>
-          <details class="cu-q" data-reveal style="--d:0.18s">
+          <details class="cz-q" data-reveal style="--d:.18s">
             <summary>Will I see the design first?<i aria-hidden="true"></i></summary>
             <p>Yes. Shanaya sketches your set and checks it with you before she paints a single nail.</p>
           </details>
-          <details class="cu-q" data-reveal style="--d:0.24s">
+          <details class="cz-q" data-reveal style="--d:.24s">
             <summary>Can I return a custom set?<i aria-hidden="true"></i></summary>
-            <p>Custom sets are made just for you, so they're final sale — unless we made a mistake. See our <a href="policies.html#returns">returns policy</a>.</p>
+            <p>Custom sets are made just for you, so they're final sale, unless we made a mistake. See our <a href="policies.html#returns">returns policy</a>.</p>
           </details>
         </div>
       </div>
     </section>
 
     <!-- last word -->
-    <section class="cu-cta" aria-label="Start your custom set">
-      <div class="container">
-        <div class="cu-cta__card" data-reveal>
-          <p class="cu-cta__script">ready when you are</p>
-          <p class="cu-cta__big">Dream it, we&rsquo;ll <span>paint it</span> ♡</p>
-          <div class="cx__actions">
-            <a href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic>
-              <span class="roll"><span>DM @nailsbyshanaya_</span><span>DM @nailsbyshanaya_</span></span>
-              <span class="btn__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
-            </a>
-          </div>
+    <section class="cz-cta" aria-label="Start your custom set">
+      <div class="cz-wrap">
+        <div class="cz-cta__card" data-reveal>
+          <p class="cz-small">Ready when you are</p>
+          <p class="cz-cta__big">Dream it, <span>we&rsquo;ll paint it</span></p>
+          <a class="cz-pill cz-pill--big" href="https://www.tiktok.com/@nailsbyshanaya_" target="_blank" rel="noopener noreferrer">DM @nailsbyshanaya_ <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i></a>
         </div>
       </div>
     </section>
@@ -300,5 +347,6 @@
   <script src="js/fx.js"></script>
   <script src="js/receipt.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/custom.js"></script>
 </body>
 </html>

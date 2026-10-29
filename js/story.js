@@ -114,93 +114,77 @@
     scenes.push(sc);
   }
 
-  /* ─── 3. COLLECTION: the baskets on A24's film-index diagonal ───
-     Each basket sits on a soft glow in its own colour; they run on a rising
-     diagonal, grow toward the right and lean as you scroll. The basket in
-     the middle is featured, with what's inside listed in the panel. */
+  /* ─── 3. COLLECTION: the baskets laid out like A24's film index ───
+     The baskets sit where the discs sit in the reference: the featured one
+     centred over the quotes, the next one bigger and off the top-right
+     corner, the earlier ones smaller and running off the left edge. They
+     lean along the row and slide along it as you scroll; the panel and the
+     quotes change with the featured basket. */
   const coll = $('[data-scene="coll"]');
   if (coll) {
     const stage = $('[data-cd-stage]', coll);
     const BASKETS = [401, 402, 403, 405, 408].map(byId); // five of the ten: Pink, Cocoa, Emerald, Cherry, Butter
-    const inside = (b, type) => b.has.filter((id) => S.PRODUCTS.find((p) => p.id === id).type === type);
-    // each basket as itself: the cut-out photo on a soft round glow in its own colour
+    const MOOD = {
+      401: 'Soft, sweet and very pink', 402: 'Warm cocoa and mocha chrome', 403: 'Deep green with a little gold',
+      405: 'Cherry red, made to be seen', 408: 'Butter yellow and sweet charms',
+    };
+    const WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
     stage.innerHTML = BASKETS.map((b) => `
-      <button type="button" class="bk" data-quick="${b.id}" data-cursor="Quick look" tabindex="-1" aria-label="Quick look: ${esc(b.name)}" style="--tint:${b.tint}">
-        <span class="bk__tilt"><i class="bk__halo"></i><img class="bk__img" src="${b.cutout}" alt="" loading="lazy" decoding="async"></span>
+      <button type="button" class="bk" data-quick="${b.id}" data-cursor="Quick look" tabindex="-1" aria-label="Quick look: ${esc(b.name)}">
+        <img class="bk__img" src="${b.cutout.replace('basket-', 'tray-')}" alt="" loading="lazy" decoding="async">
       </button>`).join('');
     const items = $$('.bk', stage);
-    const info = $('.coll__info', coll);
+    const info = $('.coll__info', coll), quotes = $('.cd__quotes', coll);
     const out = {
-      name: $('.coll__name', info), sets: $('.bk__sets', info), charms: $('.bk__charms', info),
-      polish: $('.bk__polish', info), price: $('.bk__price', info), desc: $('.coll__desc', info),
-      btn: $('.cd__btn', info), now: $('.coll__now', coll),
+      name: $('.coll__name', info), price: $('.bk__price', info), inside: $('.bk__inside', info),
+      q1: $('.cd__q1', quotes), q2: $('.cd__q2', quotes),
     };
-    $('.coll__total', coll).textContent = pad(BASKETS.length);
-    const n = (k, one, many) => `${k} ${k === 1 ? one : many}`;
+    const replay = (el) => { el.classList.remove('is-swap'); void el.offsetWidth; el.classList.add('is-swap'); };
     let active = -1;
     const show = (i) => {
       const b = BASKETS[i];
-      info.classList.remove('is-swap');
-      void info.offsetWidth; // restart the swap animation
-      info.classList.add('is-swap');
-      out.name.textContent = b.name;
-      out.sets.textContent = n(inside(b, 'set').length, 'set', 'sets');
-      out.charms.textContent = n(inside(b, 'charm').length, 'box', 'boxes');
-      out.polish.textContent = n(inside(b, 'polish').length, 'shade', 'shades');
-      out.price.innerHTML = `${usd(b.price)} <s>${usd(b.oldPrice)}</s>`;
-      out.desc.textContent = b.desc;
-      out.btn.dataset.quick = b.id;
-      out.now.textContent = pad(i + 1);
+      replay(info); replay(quotes);
+      out.name.textContent = `${b.colour} Basket`;
+      out.price.innerHTML = usd(b.price);
+      out.inside.innerHTML = b.has.map((id) => `<span>${esc(byId(id).name)}</span>`).join('');
+      out.q1.textContent = `“${MOOD[b.id] || b.name}”`;
+      out.q2.textContent = `“${WORDS[b.has.length] || b.has.length} picks, one price”`;
     };
     const sc = pinned(coll);
-    // Laid out like A24's film index (measured from the reference): the
-    // featured basket sits centred just above the quotes; each step right is
-    // about 1.3x bigger and about one disc-width along, climbing more steeply
-    // as the discs grow, so the row runs off the left edge small and low and
-    // off the top-right corner big. Every disc is tilted into an ellipse and
-    // its label spins as the row slides. Any disc that would come to rest on
-    // the panel or the links fades out instead.
-    const top = $('.cd__top', coll), quotes = $('.cd__quotes', coll);
-    const G = 1.3, K = 1.06;                 // size step; spacing between centres (in basket widths)
-    const along = (d) => K * (1 + G) / 2 * (Math.pow(G, d) - 1) / (G - 1);
-    const rise = (d) => (d >= 0 ? 0.42 : 0.16) * (Math.pow(G, d) - 1) / (G - 1); // the climb, steeper on the right
-    let L = { cx: 0, cy: 0, D: 1, dmin: -3, dmax: 2 };
+    // Measured from the reference, frame by frame: where each disc sits
+    // relative to the featured one (in featured-disc widths) and its size.
+    // Index 0 is four steps left of the featured disc, index 4 is the featured one.
+    const KX = [-2.75, -2.15, -1.585, -0.909, 0, 1.265, 3.0, 5.0];
+    const KY = [0.42, 0.37, 0.311, 0.228, 0, -0.461, -1.25, -2.2];
+    const KS = [0.48, 0.57, 0.68, 0.81, 1, 1.36, 1.85, 2.4];
+    const at = (k, d) => {                    // a smooth curve through the measured points
+      const t = clamp(d + 4, 0, k.length - 1), i = Math.min(Math.floor(t), k.length - 2), u = t - i;
+      const p0 = k[Math.max(i - 1, 0)], p1 = k[i], p2 = k[i + 1], p3 = k[Math.min(i + 2, k.length - 1)];
+      return 0.5 * (2 * p1 + (p2 - p0) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u * u + (3 * p1 - p0 - 3 * p2 + p3) * u * u * u);
+    };
+    const BW = 1.2, BH = BW / 1.55;            // a basket is as wide as a disc and a bit, and wider than tall
+    let L = { cx: 0, cy: 0, D: 1, U: 1 };
     sc.measure = ((m) => () => {
       m();
-      const base = stage.getBoundingClientRect();
-      const rel = (el, pad) => { const r = el.getBoundingClientRect(); return [r.left - base.left - pad, r.top - base.top - pad, r.right - base.left + pad, r.bottom - base.top + pad]; };
       const W = stage.clientWidth, H = stage.clientHeight;
-      const text = [rel(info, 20), rel(top, 14)];
-      const q = rel(quotes, 0);
-      const D = Math.min(H * 0.6, W * 0.28);                // the featured disc's diameter (about 60% of the frame's height)
-      const cx = (q[0] + q[2]) / 2;                           // centred over the quotes, as in the reference
-      const cy = q[1] - 18 - D * 0.62;                       // its bottom edge just above them
-      // a disc is round: test its (tilted) elliptical outline against each block of text
-      const box = (d) => {
-        const s = Math.pow(G, d);
-        return { x: cx + along(d) * D, y: cy - rise(d) * D, a: (s * D) * 0.46, b: s * D * 0.6 };
-      };
-      const hits = (e) => text.some((t) => {
-        const px = clamp(e.x, t[0], t[2]), py = clamp(e.y, t[1], t[3]);
-        return ((px - e.x) / e.a) ** 2 + ((py - e.y) / e.b) ** 2 < 1;
-      });
-      let dmin = 0, dmax = 0;                                // check where discs come to rest (whole steps)
-      while (dmin > -4 && !hits(box(dmin - 1))) dmin -= 1;
-      while (dmax < 2 && !hits(box(dmax + 1))) dmax += 1;
-      L = { cx, cy, D, dmin: dmin - 0.6, dmax: dmax + 0.6 };
+      const D = Math.min(H * 0.58, W * 0.296);   // the featured disc: 58% of the frame's height
+      // steps along the row also stretch with a frame wider than the reference's
+      L = { cx: W * 0.516, cy: Math.min(H * 0.54, quotes.offsetTop - 14 - (D * BH) / 2), D, U: (D + W * 0.296) / 2 };
     })(sc.measure);
     const render = scrubber(0.8, (f) => {
-      const { cx, cy, D, dmin, dmax } = L;
+      const { cx, cy, D, U } = L;
+      const w = D * BW, h = D * BH;
       items.forEach((c, i) => {
         const d = i - f;
-        if (d < dmin || d > dmax) { c.style.visibility = 'hidden'; return; }
+        if (d < -4 || d > 3) { c.style.visibility = 'hidden'; return; }
         c.style.visibility = '';
-        const s = Math.pow(G, d), x = cx + along(d) * D, y = cy - rise(d) * D;
-        c.style.width = `${D.toFixed(1)}px`;
-        c.style.transform = `translate3d(${(x - D / 2).toFixed(1)}px,${(y - D * 0.625).toFixed(1)}px,0) scale(${s.toFixed(4)})`;
+        const s = at(KS, d), x = cx + at(KX, d) * U, y = cy + at(KY, d) * D;
+        // lean along the row: flat on the left, climbing more steeply to the right
+        const lean = (Math.atan2(at(KY, d + 0.05) - at(KY, d - 0.05), at(KX, d + 0.05) - at(KX, d - 0.05)) * 180) / Math.PI * 0.45;
+        c.style.width = `${w.toFixed(1)}px`;
+        c.style.height = `${h.toFixed(1)}px`;
+        c.style.transform = `translate3d(${(x - w / 2).toFixed(1)}px,${(y - h / 2).toFixed(1)}px,0) scale(${s.toFixed(4)}) rotate(${lean.toFixed(2)}deg)`;
         c.style.zIndex = String(50 + Math.round(d * 10));
-        c.style.opacity = String(clamp(Math.min((d - dmin) / 0.6, (dmax - d) / 0.5)));
-        c.firstElementChild.style.transform = `rotate(${(-3 - d * 7).toFixed(2)}deg)`; // each basket leans as it slides; nearly upright in the middle
         const on = Math.abs(d) < 0.5;
         c.classList.toggle('is-active', on);
         c.tabIndex = on ? 0 : -1;
