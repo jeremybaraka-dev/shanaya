@@ -23,7 +23,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const mqMobile = matchMedia('(max-width: 900px)');
-  const PAY = Object.assign({ currency: 'USD', freeShippingOver: 35, shippingFee: 6 }, window.SHANAYA_PAY);
+  const PAY = Object.assign({ currency: 'USD', freeShippingOver: 45, shippingFee: 8 }, window.SHANAYA_PAY);
   const FREE_SHIP = PAY.freeShippingOver;
 
   const ICON = {
