@@ -896,7 +896,6 @@
     const sortSel = $('#sort');
     const params = new URLSearchParams(location.search);
     let filter = params.get('cat') || 'all';
-    if (params.get('test') === '1' && byId(999)) setTimeout(() => openQuick(999, [999]), 600); // the hidden payment test item
     if (S.SETS.some((p) => p.category === filter)) filter = 'press-ons'; // old style links (?cat=floral …)
     if (!$$('.chip', chips).some((c) => c.dataset.filter === filter)) filter = 'all';
     const inGroup = (f) => (f === 'all' ? S.MIXED.slice() : S.PRODUCTS.filter((p) => p.group === f));
