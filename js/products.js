@@ -23,8 +23,8 @@
   // what the market charges. Set one to null and those items show as "Coming
   // soon" and can't be bought. Each polish is priced by its brand (POLISH_BRAND
   // below); POLISH_PRICE is for bottles with no brand listed.
-  const CHARM_PRICE = 10;
-  const POLISH_PRICE = 8;
+  const CHARM_PRICE = 9;
+  const POLISH_PRICE = 7;
   const item = (type, category, folder, optionLabel, option, price) => (id, slug, name, desc) => Object.assign({
     id, slug, name, category, type, group: category, price, desc, sizes: [option], optionLabel, stars: 0,
     img: `images/${folder}/${slug}.webp`,
@@ -34,29 +34,29 @@
   const polish = item('polish', 'polish', 'nail-polish', 'Bottle', 'One bottle', POLISH_PRICE);
 
   const PRODUCTS = [
-    set(101, 'merlot-garden', 'Merlot Garden', 'floral', 32, { badge: 'Bestseller', art: 'rosegold', shape: 'Stiletto',
+    set(101, 'merlot-garden', 'Merlot Garden', 'floral', 30, { badge: 'Bestseller', art: 'rosegold', shape: 'Stiletto',
       desc: 'Burgundy marble, sculpted pink blossoms, a touch of leopard and gold charms. Set of 10 stiletto nails.' }),
-    set(102, 'downtown-charm', 'Downtown Charm', 'charms', 30, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
+    set(102, 'downtown-charm', 'Downtown Charm', 'charms', 28, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
       desc: 'Nude French tips with cocoa stars, cherries, an NY charm and leopard and zebra accents. Set of 10.' }),
-    set(103, 'polka-blossom', 'Polka Blossom', 'floral', 28, { art: 'floral', shape: 'Stiletto',
+    set(103, 'polka-blossom', 'Polka Blossom', 'floral', 26, { art: 'floral', shape: 'Stiletto',
       desc: 'Pink and burgundy polka dots with hand-sculpted 3D blossoms and soft French tips. Set of 10.' }),
-    set(104, 'mocha-chrome', 'Mocha Chrome', 'chrome', 28, { badge: 'New', isNew: true, art: 'midnight', shape: 'Almond',
+    set(104, 'mocha-chrome', 'Mocha Chrome', 'chrome', 26, { badge: 'New', isNew: true, art: 'midnight', shape: 'Almond',
       desc: 'Rich chocolate with liquid silver chrome swirls and a tortoiseshell accent. Set of 10.' }),
-    set(105, 'safari-butterfly', 'Safari Butterfly', 'animal', 30, { art: 'y2k', shape: 'Almond',
+    set(105, 'safari-butterfly', 'Safari Butterfly', 'animal', 28, { art: 'y2k', shape: 'Almond',
       desc: 'Leopard and zebra on a nude base, finished with gold chains and a butterfly charm. Set of 10.' }),
-    set(106, 'tropic-wild', 'Tropic Wild', 'animal', 28, { badge: 'New', isNew: true, art: 'ombre', shape: 'Almond',
+    set(106, 'tropic-wild', 'Tropic Wild', 'animal', 26, { badge: 'New', isNew: true, art: 'ombre', shape: 'Almond',
       desc: 'Leopard, zebra and painted hibiscus with bold orange and black tips. Set of 10.' }),
-    set(107, 'rose-gold-swirl', 'Rose Gold Swirl', 'chrome', 30, { badge: 'Limited', art: 'rosegold', shape: 'Almond',
+    set(107, 'rose-gold-swirl', 'Rose Gold Swirl', 'chrome', 28, { badge: 'Limited', art: 'rosegold', shape: 'Almond',
       desc: 'Blush pink with sculpted gold swirls, chrome lines and soft ombre. Set of 10.' }),
-    set(108, 'scarlet-lily', 'Scarlet Lily', 'floral', 28, { art: 'gel', shape: 'Coffin',
+    set(108, 'scarlet-lily', 'Scarlet Lily', 'floral', 26, { art: 'gel', shape: 'Coffin',
       desc: 'Hand-painted red lilies, leopard and gold star charms on a pink coffin shape. Set of 10.' }),
-    set(109, 'bow-and-cherry', 'Bow & Cherry', 'charms', 32, { badge: 'Bestseller', art: 'stickers', shape: 'Stiletto',
+    set(109, 'bow-and-cherry', 'Bow & Cherry', 'charms', 30, { badge: 'Bestseller', art: 'stickers', shape: 'Stiletto',
       desc: 'Sculpted 3D bows, cherries, a spider charm and cow print in pink and burgundy. Set of 10.' }),
-    set(110, 'berry-leopard', 'Berry Leopard', 'animal', 28, { art: 'gel', shape: 'Stiletto',
+    set(110, 'berry-leopard', 'Berry Leopard', 'animal', 26, { art: 'gel', shape: 'Stiletto',
       desc: 'Berry marble, pink leopard and zebra with a white chrome flower. Set of 10.' }),
-    set(111, 'big-apple-eight', 'Big Apple Eight', 'charms', 32, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
+    set(111, 'big-apple-eight', 'Big Apple Eight', 'charms', 30, { badge: 'New', isNew: true, art: 'y2k', shape: 'Almond',
       desc: 'Leopard, cherries, an NY charm, 8-ball art and gold chains. Set of 10.' }),
-    set(112, 'orchid-tortoise', 'Orchid Tortoise', 'floral', 30, { art: 'floral', shape: 'Almond',
+    set(112, 'orchid-tortoise', 'Orchid Tortoise', 'floral', 28, { art: 'floral', shape: 'Almond',
       desc: 'Sculpted orchids, magenta marble, tortoiseshell and leopard with gold charms. Set of 10.' }),
 
     // ─── nail charms (photos in images/nail-charms/) ───
@@ -98,8 +98,8 @@
   // the brand's usual US price (Chanel Le Vernis $34, Essie Gel Couture $12.99,
   // OPI and Olive & June about $12, Essie about $11, Sally Hansen $7-8).
   const BRAND = {
-    chanel: ['Chanel Le Vernis', 30], essieGel: ['Essie Gel Couture', 11], essie: ['Essie', 9], opi: ['OPI', 10],
-    oliveJune: ['Olive & June', 10], sallyGel: ['Sally Hansen Miracle Gel', 7], sally: ['Sally Hansen Insta-Dri', 6], bellavita: ['Bellavita', 7],
+    chanel: ['Chanel Le Vernis', 28], essieGel: ['Essie Gel Couture', 10], essie: ['Essie', 8], opi: ['OPI', 9],
+    oliveJune: ['Olive & June', 9], sallyGel: ['Sally Hansen Miracle Gel', 6], sally: ['Sally Hansen Insta-Dri', 5], bellavita: ['Bellavita', 6],
   };
   const POLISH_BRAND = {
     301: 'chanel', 302: 'sally', 303: 'oliveJune', 304: 'chanel', 305: 'essieGel', 307: 'essie', 308: 'essie',
