@@ -282,8 +282,8 @@
     if (!first) {
       loader.classList.add('is-quick');
       await twoFrames();
-      await wait(220);
-      await openLoader(320);
+      await wait(120);
+      await openLoader(260);
       return;
     }
 
