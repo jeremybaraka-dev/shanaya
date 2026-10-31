@@ -868,6 +868,7 @@ html.js .about__sig.is-in text { fill-opacity: 1; stroke-dashoffset: 0; }
 .fx__col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .fx__col a { font-size: 15px; font-weight: 500; color: rgba(242, 228, 215, 0.62); transition: color 0.25s; }
 .fx__col a:hover, .fx__col a:focus-visible { color: #fff; }
+.fx__col li.fx__loc { font-size: 15px; font-weight: 500; color: rgba(242, 228, 215, 0.62); }
 .fx__col--cta { display: flex; flex-direction: column; gap: 10px; }
 .fx__col--cta h3 { margin-bottom: 8px; }
 .fx__pill {
@@ -1532,6 +1533,7 @@ body.hdr-hidden .filters { top: 0; }
 .policy__card a { color: var(--dolphin); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .policy__card--contact { background: var(--pink); box-shadow: none; }
 .policy__card--contact a { color: var(--ink); }
+.policy__contact { margin: 16px 0; }
 .policy__small { margin-top: 14px; font-size: 13px !important; color: rgba(64, 31, 40, 0.7); }
 .drawer__terms { font-size: 12px; text-align: center; color: var(--muted); }
 .drawer__terms a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
