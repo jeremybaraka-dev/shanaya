@@ -9,7 +9,9 @@ images/basket/       basket-a.webp ... basket-j.webp: cut-outs (background remov
                      shown in the home page's collection, and <colour>-basket.webp /
                      -sm.webp / .jpg: the same baskets on a tinted background,
                      used as the shop photos for the basket bundles.
-images/home/         nail-1.webp ... nail-4.webp: cut-out nails shown in "The craft".
+images/basket/       arm-a/b/c/e/h.webp: the hands holding a basket on the home page.
+images/nail-polish/  deep-merlot-photo.webp: the polish photo in the home page About.
+images/home/         cover-1/2/3.webp: the photos in the home page hero.
 
 The full-size originals (now (1).png, box (1).png, polish (1).png, a.png ...,
 nail (1).png) stay on your computer only. They're kept out of GitHub and the

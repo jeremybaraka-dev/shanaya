@@ -1,6 +1,4 @@
-# Never upload backups, editor settings or notes
-_original-backup
-_backup-pink-v1
+# Never upload editor settings or notes
 .claude
 **/_PHOTO-NAMES.txt
 images/press-ons/now (*).png
@@ -8,7 +6,6 @@ images/nail-charms/box (*).png
 images/nail-polish/polish (*).png
 images/basket/?.png
 images/home/nail (*).png
-_backup-palette-v2
 
 # Setup notes stay in the repo, not on the live site
 README.md

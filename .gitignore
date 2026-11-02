@@ -1,6 +1,4 @@
-# Local backups and editor settings — not part of the site
-_original-backup/
-_backup-pink-v1/
+# Editor settings — not part of the site
 .claude/
 
 # Secrets and tooling (PayPal keys live in Vercel's settings, never in the repo)
@@ -19,4 +17,3 @@ images/nail-charms/box (*).png
 images/nail-polish/polish (*).png
 images/basket/?.png
 images/home/nail (*).png
-_backup-palette-v2/
