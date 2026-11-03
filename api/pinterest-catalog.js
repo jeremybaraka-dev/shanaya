@@ -6,7 +6,7 @@ const catalog = require('../js/products.js');
 const settings = require('../js/payments.js');
 
 const SITE_URL = 'https://nailsbyshanaya.vercel.app';
-const COLUMNS =['id', 'title', 'description', 'link', 'image_link', 'price', 'sale_price', 'availability', 'condition', 'brand', 'product_type'];
+const COLUMNS =['id', 'title', 'description', 'link', 'image_link', 'price', 'sale_price', 'availability', 'condition', 'brand', 'product_type', 'custom_label_0'];
 const TYPES = {
   floral: 'Beauty > Nails > Press-On Nails > Floral',
   animal: 'Beauty > Nails > Press-On Nails > Animal Print',
@@ -16,6 +16,9 @@ const TYPES = {
   polish: 'Beauty > Nails > Nail Polish',
   baskets: 'Beauty > Nails > Nail Kits',
 };
+// custom_label_0 is the shop section, so Pinterest product groups can be made
+// with one filter ("Custom label 0 is Nail polish") instead of picking items.
+const SECTIONS = { 'press-ons': 'Press-on nails', 'nail-charms': 'Nail charms', polish: 'Nail polish', baskets: 'Baskets' };
 
 const cell = (v) => {
   const s = String(v == null ? '' : v).replace(/\r?\n/g, ' ');
@@ -59,6 +62,7 @@ module.exports = async (req, res) => {
       condition: 'new',
       brand: 'Nails by Shanaya',
       product_type: TYPES[p.category] || 'Beauty > Nails',
+      custom_label_0: SECTIONS[p.group] || 'Other',
     };
   }));
 
